@@ -1,0 +1,135 @@
+fileFormatVersion: 2
+guid: e9422e8333ad0f94a8744e522bdecc49
+timeCreated: 1457177346
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: AirUpSpear_0
+    21300002: AirUpSpear_1
+    21300004: AirUpSpear_2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: AirUpSpear_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 10}
+        - {x: 23, y: 10}
+        - {x: 23, y: 17}
+        - {x: 86, y: 24}
+        - {x: 86, y: 94}
+        - {x: 61, y: 126}
+        - {x: -14, y: 126}
+        - {x: -19, y: 121}
+        - {x: -18, y: 116}
+        - {x: -29, y: 106}
+        - {x: -81, y: 27}
+        - {x: -82, y: 25}
+        - {x: -82, y: 18}
+        - {x: -66, y: 15}
+        - {x: -22, y: 10}
+        - {x: -2, y: 10}
+        - {x: -2, y: 30}
+        - {x: 2, y: 13}
+    - name: AirUpSpear_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 126}
+        - {x: -20, y: 121}
+        - {x: -18, y: 116}
+        - {x: -28, y: 106}
+        - {x: -81, y: 32}
+        - {x: -82, y: 30}
+        - {x: -82, y: 21}
+        - {x: -56, y: 2}
+        - {x: 54, y: 2}
+        - {x: 86, y: 20}
+        - {x: 86, y: 66}
+        - {x: 9, y: 126}
+    - name: AirUpSpear_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -17, y: 126}
+        - {x: -19, y: 121}
+        - {x: -18, y: 116}
+        - {x: -28, y: 106}
+        - {x: -86, y: 28}
+        - {x: -86, y: 18}
+        - {x: -71, y: 16}
+        - {x: -37, y: 6}
+        - {x: 49, y: 6}
+        - {x: 82, y: 15}
+        - {x: 82, y: 88}
+        - {x: 46, y: 126}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

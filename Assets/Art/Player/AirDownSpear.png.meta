@@ -1,0 +1,157 @@
+fileFormatVersion: 2
+guid: daccb1be717a72e4aa691da2a8a120b4
+timeCreated: 1457177237
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: AirDownSpear_0
+    21300002: AirDownSpear_1
+    21300004: AirDownSpear_2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: AirDownSpear_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 2, y: 96}
+        - {x: 4, y: 94}
+        - {x: 2, y: 94}
+        - {x: 2, y: 104}
+        - {x: -86, y: 90}
+        - {x: -86, y: 11}
+        - {x: -80, y: 2}
+        - {x: 29, y: 2}
+        - {x: 82, y: 50}
+        - {x: 82, y: 89}
+        - {x: 16, y: 106}
+        - {x: 5, y: 106}
+        - {x: 3, y: 103}
+        - {x: 2, y: 100}
+    - name: AirDownSpear_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4, y: 2}
+        - {x: 20, y: 2}
+        - {x: 22, y: 4}
+        - {x: 23, y: 13}
+        - {x: 90, y: 57}
+        - {x: 90, y: 83}
+        - {x: 71, y: 83}
+        - {x: 55, y: 79}
+        - {x: 24, y: 74}
+        - {x: 22, y: 72}
+        - {x: 22, y: 74}
+        - {x: 24, y: 74}
+        - {x: 27, y: 75}
+        - {x: 26, y: 92}
+        - {x: 20, y: 101}
+        - {x: 14, y: 106}
+        - {x: 6, y: 106}
+        - {x: 1, y: 101}
+        - {x: 2, y: 96}
+        - {x: 4, y: 94}
+        - {x: 2, y: 94}
+        - {x: 2, y: 96}
+        - {x: 0, y: 98}
+        - {x: -5, y: 101}
+        - {x: -78, y: 81}
+        - {x: -78, y: 13}
+        - {x: -68, y: 2}
+        - {x: -4, y: 2}
+        - {x: -2, y: 4}
+        - {x: -2, y: 8}
+    - name: AirDownSpear_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 2}
+        - {x: 44, y: 2}
+        - {x: 86, y: 28}
+        - {x: 86, y: 103}
+        - {x: 64, y: 106}
+        - {x: 2, y: 106}
+        - {x: 1, y: 101}
+        - {x: 2, y: 96}
+        - {x: 4, y: 94}
+        - {x: 2, y: 94}
+        - {x: 2, y: 96}
+        - {x: 0, y: 98}
+        - {x: -13, y: 99}
+        - {x: -82, y: 57}
+        - {x: -82, y: 46}
+        - {x: -24, y: 2}
+        - {x: -3, y: 2}
+        - {x: -2, y: 4}
+        - {x: -2, y: 8}
+        - {x: 2, y: 4}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

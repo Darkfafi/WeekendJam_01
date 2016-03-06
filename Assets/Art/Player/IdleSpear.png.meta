@@ -1,0 +1,189 @@
+fileFormatVersion: 2
+guid: df533e5d9a2e6644f971b8681ad09483
+timeCreated: 1456646905
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: IdleSpear_0
+    21300002: IdleSpear_1
+    21300004: IdleSpear_2
+    21300006: IdleSpear_3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: IdleSpear_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 0}
+        - {x: -2, y: 0}
+        - {x: -2, y: 5}
+        - {x: -3, y: 11}
+        - {x: -8, y: 14}
+        - {x: -22, y: 14}
+      - - {x: 12, y: 14}
+        - {x: 4, y: 14}
+        - {x: 2, y: 12}
+        - {x: 2, y: 0}
+        - {x: 22, y: 0}
+        - {x: 22, y: 6}
+        - {x: 17, y: 11}
+      - - {x: -32, y: 114}
+        - {x: -82, y: 35}
+        - {x: -82, y: 14}
+        - {x: 48, y: 14}
+        - {x: 79, y: 18}
+        - {x: 86, y: 20}
+        - {x: 86, y: 93}
+        - {x: 64, y: 114}
+    - name: IdleSpear_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 0}
+        - {x: -2, y: 0}
+        - {x: -2, y: 5}
+        - {x: -3, y: 11}
+        - {x: -8, y: 14}
+        - {x: -22, y: 14}
+      - - {x: 12, y: 14}
+        - {x: 4, y: 14}
+        - {x: 2, y: 12}
+        - {x: 2, y: 0}
+        - {x: 22, y: 0}
+        - {x: 22, y: 6}
+        - {x: 17, y: 11}
+      - - {x: 39, y: 110}
+        - {x: -33, y: 110}
+        - {x: -82, y: 55}
+        - {x: -82, y: 14}
+        - {x: 45, y: 14}
+        - {x: 72, y: 28}
+        - {x: 86, y: 38}
+        - {x: 86, y: 60}
+    - name: IdleSpear_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 0}
+        - {x: -2, y: 0}
+        - {x: -2, y: 5}
+        - {x: -3, y: 11}
+        - {x: -8, y: 14}
+        - {x: -22, y: 14}
+      - - {x: 12, y: 14}
+        - {x: 4, y: 14}
+        - {x: 2, y: 12}
+        - {x: 2, y: 0}
+        - {x: 22, y: 0}
+        - {x: 22, y: 6}
+        - {x: 17, y: 11}
+      - - {x: 29, y: 110}
+        - {x: -19, y: 110}
+        - {x: -82, y: 37}
+        - {x: -82, y: 10}
+        - {x: 24, y: 10}
+        - {x: 72, y: 24}
+        - {x: 86, y: 34}
+        - {x: 86, y: 55}
+    - name: IdleSpear_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 0}
+        - {x: -2, y: 0}
+        - {x: -2, y: 5}
+        - {x: -3, y: 11}
+        - {x: -8, y: 14}
+        - {x: -22, y: 14}
+      - - {x: 12, y: 14}
+        - {x: 4, y: 14}
+        - {x: 2, y: 12}
+        - {x: 2, y: 0}
+        - {x: 22, y: 0}
+        - {x: 22, y: 6}
+        - {x: 17, y: 11}
+      - - {x: -32, y: 114}
+        - {x: -82, y: 35}
+        - {x: -82, y: 14}
+        - {x: 48, y: 14}
+        - {x: 79, y: 18}
+        - {x: 86, y: 20}
+        - {x: 86, y: 93}
+        - {x: 64, y: 114}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
