@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\Animation\AnimationManager.cs" />
     <Compile Include="Assets\_Scripts\Globals\BusyConsts.cs" />
     <Compile Include="Assets\_Scripts\Globals\Layers.cs" />
     <Compile Include="Assets\_Scripts\Input\UserInput.cs" />

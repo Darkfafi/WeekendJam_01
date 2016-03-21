@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 	private WeaponHolder weaponHolder;
 	private Rigidbody2D rigid;
     private PlatformerMovement2D platformerMovement;
-	private PlayerAnimationHandler animationHandler;
+	private PlayerAnimationManager animationHandler;
 
 	private UserInput userInput;
 
@@ -29,7 +29,9 @@ public class Player : MonoBehaviour {
 		touch2D.SetMaskLayers(Layers.LayerMaskIgnore(new int[] { Layers.PLAYERS, Layers.OBJECTS }));
 
 		animator = gameObject.GetComponent<Animator>();
-		animationHandler = new PlayerAnimationHandler(this, animator);
+		animationHandler = gameObject.AddComponent<PlayerAnimationManager>();
+		animationHandler.SetAnimationHandler(this, animator);
+		animationHandler.AnimationEnded += OnAnimEnd;
 
 		userInput = gameObject.GetComponent<UserInput>();
 
@@ -54,10 +56,20 @@ public class Player : MonoBehaviour {
 
 	void Update()
 	{
-		CheckAnimations();
 		if (!busyList.InBusyAction())
 		{
 			animationHandler.PlayAnimation("Idle");
+		}
+		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT) && busyList.InBusyAction(BusyConsts.ACTION_IN_AIR))
+		{
+			if (rigid.velocity.y < 0)
+			{
+				animationHandler.PlayAnimation("AirDown");
+			}
+			else
+			{
+				animationHandler.PlayAnimation("AirUp");
+			}
 		}
 	}
 
@@ -65,6 +77,10 @@ public class Player : MonoBehaviour {
 	{
 		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_INPUT_DISABLE))
 		{
+			if (key == bindings.Attack)
+			{
+				Attack();
+			}
 			if (key == bindings.Right)
 			{
 				Move(PlatformerMovement2D.DIR_RIGHT);
@@ -72,10 +88,6 @@ public class Player : MonoBehaviour {
 			else if (key == bindings.Left)
 			{
 				Move(PlatformerMovement2D.DIR_LEFT);
-			}
-			if (key == bindings.Attack)
-			{
-				Attack();
 			}
 		}
 	}
@@ -137,9 +149,20 @@ public class Player : MonoBehaviour {
 
 	private void GetStunned()
 	{
-		Debug.Log("Get Stunned");
 		animationHandler.PlayAnimation("KO");
 		busyList.AddBusyAction(BusyConsts.ACTION_STUNNED, BusyConsts.BUSY_LAYER_INPUT_DISABLE);
+		StartCoroutine(StunWaitTimer(3));
+	}
+
+	private IEnumerator StunWaitTimer(float timeInSeconds)
+	{
+		yield return new WaitForSeconds(timeInSeconds);
+		ReleaseFromStun();
+	}
+
+	private void ReleaseFromStun()
+	{
+		busyList.RemoveBusyAction(BusyConsts.ACTION_STUNNED);
 	}
 	public void Move(int direction)
 	{
@@ -166,29 +189,18 @@ public class Player : MonoBehaviour {
 
 		busyList.AddBusyAction(BusyConsts.ACTION_HOR_MOVING,BusyConsts.BUSY_LAYER_MOVEMENT);
 
-		if (!busyList.InBusyAction(BusyConsts.ACTION_IN_AIR))
+		if (!busyList.InBusyAction(BusyConsts.ACTION_IN_AIR) && !busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT))
 		{
 			animationHandler.PlayAnimation("Walk");
 		}
     }
-	private void CheckAnimations()
+	private void OnAnimEnd(string animationName)
 	{
-		if (!animator.GetCurrentAnimatorStateInfo(0).IsName(animationHandler.GetAnimationName("Attack")))
+		if (animationName == animationHandler.GetAnimationName("Attack"))
 		{
 			if (busyList.InBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT))
-			{
+			{ 
 				busyList.RemoveBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT);
-			}
-		}
-		if(!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT) && busyList.InBusyAction(BusyConsts.ACTION_IN_AIR))
-		{
-			if (rigid.velocity.y < 0)
-			{
-				animationHandler.PlayAnimation("AirDown");
-			}
-			else
-			{
-				animationHandler.PlayAnimation("AirUp");
 			}
 		}
 	}

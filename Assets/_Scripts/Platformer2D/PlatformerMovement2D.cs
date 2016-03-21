@@ -88,7 +88,7 @@ public class PlatformerMovement2D {
                 }
 				if (onGround)
 				{
-					//ground jump
+					//Ground jump
 					if(JumpFromGroundEvent != null)
 					{
 						JumpFromGroundEvent(calculatedJumpForce);
@@ -96,7 +96,7 @@ public class PlatformerMovement2D {
                 }
 				else
 				{
-					//air jump 
+					//Air jump 
 					if(JumpMidAirEvent != null)
 					{
 						JumpMidAirEvent(calculatedJumpForce);

@@ -1,23 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class PlayerAnimationHandler {
+public class PlayerAnimationManager : AnimationManager{
 
-	private Player player;
-	private Animator animator;
-
-	public PlayerAnimationHandler(Player player,Animator animator)
-	{
-		this.animator = animator;
-		this.player = player;
-    }
-
-	public void PlayAnimation(string animationString)
-	{
-		animator.Play(GetAnimationName(animationString));
-	}
-
-	public string GetAnimationName(string animationString)
+	public override string GetAnimationName(string animationString)
 	{
 		if ((animationString != "KO" || animationString != "Death"))
 		{

@@ -6,7 +6,7 @@ using System;
 public class Weapon : PickAbleObject {
 
 	public WeaponInfo WeaponInfo { get; private set; }
-	[SerializeField] private bool killWeapon = true;
+	[SerializeField] private DamageHitBox.HitTypes killWeapon;
 	[SerializeField] private WeaponFactory.AllWeapons weapon;
 
 	protected void Awake()
@@ -18,13 +18,13 @@ public class Weapon : PickAbleObject {
 public class WeaponInfo
 {
 	public string ItemId { get; private set; }
-	public bool KillWeapon { get; private set; }
+	public DamageHitBox.HitTypes WeaponHitType { get; private set; }
 	public WeaponFactory.AllWeapons weapon { get; private set; }
 
-	public WeaponInfo(string itemId, bool killWeapon, WeaponFactory.AllWeapons weapon)
+	public WeaponInfo(string itemId, DamageHitBox.HitTypes weaponHitType, WeaponFactory.AllWeapons weapon)
 	{
 		this.ItemId = itemId;
-		this.KillWeapon = killWeapon;
+		this.WeaponHitType = weaponHitType;
 		this.weapon = weapon;
 	}
 }

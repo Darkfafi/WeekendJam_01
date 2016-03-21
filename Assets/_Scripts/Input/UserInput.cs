@@ -10,8 +10,22 @@ public class UserInput : MonoBehaviour {
 	public event OnKeyHandler KeyUpEvent;
 
 	public KeyBindings KeyBindigns { get { return keyBindings; } }
-	private KeyBindings keyBindings = UserKeyBindings.GetKeysOf(UserKeyBindings.KeyUsers.Keyboard1);
+	[SerializeField]
+	UserKeyBindings.KeyUsers userKeys;
+	private KeyBindings keyBindings;
 
+	public void Awake()
+	{
+		if(keyBindings == null)
+		{
+			SetKeyBindings(userKeys);
+		}
+	}
+
+	public void SetKeyBindings(UserKeyBindings.KeyUsers keyUser)
+	{
+		this.keyBindings = UserKeyBindings.GetKeysOf(keyUser);
+    }
 
 	public void SetKeyBindings(KeyBindings keybinding)
 	{
