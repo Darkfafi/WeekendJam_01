@@ -78,6 +78,9 @@
     <Compile Include="Assets\_Scripts\Player\DamageHitBox.cs" />
     <Compile Include="Assets\_Scripts\Player\Player.cs" />
     <Compile Include="Assets\_Scripts\Player\PlayerAnimationHandler.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorSystem\ConfactoryFinder.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorSystem\IConfectory.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorSystem\IConfectoryFinder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
