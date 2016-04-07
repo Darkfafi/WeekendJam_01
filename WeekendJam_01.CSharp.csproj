@@ -63,11 +63,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Animation\AnimationManager.cs" />
+    <Compile Include="Assets\_Scripts\Characters\Character.cs" />
+    <Compile Include="Assets\_Scripts\Characters\CharacterAnimationHandler.cs" />
+    <Compile Include="Assets\_Scripts\Characters\DamageHitBox.cs" />
+    <Compile Include="Assets\_Scripts\Game\ConActivePlayers.cs" />
+    <Compile Include="Assets\_Scripts\Game\GameControll\NewBehaviourScript.cs" />
     <Compile Include="Assets\_Scripts\Globals\BusyConsts.cs" />
     <Compile Include="Assets\_Scripts\Globals\Layers.cs" />
-    <Compile Include="Assets\_Scripts\Input\UserInput.cs" />
-    <Compile Include="Assets\_Scripts\Input\UserKeyBindings.cs" />
+    <Compile Include="Assets\_Scripts\Input\ConGameInputBindings.cs" />
+    <Compile Include="Assets\_Scripts\Input\ConInputBindingsHandler.cs" />
+    <Compile Include="Assets\_Scripts\Input\GameSpecific\GameKeys.cs" />
+    <Compile Include="Assets\_Scripts\Input\InputItem.cs" />
+    <Compile Include="Assets\_Scripts\Input\InputUser\InputUser.cs" />
+    <Compile Include="Assets\_Scripts\Menus\CharacterSelection\CharacterSelectionMenu.cs" />
+    <Compile Include="Assets\_Scripts\Menus\CharacterSelection\PlayerSlot.cs" />
     <Compile Include="Assets\_Scripts\Misc\BusyList.cs" />
+    <Compile Include="Assets\_Scripts\Misc\Confactories\ConCoroutines.cs" />
+    <Compile Include="Assets\_Scripts\Misc\Confactories\ConGlobalEvents.cs" />
     <Compile Include="Assets\_Scripts\Misc\TouchDetector2D.cs" />
     <Compile Include="Assets\_Scripts\Objects\ObjectPicker.cs" />
     <Compile Include="Assets\_Scripts\Objects\PickAbleObject.cs" />
@@ -75,12 +87,15 @@
     <Compile Include="Assets\_Scripts\Objects\Weapons\WeaponFactory.cs" />
     <Compile Include="Assets\_Scripts\Objects\Weapons\WeaponHolder.cs" />
     <Compile Include="Assets\_Scripts\Platformer2D\PlatformerMovement2D.cs" />
-    <Compile Include="Assets\_Scripts\Player\DamageHitBox.cs" />
-    <Compile Include="Assets\_Scripts\Player\Player.cs" />
-    <Compile Include="Assets\_Scripts\Player\PlayerAnimationHandler.cs" />
-    <Compile Include="Assets\_Scripts\Utils\ConfactorSystem\ConfactoryFinder.cs" />
-    <Compile Include="Assets\_Scripts\Utils\ConfactorSystem\IConfectory.cs" />
-    <Compile Include="Assets\_Scripts\Utils\ConfactorSystem\IConfectoryFinder.cs" />
+    <Compile Include="Assets\_Scripts\Players\PlayerInfo.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfacotryParts\SceneSwitchChecker.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryFinder.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryTools.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\IConfactory.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\IConfactoryFinder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Fonts\Lobster_Two\OFL.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
