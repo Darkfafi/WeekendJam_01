@@ -21,14 +21,10 @@ public class ConInputBindingsHandler : MonoBehaviour, IConfactory {
 		GameObject.Destroy(gObject);
     }
 
-	public IConfactory ConStruct()
+	public void ConStruct()
 	{
 		//TODO luisterd naar wanneer de Game keybindingsholder confactory bindings krijgt of checkt hier al of het, het al heeft. Dan als er naar gevraagt wordt geeft het geen error. Anders wel
-		gObject = ConfactoryTools.CreateConGameObject("KeyBindings"); //  = new GameObject("<KeyBindings>");
-		ConInputBindingsHandler c = gObject.AddComponent<ConInputBindingsHandler>();
-		c.gameBindings = ConfactoryFinder.Instance.Give<ConGameInputBindings>();
-
-        return c;
+		gameBindings = ConfactoryFinder.Instance.Give<ConGameInputBindings>();
 	}
 
 	public void OnSceneSwitch(int newSceneIndex)
@@ -57,22 +53,25 @@ public class ConInputBindingsHandler : MonoBehaviour, IConfactory {
 		{
 			foreach(InputUser user in allInputUsers)
 			{
-				InputItem[] allBindingsForUser = gameBindings.GetBindingsOf(user.InputUsing);
-				if (allBindingsForUser != null)
+				if (user.InputUsing != ConGameInputBindings.BindingTypes.None)
 				{
-					InputAction action;
-					foreach (InputItem item in allBindingsForUser)
+					InputItem[] allBindingsForUser = gameBindings.GetBindingsOf(user.InputUsing);
+					if (allBindingsForUser != null)
 					{
-						action = new InputAction(item.InputActionName, item.Type, item.GetUseValue());
-						if (action.Value != InputAction.NOT_IN_USE_VALUE)
+						InputAction action;
+						foreach (InputItem item in allBindingsForUser)
 						{
-							user.OnInput(action);
+							action = new InputAction(item.InputActionName, item.Type, item.GetUseValue());
+							if (action.Value != InputAction.NOT_IN_USE_VALUE)
+							{
+								user.OnInput(action);
+							}
 						}
 					}
-				}
-				else
-				{
-					Debug.LogError(user.gameObject.name +" asking for bindings for type " + user.InputUsing + " which have not been set yet in ConGameInputBindings!");
+					else
+					{
+						Debug.LogError(user.gameObject.name + " asking for bindings for type " + user.InputUsing + " which have not been set yet in ConGameInputBindings!");
+					}
 				}
             }
 		}

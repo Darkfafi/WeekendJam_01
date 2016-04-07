@@ -11,11 +11,10 @@ public class ConCoroutines : IConfactory
 
 	private Dictionary<object, Coroutine> allRunningRoutines = new Dictionary<object, Coroutine>();
 
-	public IConfactory ConStruct()
+	public void ConStruct()
 	{
 		coroutineObject = ConfactoryTools.CreateConGameObject(NAME_OBJECT).AddComponent<CoroutineObject>();
 		UpdateName();
-		return null;
 	}
 
 	public void ConClear()

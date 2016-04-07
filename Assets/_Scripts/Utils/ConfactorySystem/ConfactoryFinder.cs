@@ -92,9 +92,18 @@ namespace Confactory
 
 		private IConfactory CreateConfectory(Type t)
 		{
-			IConfactory confectory = (IConfactory)Activator.CreateInstance(t);
-			IConfactory returnFac = confectory.ConStruct();
-			confectory = returnFac != null ? returnFac : confectory;
+			IConfactory confectory;
+
+			if(t.IsSubclassOf(typeof(MonoBehaviour)))
+			{
+				confectory = (IConfactory)ConfactoryTools.CreateConGameObject(t.Name).AddComponent(t);
+			}
+			else {
+				confectory = (IConfactory)Activator.CreateInstance(t); 
+			}
+
+			confectory.ConStruct();
+			//confectory = returnFac != null ? returnFac : confectory;
 
             activeConfectories.Add(confectory.GetType(), confectory);
 			return confectory;

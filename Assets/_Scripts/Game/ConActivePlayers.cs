@@ -8,11 +8,10 @@ public class ConActivePlayers : IConfactory {
 	 
 	private List<PlayerInfo> allPlayers = new List<PlayerInfo>();
 
-	public IConfactory ConStruct()
+	public void ConStruct()
 	{
-		return null;
-	}
 
+	}
 
 	public void RegisterPlayer(PlayerInfo player)
 	{

@@ -11,9 +11,9 @@ public class ConGlobalEvents : IConfactory
 
 	private Dictionary<string, List<GlobalDelegate>> currentListeners = new Dictionary<string, List<GlobalDelegate>>();
 
-	public IConfactory ConStruct()
+	public void ConStruct()
 	{
-		return null;
+
 	}
 
 	public void ConClear()

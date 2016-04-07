@@ -7,14 +7,26 @@ using System;
 using System.Collections.Generic;
 public class ConGameInputBindings : MonoBehaviour, IConfactory
 {
-	public delegate void BindingsHandler(int inputType, InputItem[] inputItems);
+	public delegate void BindingsHandler(BindingTypes inputType, InputItem[] inputItems);
 	public event BindingsHandler BindingsAddedEvent;
 
-	private Dictionary<int, InputItem[]> allBindings = new Dictionary<int, InputItem[]>();
-
-	public IConfactory ConStruct()
+	public enum BindingTypes
 	{
-		return null;
+		None,
+		Keyboard01,
+		Keyboard02,
+
+		Joystick01,
+		Joystick02,
+		Joystick03,
+		Joystick04
+	}
+
+	private Dictionary<BindingTypes, InputItem[]> allBindings = new Dictionary<BindingTypes, InputItem[]>();
+
+	public void ConStruct()
+	{
+
 	}
 
 	public void ConClear()
@@ -27,7 +39,7 @@ public class ConGameInputBindings : MonoBehaviour, IConfactory
 		
 	}
 
-	public InputItem[] GetBindingsOf(int inputType)
+	public InputItem[] GetBindingsOf(BindingTypes inputType)
 	{
 		if(allBindings.ContainsKey(inputType))
 		{
@@ -36,7 +48,7 @@ public class ConGameInputBindings : MonoBehaviour, IConfactory
 		return null;
 	}
 
-	public void AddBindings(int inputType, InputItem[] inputItems)
+	public void AddBindings(BindingTypes inputType, InputItem[] inputItems)
 	{
 		if (!allBindings.ContainsKey(inputType))
 		{
