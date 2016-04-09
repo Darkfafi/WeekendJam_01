@@ -42,6 +42,22 @@ public class GameKeys : MonoBehaviour {
 			new InputItem(KeyCode.Joystick2Button0,InputNames.ATTACK),
 			new InputItem(KeyCode.Joystick2Button2,InputNames.USE)
 		});
+		bindingsSystem.AddBindings(ConGameInputBindings.BindingTypes.Joystick03, new InputItem[]
+		{
+			new InputItem("Horizontal3",-1,InputNames.LEFT),
+			new InputItem("Horizontal3",1,InputNames.RIGHT),
+			new InputItem(KeyCode.Joystick3Button1,InputNames.JUMP),
+			new InputItem(KeyCode.Joystick3Button0,InputNames.ATTACK),
+			new InputItem(KeyCode.Joystick3Button2,InputNames.USE)
+		});
+		bindingsSystem.AddBindings(ConGameInputBindings.BindingTypes.Joystick04, new InputItem[]
+		{
+			new InputItem("Horizontal4",-1,InputNames.LEFT),
+			new InputItem("Horizontal4",1,InputNames.RIGHT),
+			new InputItem(KeyCode.Joystick4Button1,InputNames.JUMP),
+			new InputItem(KeyCode.Joystick4Button0,InputNames.ATTACK),
+			new InputItem(KeyCode.Joystick4Button2,InputNames.USE)
+		});
 	}
 }
 

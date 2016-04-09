@@ -3,7 +3,7 @@ using System.Collections;
 using Confactory;
 public class InputUser : MonoBehaviour {
 
-	public delegate void InputHandler(InputAction action);
+	public delegate void InputHandler(InputAction action, InputUser user);
 	public delegate void InputKeyHandler(string name, InputAction.KeyAction keyActionType);
 	public delegate void InputAxisHandler(string name, float value);
 	public event InputHandler InputEvent;
@@ -18,10 +18,11 @@ public class InputUser : MonoBehaviour {
 	{
 		inputCon = ConfactoryFinder.Instance.Give<ConInputBindingsHandler>();
 		inputCon.RegisterInputUser(this);
-		if(InputUsing == ConGameInputBindings.BindingTypes.None)
-		{
-			Debug.LogWarning(gameObject.name + " has no input type assigned!");
-		}
+    }
+
+	public void SetInputUsing(ConGameInputBindings.BindingTypes bindingType)
+	{
+		inputUsing = bindingType;
     }
 
 	// May be called by AI script also. Thats why it is public
@@ -29,7 +30,7 @@ public class InputUser : MonoBehaviour {
 	{
 		if (InputEvent != null)
 		{
-			InputEvent(inputAction);
+			InputEvent(inputAction,this);
 		}
 		if (InputKeyEvent != null && inputAction.Type == InputItem.InputType.KeyCode)
 		{

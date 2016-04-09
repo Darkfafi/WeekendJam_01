@@ -5,12 +5,12 @@ public class PlayerInfo {
 
 	public Color PlayerColor { get; private set; }
 	public Character PlayerCharacter { get; private set; }//character of player
-	public int PlayerKeyBindingsType { get; private set;} // If null then AI.
+	public ConGameInputBindings.BindingTypes BindingType { get; private set;} // If null then AI.
 	public int playerId = 0;
 
-	public PlayerInfo(int bindingsDefinePlayer)
+	public PlayerInfo(ConGameInputBindings.BindingTypes bindingsDefinePlayer)
 	{
-		PlayerKeyBindingsType = bindingsDefinePlayer;
+		BindingType = bindingsDefinePlayer;
     }
 
 	public void SetPlayerColor(Color color)

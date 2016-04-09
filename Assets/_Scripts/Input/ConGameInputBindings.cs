@@ -5,7 +5,7 @@ using System.Collections;
 using Confactory;
 using System;
 using System.Collections.Generic;
-public class ConGameInputBindings : MonoBehaviour, IConfactory
+public class ConGameInputBindings : IConfactory
 {
 	public delegate void BindingsHandler(BindingTypes inputType, InputItem[] inputItems);
 	public event BindingsHandler BindingsAddedEvent;
@@ -21,7 +21,7 @@ public class ConGameInputBindings : MonoBehaviour, IConfactory
 		Joystick03,
 		Joystick04
 	}
-
+	public Dictionary<BindingTypes, InputItem[]> AllBindings { get { return allBindings; } }
 	private Dictionary<BindingTypes, InputItem[]> allBindings = new Dictionary<BindingTypes, InputItem[]>();
 
 	public void ConStruct()

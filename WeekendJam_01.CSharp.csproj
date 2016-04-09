@@ -74,7 +74,8 @@
     <Compile Include="Assets\_Scripts\Input\GameSpecific\GameKeys.cs" />
     <Compile Include="Assets\_Scripts\Input\InputItem.cs" />
     <Compile Include="Assets\_Scripts\Input\InputUser\InputUser.cs" />
-    <Compile Include="Assets\_Scripts\Menus\CharacterSelection\CharacterSelectionMenu.cs" />
+    <Compile Include="Assets\_Scripts\Input\InputUser\MultiInputUser.cs" />
+    <Compile Include="Assets\_Scripts\Menus\CharacterSelection\CharacterGameLobby.cs" />
     <Compile Include="Assets\_Scripts\Menus\CharacterSelection\PlayerSlot.cs" />
     <Compile Include="Assets\_Scripts\Misc\BusyList.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\ConCoroutines.cs" />

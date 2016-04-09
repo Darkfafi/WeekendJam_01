@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 public class PlayerSlot : MonoBehaviour
 {
-	private PlayerInfo playerOnSlot = null;
+	public PlayerInfo PlayerOnSlot { get; private set; }
+	public bool IsReady { get { return readyObject.activeSelf; } }
  	[SerializeField]
 	private GameObject usedSlot;
 	[SerializeField]
@@ -16,9 +17,9 @@ public class PlayerSlot : MonoBehaviour
 
 	public void SetPlayerForSlot(PlayerInfo player)
 	{
-		playerOnSlot = player;
+		PlayerOnSlot = player;
 
-		if (playerOnSlot != null)
+		if (PlayerOnSlot != null)
 		{
 			usedSlot.SetActive(true);
 			unusedSlot.SetActive(false);
@@ -26,12 +27,12 @@ public class PlayerSlot : MonoBehaviour
 		else
 		{
 			usedSlot.SetActive(false);
+			SetReady(false);
 			unusedSlot.SetActive(true);
 		}
 	}
-
-	void Update()
+	public void SetReady(bool readyState)
 	{
-		
+		readyObject.SetActive(readyState);
 	}
 }
