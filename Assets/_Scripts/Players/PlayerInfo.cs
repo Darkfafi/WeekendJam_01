@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerInfo {
 
-	public Color PlayerColor { get; private set; }
+	public ColorHandler.Colors PlayerColor { get; private set; }
 	public Character PlayerCharacter { get; private set; }//character of player
 	public ConGameInputBindings.BindingTypes BindingType { get; private set;} // If null then AI.
 	public int playerId = 0;
@@ -13,7 +13,7 @@ public class PlayerInfo {
 		BindingType = bindingsDefinePlayer;
     }
 
-	public void SetPlayerColor(Color color)
+	public void SetPlayerColor(ColorHandler.Colors color)
 	{
 		PlayerColor = color;
 		//Send event that color changed;

@@ -4,13 +4,19 @@ using Confactory;
 using System;
 using System.Collections.Generic;
 
-public class ConActivePlayers : IConfactory {
-	 
+public class ConActivePlayers : IConfactory
+{
+	public delegate void PlayerHandler(PlayerInfo playerInfo);
+	public event PlayerHandler PlayerRegisteredEvent;
+	public event PlayerHandler PlayerUnRegisteredEvent;
+
+	public ColorHandler ColorHandler { get; private set; }
+
 	private List<PlayerInfo> allPlayers = new List<PlayerInfo>();
 
 	public void ConStruct()
 	{
-
+		ColorHandler = new ColorHandler();
 	}
 
 	public void RegisterPlayer(PlayerInfo player)
@@ -18,6 +24,10 @@ public class ConActivePlayers : IConfactory {
 		if (!allPlayers.Contains(player))
 		{
 			allPlayers.Add(player);
+			if(PlayerRegisteredEvent != null)
+			{
+				PlayerRegisteredEvent(player);
+            }
 		}
 		else
 		{
@@ -29,6 +39,11 @@ public class ConActivePlayers : IConfactory {
 		if (allPlayers.Contains(player))
 		{
 			allPlayers.Remove(player);
+			ColorHandler.StopUsingColor(player.PlayerColor);
+			if (PlayerUnRegisteredEvent != null)
+			{
+				PlayerUnRegisteredEvent(player);	
+            }
 		}
 		else
 		{
@@ -42,11 +57,11 @@ public class ConActivePlayers : IConfactory {
 
 	public void ConClear()
 	{
-		
+
 	}
 
 	public void OnSceneSwitch(int newSceneIndex)
 	{
-		
+
 	}
 }

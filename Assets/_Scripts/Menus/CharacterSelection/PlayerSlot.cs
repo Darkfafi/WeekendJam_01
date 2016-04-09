@@ -22,6 +22,7 @@ public class PlayerSlot : MonoBehaviour
 		if (PlayerOnSlot != null)
 		{
 			usedSlot.SetActive(true);
+			SetFlagColor(ColorHandler.ColorsToColor(player.PlayerColor));
 			unusedSlot.SetActive(false);
 		}
 		else
@@ -30,6 +31,10 @@ public class PlayerSlot : MonoBehaviour
 			SetReady(false);
 			unusedSlot.SetActive(true);
 		}
+	}
+	public void SetFlagColor(Color color)
+	{
+		colorFlag.color = color;
 	}
 	public void SetReady(bool readyState)
 	{

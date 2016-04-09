@@ -66,6 +66,7 @@
     <Compile Include="Assets\_Scripts\Characters\Character.cs" />
     <Compile Include="Assets\_Scripts\Characters\CharacterAnimationHandler.cs" />
     <Compile Include="Assets\_Scripts\Characters\DamageHitBox.cs" />
+    <Compile Include="Assets\_Scripts\Game\ColorHandler.cs" />
     <Compile Include="Assets\_Scripts\Game\ConActivePlayers.cs" />
     <Compile Include="Assets\_Scripts\Globals\BusyConsts.cs" />
     <Compile Include="Assets\_Scripts\Globals\Layers.cs" />

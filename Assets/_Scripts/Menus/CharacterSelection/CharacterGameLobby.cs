@@ -8,6 +8,7 @@ public class CharacterGameLobby : MonoBehaviour {
 	[SerializeField] PlayerSlot[] playerSlots;
 	private MultiInputUser multiInputUser;
 	private ConActivePlayers conActivePlayers;
+
 	void Awake ()
 	{
 		conActivePlayers = Confactory.ConfactoryFinder.Instance.Give<ConActivePlayers>();
@@ -26,6 +27,7 @@ public class CharacterGameLobby : MonoBehaviour {
 				{
 					//add to slot
 					PlayerInfo player = new PlayerInfo(type);
+					player.SetPlayerColor(GivePlayerRandomColor());
 					if (AddPlayerToNextOpenSlot(player))
 					{
 						conActivePlayers.RegisterPlayer(player);
@@ -149,4 +151,11 @@ public class CharacterGameLobby : MonoBehaviour {
 			}
         }
 	}
+	private ColorHandler.Colors GivePlayerRandomColor()
+	{
+		ColorHandler.Colors[] colors = conActivePlayers.ColorHandler.GetAvailableColors();
+		ColorHandler.Colors color = colors[Random.Range(0, colors.Length)];
+		conActivePlayers.ColorHandler.GetColor(color, true);
+        return color;
+    }
 }
