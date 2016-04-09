@@ -14,27 +14,29 @@ public class InputItem {
 	public string InputActionName { get; private set; }
 
 	private string axisString = string.Empty;
+	private int direction = 0;
+	private float preAxisCheck = 0;
 	private KeyCode keyCode = KeyCode.None;
 
 	public InputItem()
 	{
 
 	}
-    public InputItem(string axisName, string nameInputAction)
+    public InputItem(string axisName, int direction, string nameInputAction)
 	{
-		SetBinding(axisName, nameInputAction);
+		SetBinding(axisName, direction, nameInputAction);
     }
 	public InputItem(KeyCode keyCode, string nameInputAction)
 	{
 		SetBinding(keyCode, nameInputAction);
 	}
 
-	public void SetBinding(string axisName, string nameInputAction)
+	public void SetBinding(string axisName, int direction, string nameInputAction)
 	{
 		axisString = axisName;
 		keyCode = KeyCode.None;
 		Type = InputType.Axis;
-
+		this.direction = direction;
 		InputActionName = nameInputAction;
 	}
 	public void SetBinding(KeyCode keyCode, string nameInputAction)
@@ -80,30 +82,40 @@ public class InputItem {
 
 		if(Input.GetKeyDown(keyCode))
 		{
-			value = 1;
+			value = (float)InputAction.KeyAction.OnKeyDown;
 		}else if(Input.GetKey(keyCode))
 		{
-			value = 0;
+			value = (float)InputAction.KeyAction.KeyDown;
 		}else if(Input.GetKeyUp(keyCode))
 		{
-			value = -1;
+			value = (float)InputAction.KeyAction.OnKeyUp;
 		}
 
 		return value;
 	}
 	private float AxisCheck()
 	{
-		float value = Input.GetAxis(axisString);
+		float value = InputAction.NOT_IN_USE_VALUE;
+		float axisValue = Input.GetAxis(axisString);
+        if (Mathf.Abs(axisValue) / axisValue == direction || (preAxisCheck != 0 && axisValue == 0)) // || hits 0 for first time after pre value was in direction then return -1 
+		{
+			value = Mathf.Abs(axisValue);
+			preAxisCheck = value;
+        }
 		return value;
 	}
 }
 public class InputAction
 {
 	public const float NOT_IN_USE_VALUE = 1337;
-	public const int VALUE_ON_KEY_DOWN = 1;
-	public const int VALUE_KEY_DOWN = 0;
-	public const int VALUE_ON_KEY_UP = -1;
 
+	public enum KeyAction
+	{
+		NotUser = (int)NOT_IN_USE_VALUE,
+        OnKeyDown = 1,
+		KeyDown = 0,
+		OnKeyUp = -1
+	}
 
 	public string Name { get; private set; }
 	public InputItem.InputType Type { get; private set; }
@@ -114,5 +126,26 @@ public class InputAction
 		Name = name;
 		Type = type;
 		Value = value;
+	}
+	public KeyAction KeyActionValue
+	{
+		get {
+			if (Value == -1)
+			{
+				return KeyAction.OnKeyUp;
+			}
+			else if (Value == 0)
+			{
+				return KeyAction.KeyDown;
+	        }
+			else if (Value == 1)
+			{
+				return KeyAction.OnKeyDown;
+			}
+			else
+			{
+				return KeyAction.NotUser;
+			}
+		}
 	}
 }

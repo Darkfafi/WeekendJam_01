@@ -10,6 +10,7 @@ namespace Confactory
 		public static GameObject CreateConGameObject(string name)
 		{
 			GameObject go = new GameObject("<" + name + ">");
+			go.isStatic = true;
 			GameObject.DontDestroyOnLoad(go);
 			return go;
 		}

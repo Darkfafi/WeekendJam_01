@@ -7,6 +7,9 @@ using System.Collections.Generic;
 
 namespace Confactory
 {
+	/// <summary>
+	/// This class is responsible for Creating, managing and destroying Confactories.
+	/// </summary>
 	public class ConfactoryFinder : IConfactoryFinder
 	{
 		private Dictionary<Type, IConfactory> activeConfectories = new Dictionary<Type, IConfactory>();
@@ -77,6 +80,10 @@ namespace Confactory
 					IConfactory confactory = activeConfectories[t];
 					activeConfectories.Remove(t);
 					confactory.ConClear();
+					if(confactory.GetType().IsSubclassOf(typeof(MonoBehaviour)))
+                    {
+						GameObject.Destroy((confactory as MonoBehaviour).gameObject);
+                    }
 					inDeletionTypes.Remove(t);
 					if(activeConfectories.Count == 0)
 					{
@@ -103,9 +110,8 @@ namespace Confactory
 			}
 
 			confectory.ConStruct();
-			//confectory = returnFac != null ? returnFac : confectory;
 
-            activeConfectories.Add(confectory.GetType(), confectory);
+			activeConfectories.Add(confectory.GetType(), confectory);
 			return confectory;
 		}
 
@@ -131,10 +137,10 @@ namespace Confactory
 
 		private void OnSceneSwitchedEvent(int currentLevel)
 		{
-			foreach(KeyValuePair<Type,IConfactory> confactoryPair in activeConfectories)
+			foreach(KeyValuePair<Type, IConfactory> confactoryPair in activeConfectories)
 			{
 				confactoryPair.Value.OnSceneSwitch(currentLevel);
-			}
+            }
 		}
     }
 }

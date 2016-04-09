@@ -14,11 +14,10 @@ public class ConInputBindingsHandler : MonoBehaviour, IConfactory {
 
 	private List<InputUser> allInputUsers = new List<InputUser>();
 	private ConGameInputBindings gameBindings;
-	private GameObject gObject;
 
     public void ConClear()
 	{
-		GameObject.Destroy(gObject);
+		
     }
 
 	public void ConStruct()

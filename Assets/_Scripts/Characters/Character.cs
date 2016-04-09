@@ -35,9 +35,10 @@ public class Character : MonoBehaviour {
 
 		userInput = gameObject.GetComponent<InputUser>();
 
-		userInput.InputEvent += OnInputEvent;
+		userInput.InputKeyEvent += OnInputKeyEvent;
+		userInput.InputAxisEvent += OnInputAxisEvent;
 
-        rigid.gravityScale = 2;
+		rigid.gravityScale = 2;
 		rigid.freezeRotation = true;
 		touch2D.DistanceCheck = 0.05f;
 
@@ -68,39 +69,36 @@ public class Character : MonoBehaviour {
 		}
 	}
 
-	protected void OnInputEvent(InputAction action)
+	protected void OnInputKeyEvent(string name, InputAction.KeyAction keyAction)
 	{
-		if(action.Type == InputItem.InputType.KeyCode)
+		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_INPUT_DISABLE))
 		{
-			if(action.Value == InputAction.VALUE_KEY_DOWN)
+			if (keyAction == InputAction.KeyAction.KeyDown)
 			{
-				if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_INPUT_DISABLE))
+				if (name == InputNames.ATTACK)
 				{
-					if (action.Name == InputNames.ATTACK)
-					{
-						Attack();
-					}
-					if (action.Name == InputNames.LEFT)
-					{
-						Move(PlatformerMovement2D.DIR_LEFT);
-					}
-					else if (action.Name == InputNames.RIGHT)
-					{
-						Move(PlatformerMovement2D.DIR_RIGHT);
-					}
+					Attack();
 				}
-			}
-			else if(action.Value == InputAction.VALUE_ON_KEY_DOWN)
-			{
-				if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT)
-					&& !busyList.InBusyAction(BusyConsts.BUSY_LAYER_INPUT_DISABLE))
+				if (name == InputNames.LEFT)
 				{
-					if (action.Name == InputNames.JUMP)
+					Move(PlatformerMovement2D.DIR_LEFT);
+				}
+				else if (name == InputNames.RIGHT)
+				{
+					Move(PlatformerMovement2D.DIR_RIGHT);
+				}
+
+			}
+			else if (keyAction == InputAction.KeyAction.OnKeyDown)
+			{
+				if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT))
+				{
+					if (name == InputNames.JUMP)
 					{
 						platformerMovement.Jump();
 					}
 
-					if (action.Name == InputNames.USE)
+					if (name == InputNames.USE)
 					{
 						if (CurrentWeapon == null)
 						{
@@ -113,13 +111,31 @@ public class Character : MonoBehaviour {
 					}
 				}
 			}
-			else if(action.Value == InputAction.VALUE_ON_KEY_UP)
+			else if (keyAction == InputAction.KeyAction.OnKeyUp)
 			{
 				if (busyList.InBusyAction(BusyConsts.ACTION_HOR_MOVING))
 				{
 					busyList.RemoveBusyAction(BusyConsts.ACTION_HOR_MOVING);
 				}
 			}
+		}
+	}
+
+	private void OnInputAxisEvent(string name, float value)
+	{
+		if (value != 0) { 
+			if (name == InputNames.LEFT)
+			{
+				Move(PlatformerMovement2D.DIR_LEFT);
+			}
+			else if (name == InputNames.RIGHT)
+			{
+				Move(PlatformerMovement2D.DIR_RIGHT);
+			}
+		}
+		else if (busyList.InBusyAction(BusyConsts.ACTION_HOR_MOVING))
+        {
+			busyList.RemoveBusyAction(BusyConsts.ACTION_HOR_MOVING);
 		}
 	}
 

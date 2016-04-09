@@ -42,6 +42,10 @@ public class ConCoroutines : IConfactory
 			UpdateName();
 		}
     }
+	public bool HasContext(object context)
+	{
+		return allRunningRoutines.ContainsKey(context);
+	}
 	public void StopContext(object context)
 	{
 		if(allRunningRoutines.ContainsKey(context))
