@@ -3,9 +3,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
 public class CharacterGameLobby : MonoBehaviour {
 
 	[SerializeField] PlayerSlot[] playerSlots;
+	[SerializeField] NotificationBar notificationBar;
+
 	private MultiInputUser multiInputUser;
 	private ConActivePlayers conActivePlayers;
 
@@ -33,6 +37,10 @@ public class CharacterGameLobby : MonoBehaviour {
 						conActivePlayers.RegisterPlayer(player);
                     }
 				}
+				if (action.Name == InputNames.USE)
+				{
+					Debug.Log("Back to Menu!(Menu Scene)");
+				}
 			}
 			else
 			{
@@ -42,6 +50,20 @@ public class CharacterGameLobby : MonoBehaviour {
 					if (!slot.IsReady)
 					{
 						slot.SetReady(true);
+					}
+					else if(CheckAllSlotsReadyStatus())
+					{
+						if (AmountOfSlotsInUse() > 1)
+						{
+							Debug.Log("START(Game Scene)");
+						}else
+						{
+							Debug.Log("Need more then one player to start!");
+							notificationBar.ShowNotification("Need more then one player to start!", 3.5f, 1.2f, 3.5f);
+                        }
+					}else
+					{
+						notificationBar.ShowNotification("All Players have to be ready to start!", 3.5f, 1.2f, 3.5f);
 					}
 				}
 				if (action.Name == InputNames.USE)
@@ -99,6 +121,7 @@ public class CharacterGameLobby : MonoBehaviour {
 	private void SetSlotInUse(PlayerSlot slot, PlayerInfo playerInfo)
 	{
 		slot.SetPlayerForSlot(playerInfo);
+		playerInfo.playerId = Array.IndexOf(playerSlots, slot);
 		//TODO sound effect in confactory for sounds or something..
 	}
 	private PlayerSlot CheckIfTypeInSlot(ConGameInputBindings.BindingTypes type)
@@ -116,7 +139,24 @@ public class CharacterGameLobby : MonoBehaviour {
 		}
 		return null;
 	}
-	private bool AllSlotsInUse()
+	private int AmountOfSlotsInUse()
+	{
+		int counter = 0;
+		for (int i = 0; i < playerSlots.Length; i++)
+		{
+			PlayerSlot slot = playerSlots[i];
+			if (slot.PlayerOnSlot != null)
+			{
+				counter++;
+            }
+			else
+			{
+				break;
+			}
+		}
+		return counter;
+	}
+    private bool AllSlotsInUse()
 	{
 		for (int i = 0; i < playerSlots.Length; i++)
 		{
@@ -128,6 +168,36 @@ public class CharacterGameLobby : MonoBehaviour {
 		}
 		return true;
 	}
+	private bool CheckAllSlotsReadyStatus()
+	{
+		PlayerSlot slot;
+		for(int i = 0; i < playerSlots.Length; i++)
+		{
+			slot = playerSlots[i];
+			if (slot.PlayerOnSlot != null)
+			{
+				if (!slot.IsReady)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (i == 0)
+				{
+					return false;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		return true;
+	}
+	/// <summary>
+	/// Places all players to left slot if possible. This prevents slot 1 being empty while slot 2 is in use.
+	/// </summary>
 	private void RefreshPlayerSlots()
 	{
 		PlayerSlot currentSlot;
@@ -154,7 +224,7 @@ public class CharacterGameLobby : MonoBehaviour {
 	private ColorHandler.Colors GivePlayerRandomColor()
 	{
 		ColorHandler.Colors[] colors = conActivePlayers.ColorHandler.GetAvailableColors();
-		ColorHandler.Colors color = colors[Random.Range(0, colors.Length)];
+		ColorHandler.Colors color = colors[UnityEngine.Random.Range(0, colors.Length)];
 		conActivePlayers.ColorHandler.GetColor(color, true);
         return color;
     }

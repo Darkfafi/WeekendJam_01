@@ -27,20 +27,23 @@ public class ConCoroutines : IConfactory
 
 	}
 
-	public void StartCoroutine(IEnumerator method, object context)
+	public Coroutine StartCoroutine(IEnumerator method, object context)
 	{
-		if (context != null)
+		Coroutine coroutine = null;
+        if (context != null)
 		{
 			if (!allRunningRoutines.ContainsKey(context))
 			{
-				allRunningRoutines.Add(context, coroutineObject.StartCoroutine(method));
+				coroutine = coroutineObject.StartCoroutine(method);
+                allRunningRoutines.Add(context, coroutine);
 			}
 			else
 			{
 				Debug.LogError("There is already a method running on this context");
 			}
 			UpdateName();
-		}
+        }
+		return coroutine;
     }
 	public bool HasContext(object context)
 	{
