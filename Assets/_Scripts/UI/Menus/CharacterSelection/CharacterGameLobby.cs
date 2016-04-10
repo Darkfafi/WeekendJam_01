@@ -59,7 +59,7 @@ public class CharacterGameLobby : MonoBehaviour {
 						}else
 						{
 							Debug.Log("Need more then one player to start!");
-							notificationBar.ShowNotification("Need more then one player to start!", 3.5f, 1.2f, 3.5f);
+							notificationBar.ShowNotification("Need more players to start!", 3.5f, 1.2f, 3.5f);
                         }
 					}else
 					{

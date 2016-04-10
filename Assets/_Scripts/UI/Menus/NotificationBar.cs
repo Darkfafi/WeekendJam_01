@@ -9,7 +9,8 @@ public class NotificationBar : MonoBehaviour {
 	private Text notificationText;
 
 	private ConCoroutines conCoroutines;
-	private object fadeContext = new object();
+	private object showContext = new object();
+	private object hideContext = new object();
 	private object waitContext = new object();
 
 	private enum AnimationType
@@ -66,11 +67,11 @@ public class NotificationBar : MonoBehaviour {
 	private void FadeAnimation(AnimationType animation,float speed)
 	{
 		StopActiveCoroutines();
-		fadeContext = new object();
 		if (animation == AnimationType.Show)
 		{
+			showContext = new object();
 			SetAlphaObject(0);
-			conCoroutines.StartCoroutine(ShowAnimation(speed),fadeContext);
+			conCoroutines.StartCoroutine(ShowAnimation(speed), showContext);
         }
 		else
 		{
@@ -78,7 +79,8 @@ public class NotificationBar : MonoBehaviour {
 			{
 				SetAlphaObject(1);
 			}
-			conCoroutines.StartCoroutine(HideAnimation(speed),fadeContext);
+			hideContext = new object();
+			conCoroutines.StartCoroutine(HideAnimation(speed), hideContext);
 		}
 		
 	}
@@ -90,7 +92,7 @@ public class NotificationBar : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			SetAlphaObject(GetAlphaObject() - Time.deltaTime * speed);
 		}
-		conCoroutines.StopContext(fadeContext);
+		conCoroutines.StopContext(hideContext); // Does not work if the gameObject is not active
 	}
 
 	private IEnumerator ShowAnimation(float speed)
@@ -100,7 +102,7 @@ public class NotificationBar : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			SetAlphaObject(GetAlphaObject() + Time.deltaTime * speed);
 		}
-		conCoroutines.StopContext(fadeContext);
+		conCoroutines.StopContext(showContext);
 	}
 
 	private void SetAlphaObject(float alphaRange)
@@ -113,6 +115,7 @@ public class NotificationBar : MonoBehaviour {
 		notificationText.color = new Color(tC.r, tC.g, tC.b, alphaRange * notificationTextDefaultAlpha);
 		if(alphaRange == 0)
 		{
+			conCoroutines.StopContext(hideContext);
 			gameObject.SetActive(false);
 		}
 		else
@@ -135,9 +138,13 @@ public class NotificationBar : MonoBehaviour {
 		{
 			conCoroutines.StopContext(waitContext);
 		}
-		if (conCoroutines.HasContext(fadeContext))
+		if(conCoroutines.HasContext(showContext))
 		{
-			conCoroutines.StopContext(fadeContext);
+			conCoroutines.StopContext(showContext);
+		}
+		if (conCoroutines.HasContext(hideContext))
+		{
+			conCoroutines.StopContext(hideContext);
 		}	
 	}
 }
