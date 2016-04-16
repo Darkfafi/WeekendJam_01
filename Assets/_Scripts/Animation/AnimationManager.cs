@@ -6,10 +6,10 @@ public class AnimationManager : MonoBehaviour
 {
 
 	public delegate void AnimationHandler(string animation);
-	public delegate void AnimationBoolHandler(string animation, float finishNormTime);
+	public delegate void AnimationFloatHandler(string animation, float finishNormTime);
 
 	public event AnimationHandler AnimationStarted;
-	public event AnimationBoolHandler AnimationEnded;
+	public event AnimationFloatHandler AnimationEnded;
 
 	protected Character player { private set; get; }
 	protected Animator animator { private set; get; }
@@ -60,10 +60,6 @@ public class AnimationManager : MonoBehaviour
 		if (!string.IsNullOrEmpty(AnimationPlaying))
 		{
 			AnimationNormalizedTime = (animator.GetCurrentAnimatorStateInfo(0).normalizedTime - AnimationLoopCounter) / 1;
-			if (animationPlaying == GetAnimationName("Attack"))
-			{
-				Debug.Log(AnimationNormalizedTime);
-			}
 			if (AnimationNormalizedTime >= 1)
 			{
 				AnimationNormalizedTime = 1;

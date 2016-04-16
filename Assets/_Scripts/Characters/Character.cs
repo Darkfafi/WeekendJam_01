@@ -234,7 +234,7 @@ public class Character : MonoBehaviour {
 				// If animation stopped playing after it was completed then also throw the object the character is holding
 				if (animFinishedTime == 1)
 				{
-					GameObject objectThrown = weaponHolder.DropWeapon(true, transform.position + new Vector3(0.85f, 0.8f, 0));
+					GameObject objectThrown = weaponHolder.DropWeapon(true,new Vector3(0.85f, 0.8f, 0)).gameObject;
 					if (objectThrown != null)
 					{
 						Vector3 newScale = objectThrown.transform.localScale;
@@ -247,10 +247,12 @@ public class Character : MonoBehaviour {
 			}
 		}
 	}
+
 	private void OnNoGroundEvent()
 	{
 		busyList.AddBusyAction(BusyConsts.ACTION_IN_AIR, BusyConsts.BUSY_LAYER_MOVEMENT);
 	}
+
 	private void OnLandGroundEvent()
 	{
 		busyList.RemoveBusyAction(BusyConsts.ACTION_IN_AIR, BusyConsts.BUSY_LAYER_MOVEMENT);

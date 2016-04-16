@@ -59,36 +59,58 @@ public class WeaponHolder {
 		}
 		else
 		{
-			hitBox.HitType = DamageHitBox.HitTypes.Ko;
+			if (attacking)
+			{
+				hitBox.HitType = DamageHitBox.HitTypes.Ko;
+			}
+			else
+			{
+				hitBox.HitType = DamageHitBox.HitTypes.None;
+			}
 		}
+
 		hitBox.gameObject.SetActive(true);
 	}
 
-	public GameObject DropWeapon(bool dropObject = true, Vector3? spawnPosition = null)
+	public Weapon DropWeapon(bool dropObject = true, Vector3? spawnOffset = null)
 	{
 		GameObject dropWeaponObject = null;
 		if (CurrentWeapon != null)
 		{
 			if (dropObject)
 			{
-				Vector3 spawnPos = (spawnPosition.HasValue) ? spawnPosition.Value : holderTransform.position;
-				dropWeaponObject = GameObject.Instantiate(WeaponFactory.GetWeaponGameObject(CurrentWeapon.weapon), spawnPos, Quaternion.identity) as GameObject;
+				Vector3 spawnPos = holderTransform.position; //(spawnOffset.HasValue) ? spawnOffset.Value : holderTransform.position;
+				if(spawnOffset.HasValue)
+				{
+					spawnPos += spawnOffset.Value;
+				}
+                dropWeaponObject = GameObject.Instantiate(WeaponFactory.GetWeaponGameObject(CurrentWeapon.weapon), spawnPos, Quaternion.identity) as GameObject;
 			}
 			CurrentWeapon = null;
 		}
 		SetWeaponHitbox(false);
-        return dropWeaponObject;
-    }
+        return (dropWeaponObject == null) ? null : dropWeaponObject.GetComponent<Weapon>();
+	}
 
 	private void OnHitBoxClashEvent(DamageHitBox ownBox, DamageHitBox otherBox)
 	{
-		if (ownBox.HitType == otherBox.HitType)
+		if (ownBox.HitType != DamageHitBox.HitTypes.None && otherBox.HitType != DamageHitBox.HitTypes.None)
 		{
-			Debug.Log("Clash");
-		}
-		else if(ownBox.HitType == DamageHitBox.HitTypes.Kill && otherBox.HitType == DamageHitBox.HitTypes.Ko)
-		{
-			GameObject weapon = DropWeapon(true);
+			if (ownBox.HitType == otherBox.HitType && ownBox.HitType != DamageHitBox.HitTypes.Idle)
+			{
+				Debug.Log("Clash");
+			}
+			else if (ownBox.HitType == DamageHitBox.HitTypes.Idle && otherBox.HitType != DamageHitBox.HitTypes.Idle)
+			{
+				Weapon weapon = DropWeapon(true,new Vector2(0,0.5f));
+				float xDiffWeapons = otherBox.transform.position.x - ownBox.transform.position.x;
+				float force = 4f;
+				if(otherBox.HitType == DamageHitBox.HitTypes.Kill)
+				{
+					force *= 1.5f;
+				}
+				weapon.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(-Mathf.Sign(xDiffWeapons) * force, 0);
+			}
 		}
 	}
 }
