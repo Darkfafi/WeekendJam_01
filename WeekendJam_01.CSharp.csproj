@@ -79,6 +79,7 @@
     <Compile Include="Assets\_Scripts\Misc\BusyList.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\ConCoroutines.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\ConGlobalEvents.cs" />
+    <Compile Include="Assets\_Scripts\Misc\DontDestroyOnLoadObject.cs" />
     <Compile Include="Assets\_Scripts\Misc\TouchDetector2D.cs" />
     <Compile Include="Assets\_Scripts\Objects\ObjectPicker.cs" />
     <Compile Include="Assets\_Scripts\Objects\PickAbleObject.cs" />
@@ -89,7 +90,8 @@
     <Compile Include="Assets\_Scripts\Players\PlayerInfo.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\CharacterGameLobby.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\PlayerSlot.cs" />
-    <Compile Include="Assets\_Scripts\UI\Menus\NotificationBar.cs" />
+    <Compile Include="Assets\_Scripts\UI\Menus\MainMenu.cs" />
+    <Compile Include="Assets\_Scripts\UI\NotificationBar.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfacotryParts\SceneSwitchChecker.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryFinder.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryTools.cs" />

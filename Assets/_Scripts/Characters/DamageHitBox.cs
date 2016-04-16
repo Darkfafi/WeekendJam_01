@@ -8,10 +8,11 @@ public class DamageHitBox : MonoBehaviour {
 
 	public enum HitTypes
 	{
-		None,
-		Ko,
-		Kill
-	}
+		None,	// No weapon
+		Idle,	// Weapon that does not hurt
+		Ko,		// Weapon that ko's
+		Kill	// Weapon that kills 
+	} 
 
 	public HitTypes HitType = HitTypes.None;
 

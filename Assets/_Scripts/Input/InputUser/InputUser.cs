@@ -17,8 +17,16 @@ public class InputUser : MonoBehaviour {
 	private void Awake()
 	{
 		inputCon = ConfactoryFinder.Instance.Give<ConInputBindingsHandler>();
-		inputCon.RegisterInputUser(this);
     }
+
+	private void OnEnable()
+	{
+		inputCon.RegisterInputUser(this);
+	}
+	private void OnDisable()
+	{
+		inputCon.UnRegisterInputUser(this);
+	}
 
 	public void SetInputUsing(ConGameInputBindings.BindingTypes bindingType)
 	{
@@ -40,10 +48,5 @@ public class InputUser : MonoBehaviour {
 		{
 			InputAxisEvent(inputAction.Name, inputAction.Value);
 		}	
-	}
-
-	private void OnDestroy()
-	{
-		inputCon.UnRegisterInputUser(this);
 	}
 }

@@ -4,9 +4,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
 public class CharacterGameLobby : MonoBehaviour {
-
+	[SerializeField] private string backSceneToLoadName = "Menu";
+	[SerializeField] private string startSceneToLoadName = "Game";
 	[SerializeField] PlayerSlot[] playerSlots;
 	[SerializeField] NotificationBar notificationBar;
 
@@ -39,7 +41,7 @@ public class CharacterGameLobby : MonoBehaviour {
 				}
 				if (action.Name == InputNames.USE)
 				{
-					Debug.Log("Back to Menu!(Menu Scene)");
+					SceneManager.LoadScene(backSceneToLoadName);
 				}
 			}
 			else
@@ -55,7 +57,7 @@ public class CharacterGameLobby : MonoBehaviour {
 					{
 						if (AmountOfSlotsInUse() > 1)
 						{
-							Debug.Log("START(Game Scene)");
+							SceneManager.LoadScene(startSceneToLoadName);
 						}else
 						{
 							Debug.Log("Need more then one player to start!");

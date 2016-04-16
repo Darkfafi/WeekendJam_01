@@ -16,6 +16,8 @@ public class Character : MonoBehaviour {
 
 	private InputUser userInput;
 
+	private float throwForce = 20;
+
 	public WeaponInfo CurrentWeapon {
 		get { return weaponHolder.CurrentWeapon; }
 	}
@@ -106,7 +108,8 @@ public class Character : MonoBehaviour {
 						}
 						else
 						{
-							weaponHolder.DropWeapon();
+							busyList.AddBusyAction(BusyConsts.ACTION_THROW, BusyConsts.BUSY_LAYER_COMBAT);
+							animationHandler.PlayAnimation(BusyConsts.ACTION_THROW);
 						}
 					}
 				}
@@ -179,20 +182,24 @@ public class Character : MonoBehaviour {
 	{
 		busyList.RemoveBusyAction(BusyConsts.ACTION_STUNNED);
 	}
-	public void Move(int direction)
+
+	// Move & Attack are private because they will be triggered by AI using input user stuff.
+	private void Move(int direction)
 	{
 		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT) && platformerMovement.OnGround || !platformerMovement.OnGround)
 		{
 			platformerMovement.Move(direction);
 		}
 	}
-	public void Attack()
+
+	private void Attack()
 	{
 		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT))
 		{
 			busyList.AddBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT);
 			animationHandler.PlayAnimation(BusyConsts.ACTION_ATTACK);
-		}
+			weaponHolder.SetWeaponHitbox(true);
+        }
 	}
 
 	private void OnMovedEvent(float velocity)
@@ -209,13 +216,34 @@ public class Character : MonoBehaviour {
 			animationHandler.PlayAnimation("Walk");
 		}
     }
-	private void OnAnimEnd(string animationName)
+	private void OnAnimEnd(string animationName, float animFinishedTime)
 	{
-		if (animationName == animationHandler.GetAnimationName("Attack"))
+		if (animationName == animationHandler.GetAnimationName(BusyConsts.ACTION_ATTACK))
 		{
 			if (busyList.InBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT))
 			{ 
 				busyList.RemoveBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT);
+				weaponHolder.SetWeaponHitbox(false);
+			}
+		}
+		if (animationName == animationHandler.GetAnimationName(BusyConsts.ACTION_THROW))
+		{
+			if (busyList.InBusyAction(BusyConsts.ACTION_THROW, BusyConsts.BUSY_LAYER_COMBAT))
+			{
+				busyList.RemoveBusyAction(BusyConsts.ACTION_THROW, BusyConsts.BUSY_LAYER_COMBAT);
+				// If animation stopped playing after it was completed then also throw the object the character is holding
+				if (animFinishedTime == 1)
+				{
+					GameObject objectThrown = weaponHolder.DropWeapon(true, transform.position + new Vector3(0.85f, 0.8f, 0));
+					if (objectThrown != null)
+					{
+						Vector3 newScale = objectThrown.transform.localScale;
+						newScale = new Vector3(Mathf.Abs(newScale.x) * Mathf.Sign(transform.localScale.x), newScale.y, newScale.z);
+						objectThrown.transform.localScale = newScale;
+
+						objectThrown.GetComponent<Rigidbody2D>().velocity += (new Vector2(Mathf.Sign(transform.localScale.x) * throwForce, 2.1f));
+					}
+				}
 			}
 		}
 	}

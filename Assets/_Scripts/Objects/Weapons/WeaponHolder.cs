@@ -19,7 +19,7 @@ public class WeaponHolder {
 
 	public void PickUpWeapon(bool dropHoldingWeapon = true)
 	{
-			PickUpInfo infoPickUp = objectPicker.PickUpObject<Weapon>(Vector2.up, holderTransform.position, 0.4f, true);
+			PickUpInfo infoPickUp = objectPicker.PickUpObject<Weapon>(Vector2.up, holderTransform.position, 1f, true);
 			Weapon weapon;
 			if (infoPickUp.objectPickedUp != null)
 			{
@@ -39,21 +39,45 @@ public class WeaponHolder {
 	public void GainWeapon(WeaponInfo weapon)
 	{
 		CurrentWeapon = weapon;
-		hitBox.HitType = weapon.WeaponHitType;
+		SetWeaponHitbox(false);
+    }
+
+
+	public void SetWeaponHitbox(bool attacking)
+	{
+		hitBox.gameObject.SetActive(false);
+		if (CurrentWeapon != null)
+		{
+			if (attacking)
+			{
+				hitBox.HitType = CurrentWeapon.WeaponAttackType;
+			}
+			else
+			{
+				hitBox.HitType = CurrentWeapon.WeaponIdleType;
+			}
+		}
+		else
+		{
+			hitBox.HitType = DamageHitBox.HitTypes.Ko;
+		}
+		hitBox.gameObject.SetActive(true);
 	}
-	public GameObject DropWeapon(bool dropObject = true, DamageHitBox.HitTypes hit = DamageHitBox.HitTypes.Ko)
+
+	public GameObject DropWeapon(bool dropObject = true, Vector3? spawnPosition = null)
 	{
 		GameObject dropWeaponObject = null;
 		if (CurrentWeapon != null)
 		{
 			if (dropObject)
 			{
-				dropWeaponObject = GameObject.Instantiate(WeaponFactory.GetWeaponGameObject(CurrentWeapon.weapon), holderTransform.position, Quaternion.identity) as GameObject;
+				Vector3 spawnPos = (spawnPosition.HasValue) ? spawnPosition.Value : holderTransform.position;
+				dropWeaponObject = GameObject.Instantiate(WeaponFactory.GetWeaponGameObject(CurrentWeapon.weapon), spawnPos, Quaternion.identity) as GameObject;
 			}
 			CurrentWeapon = null;
 		}
-		hitBox.HitType = DamageHitBox.HitTypes.Ko;
-		return dropWeaponObject;
+		SetWeaponHitbox(false);
+        return dropWeaponObject;
     }
 
 	private void OnHitBoxClashEvent(DamageHitBox ownBox, DamageHitBox otherBox)

@@ -7,7 +7,7 @@ public class ObjectPicker : MonoBehaviour {
 	{
 		PickUpInfo info;
 		RaycastHit2D hit = Physics2D.Raycast(startRayPosition, direction, pickUpLength, Layers.LayerMaskSeeOnly(Layers.OBJECTS));
-		Debug.DrawRay(startRayPosition, direction * pickUpLength, Color.green);
+		Debug.DrawRay(startRayPosition, direction * pickUpLength, Color.green,0.5f);
 		string idObject = "";
 		PickAbleObject pickedUpGameObject = null;
 		

@@ -6,12 +6,16 @@ public class AnimationManager : MonoBehaviour
 {
 
 	public delegate void AnimationHandler(string animation);
+	public delegate void AnimationBoolHandler(string animation, float finishNormTime);
 
 	public event AnimationHandler AnimationStarted;
-	public event AnimationHandler AnimationEnded;
+	public event AnimationBoolHandler AnimationEnded;
 
 	protected Character player { private set; get; }
 	protected Animator animator { private set; get; }
+
+	public int AnimationLoopCounter { get; private set; }
+	public float AnimationNormalizedTime { get; private set; }
 
 	public string AnimationPlaying
 	{
@@ -21,7 +25,8 @@ public class AnimationManager : MonoBehaviour
 			string old = animationPlaying;
 			if (!string.IsNullOrEmpty(animationPlaying) && value != animationPlaying)
 			{
-				AnimationEnded(animationPlaying);
+				float finishedTime = (AnimationNormalizedTime > 1) ? 1 : AnimationNormalizedTime; // if filled with an empty string then the animation has ended by completion
+				AnimationEnd(animationPlaying, finishedTime);
 			}
 			animationPlaying = value;
 			if (!string.IsNullOrEmpty(animationPlaying) && old != animationPlaying)
@@ -54,7 +59,17 @@ public class AnimationManager : MonoBehaviour
 	{
 		if (!string.IsNullOrEmpty(AnimationPlaying))
 		{
-			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(AnimationPlaying))
+			AnimationNormalizedTime = (animator.GetCurrentAnimatorStateInfo(0).normalizedTime - AnimationLoopCounter) / 1;
+			if (animationPlaying == GetAnimationName("Attack"))
+			{
+				Debug.Log(AnimationNormalizedTime);
+			}
+			if (AnimationNormalizedTime >= 1)
+			{
+				AnimationNormalizedTime = 1;
+				AnimationLoopCounter++;
+            }
+			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(AnimationPlaying) || (AnimationNormalizedTime == 1 && !animator.GetCurrentAnimatorStateInfo(0).loop))
 			{
 				AnimationPlaying = "";
 			}
@@ -62,16 +77,18 @@ public class AnimationManager : MonoBehaviour
 	}
 	protected virtual void AnimationStart(string animationName)
 	{
-		if (AnimationStarted != null)
+		AnimationLoopCounter = 0;
+		AnimationNormalizedTime = 0;
+        if (AnimationStarted != null)
 		{
 			AnimationStarted(animationName);
 		}
 	}
-	protected void AnimationEnd(string animationName)
+	protected void AnimationEnd(string animationName, float finishedTime)
 	{
 		if (AnimationEnded != null)
 		{
-			AnimationEnded(animationName);
+			AnimationEnded(animationName, finishedTime);
 		}
 	}
 }
