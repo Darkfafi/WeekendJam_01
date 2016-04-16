@@ -16,7 +16,7 @@ public class Character : MonoBehaviour {
 
 	private InputUser userInput;
 
-	private float throwForce = 15;
+	private float throwForceMod = 1.1f;
 
 	public WeaponInfo CurrentWeapon {
 		get { return weaponHolder.CurrentWeapon; }
@@ -241,7 +241,7 @@ public class Character : MonoBehaviour {
 						newScale = new Vector3(Mathf.Abs(newScale.x) * Mathf.Sign(transform.localScale.x), newScale.y, newScale.z);
 						objectThrown.transform.localScale = newScale;
 
-						objectThrown.RigidbodyItem.velocity += (new Vector2(Mathf.Sign(transform.localScale.x) * throwForce, 2.1f));
+						objectThrown.RigidbodyItem.velocity += (new Vector2(Mathf.Sign(transform.localScale.x) * (throwForceMod * objectThrown.WeaponHurtVelocity), 2.1f));
 					}
 				}
 			}
