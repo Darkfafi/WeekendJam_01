@@ -4,7 +4,9 @@ using System.Collections;
 public class DamageHitBox : MonoBehaviour {
 
 	public delegate void HitBoxHandler(DamageHitBox callerBox, DamageHitBox otherBox);
+	public delegate void HitBoxGlobalHandler(DamageHitBox callerBox, Collider2D other);
 	public HitBoxHandler HitBoxClashEvent;
+	public HitBoxGlobalHandler CollisionEvent;
 
 	public enum HitTypes
 	{
@@ -16,14 +18,14 @@ public class DamageHitBox : MonoBehaviour {
 
 	public HitTypes HitType = HitTypes.None;
 
-	public Character Player { get { return player; } }
-	[SerializeField]
-	private Character player;
-
-
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		DamageHitBox otherHitBox = other.gameObject.GetComponent<DamageHitBox>();
+		if(CollisionEvent != null)
+		{
+			CollisionEvent(this, other);
+        }
+
 		if(otherHitBox != null)
 		{
 			if(HitBoxClashEvent != null)

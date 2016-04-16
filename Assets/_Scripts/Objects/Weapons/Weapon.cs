@@ -6,8 +6,9 @@ using System;
 public class Weapon : PickAbleObject {
 	
 	public WeaponInfo WeaponInfo { get; private set; }
-	public DamageHitBox HitBoxItem { get { return hitBoxItem; } }
-
+	public Rigidbody2D RigidbodyItem { get { return rigidbodyItem; } }
+	[SerializeField] private float weight = 2.5f;
+	[SerializeField] private Rigidbody2D rigidbodyItem;
 	[SerializeField] private DamageHitBox hitBoxItem;
 	[SerializeField] private DamageHitBox.HitTypes attackWeapon;
 	[SerializeField] private DamageHitBox.HitTypes idleWeapon;
@@ -16,6 +17,44 @@ public class Weapon : PickAbleObject {
 	protected void Awake()
 	{
 		WeaponInfo = new WeaponInfo(ItemId, idleWeapon, attackWeapon, weapon);
+		hitBoxItem.CollisionEvent += OnCollisionEvent;
+        rigidbodyItem.gravityScale = weight;
+    }
+
+	public void SetHitboxItem(bool attacking)
+	{
+		if(attacking)
+		{
+			hitBoxItem.HitType = attackWeapon;
+		}
+		else
+		{
+			hitBoxItem.HitType = DamageHitBox.HitTypes.None;
+		}
+	}
+
+	protected void Update()
+	{
+		if (RigidbodyItem.velocity.magnitude > 14)
+		{
+			SetHitboxItem(true);
+        }
+		else if(hitBoxItem.HitType == attackWeapon)
+		{
+			SetHitboxItem(false);
+        }
+	}
+
+	private void OnCollisionEvent(DamageHitBox ownHitbox, Collider2D otherCollider)
+	{
+		if(otherCollider.GetComponent<Character>() != null)
+		{ 
+			RigidbodyItem.velocity = new Vector2(0,0);
+		}
+		else if(RigidbodyItem.velocity.magnitude > 14)
+		{
+			RigidbodyItem.velocity = RigidbodyItem.velocity.normalized * 13;
+        }
     }
 }
 

@@ -16,7 +16,7 @@ public class Character : MonoBehaviour {
 
 	private InputUser userInput;
 
-	private float throwForce = 20;
+	private float throwForce = 15;
 
 	public WeaponInfo CurrentWeapon {
 		get { return weaponHolder.CurrentWeapon; }
@@ -28,7 +28,7 @@ public class Character : MonoBehaviour {
 		TouchDetector2D touch2D = gameObject.AddComponent<TouchDetector2D>();
 		Collider2D colliderPlayer = GetComponent<Collider2D>();
 		objectPicker = gameObject.AddComponent<ObjectPicker>();
-		touch2D.SetMaskLayers(Layers.LayerMaskIgnore(new int[] { Layers.PLAYERS, Layers.OBJECTS }));
+		touch2D.SetMaskLayers(Layers.LayerMaskIgnore(new int[] { Layers.PLAYERS, Layers.OBJECTS, Layers.HITBOXES }));
 
 		animator = gameObject.GetComponent<Animator>();
 		animationHandler = gameObject.AddComponent<CharacterAnimationManager>();
@@ -234,14 +234,14 @@ public class Character : MonoBehaviour {
 				// If animation stopped playing after it was completed then also throw the object the character is holding
 				if (animFinishedTime == 1)
 				{
-					GameObject objectThrown = weaponHolder.DropWeapon(true,new Vector3(0.85f, 0.8f, 0)).gameObject;
+					Weapon objectThrown = weaponHolder.DropWeapon(true,new Vector3(0.85f * Mathf.Sign(transform.localScale.x), 0.8f, 0));
 					if (objectThrown != null)
 					{
 						Vector3 newScale = objectThrown.transform.localScale;
 						newScale = new Vector3(Mathf.Abs(newScale.x) * Mathf.Sign(transform.localScale.x), newScale.y, newScale.z);
 						objectThrown.transform.localScale = newScale;
 
-						objectThrown.GetComponent<Rigidbody2D>().velocity += (new Vector2(Mathf.Sign(transform.localScale.x) * throwForce, 2.1f));
+						objectThrown.RigidbodyItem.velocity += (new Vector2(Mathf.Sign(transform.localScale.x) * throwForce, 2.1f));
 					}
 				}
 			}

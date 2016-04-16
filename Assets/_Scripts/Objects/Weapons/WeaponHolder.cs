@@ -109,7 +109,7 @@ public class WeaponHolder {
 				{
 					force *= 1.5f;
 				}
-				weapon.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(-Mathf.Sign(xDiffWeapons) * force, 0);
+				weapon.RigidbodyItem.velocity += new Vector2(-Mathf.Sign(xDiffWeapons) * force, 0);
 			}
 		}
 	}
