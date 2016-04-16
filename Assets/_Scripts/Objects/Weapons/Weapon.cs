@@ -7,6 +7,9 @@ public class Weapon : PickAbleObject {
 	
 	public WeaponInfo WeaponInfo { get; private set; }
 	public Rigidbody2D RigidbodyItem { get { return rigidbodyItem; } }
+
+	private float weaponHurtVelocity = 14;
+
 	[SerializeField] private float weight = 2.5f;
 	[SerializeField] private Rigidbody2D rigidbodyItem;
 	[SerializeField] private DamageHitBox hitBoxItem;
@@ -35,7 +38,7 @@ public class Weapon : PickAbleObject {
 
 	protected void Update()
 	{
-		if (RigidbodyItem.velocity.magnitude > 14)
+		if (RigidbodyItem.velocity.magnitude > weaponHurtVelocity)
 		{
 			SetHitboxItem(true);
         }
@@ -51,9 +54,9 @@ public class Weapon : PickAbleObject {
 		{ 
 			RigidbodyItem.velocity = new Vector2(0,0);
 		}
-		else if(RigidbodyItem.velocity.magnitude > 14)
+		else if(RigidbodyItem.velocity.magnitude > weaponHurtVelocity)
 		{
-			RigidbodyItem.velocity = RigidbodyItem.velocity.normalized * 13;
+			RigidbodyItem.velocity = RigidbodyItem.velocity.normalized * (weaponHurtVelocity - 1);
         }
     }
 }

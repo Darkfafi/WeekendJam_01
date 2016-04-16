@@ -19,18 +19,10 @@ public class Layers {
 
 	public static int LayerMaskIgnore(int[] layers)
 	{
-		LayerMask ignoreReturn = -1;
-		if(layers.Length > 0)
-		{
-			ignoreReturn = new LayerMask();
-        }
-		foreach(int layer in layers)
-		{
-			ignoreReturn |= (1 << layer);
-        }
-		ignoreReturn = ~ignoreReturn;
+		LayerMask ignoreReturn = LayerMaskSeeOnly(layers);
+        ignoreReturn = ~ignoreReturn;
 		return ignoreReturn;
-    }
+	}
 
 	public static int LayerMaskSeeOnly(int[] layers)
 	{
