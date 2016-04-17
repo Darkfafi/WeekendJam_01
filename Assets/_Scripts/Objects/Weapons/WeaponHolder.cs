@@ -96,21 +96,34 @@ public class WeaponHolder {
 	{
 		if (ownBox.HitType != DamageHitBox.HitTypes.None && otherBox.HitType != DamageHitBox.HitTypes.None)
 		{
-			if (ownBox.HitType == otherBox.HitType && ownBox.HitType != DamageHitBox.HitTypes.Idle)
+			if (ownBox.HitType != DamageHitBox.HitTypes.Idle)
 			{
-				Debug.Log("Clash");
-			}
-			else if (ownBox.HitType == DamageHitBox.HitTypes.Idle && otherBox.HitType != DamageHitBox.HitTypes.Idle)
-			{
-				Weapon weapon = DropWeapon(true,new Vector2(0,0.5f));
-				float xDiffWeapons = otherBox.transform.position.x - ownBox.transform.position.x;
-				float force = 4f;
-				if(otherBox.HitType == DamageHitBox.HitTypes.Kill)
+				if (ownBox.HitType == otherBox.HitType)		// if we clash and we are both not idle then do the clash effect
 				{
-					force *= 1.5f;
+					Debug.Log("Clash");
 				}
-				weapon.RigidbodyItem.velocity += new Vector2(-Mathf.Sign(xDiffWeapons) * force, 0);
+				else if (ownBox.HitType > otherBox.HitType) // if we are both not idle and mine is higher then his then disarm me (ko disarms kill weapons in clash)
+				{
+					Disarm(ownBox, otherBox);
+                }
 			}
+			else if (otherBox.HitType != DamageHitBox.HitTypes.Idle) // if mine is idle and the other is not then disarm me
+			{
+				Disarm(ownBox, otherBox);
+            }
 		}
+	}
+
+	private void Disarm(DamageHitBox ownBox, DamageHitBox otherBox, float forceMod = 1)
+	{
+		Weapon weapon = DropWeapon(true, new Vector2(0, 0.5f));
+		float xDiffWeapons = otherBox.transform.position.x - ownBox.transform.position.x;
+		float force = 4f;
+		if (otherBox.HitType == DamageHitBox.HitTypes.Kill)
+		{
+			force *= 1.5f;
+		}
+		force *= forceMod;
+        weapon.RigidbodyItem.velocity += new Vector2(-Mathf.Sign(xDiffWeapons) * force, 0);
 	}
 }

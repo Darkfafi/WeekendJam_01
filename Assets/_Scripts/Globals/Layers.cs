@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Layers {
 
+	public const int DEFAULT = 0;
 	public const int PLAYERS = 8;
 	public const int OBJECTS = 9;
 	public const int HITBOXES = 10;

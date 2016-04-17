@@ -68,7 +68,8 @@
     <Compile Include="Assets\_Scripts\Characters\DamageHitBox.cs" />
     <Compile Include="Assets\_Scripts\Game\ColorHandler.cs" />
     <Compile Include="Assets\_Scripts\Game\ConActivePlayers.cs" />
-    <Compile Include="Assets\_Scripts\Globals\BusyConsts.cs" />
+    <Compile Include="Assets\_Scripts\Game\GameControll\GameHandler.cs" />
+    <Compile Include="Assets\_Scripts\Game\GameRules\BaseGameRules.cs" />
     <Compile Include="Assets\_Scripts\Globals\Layers.cs" />
     <Compile Include="Assets\_Scripts\Input\ConGameInputBindings.cs" />
     <Compile Include="Assets\_Scripts\Input\ConInputBindingsHandler.cs" />
@@ -77,8 +78,9 @@
     <Compile Include="Assets\_Scripts\Input\InputUser\InputUser.cs" />
     <Compile Include="Assets\_Scripts\Input\InputUser\MultiInputUser.cs" />
     <Compile Include="Assets\_Scripts\Misc\BusyList.cs" />
-    <Compile Include="Assets\_Scripts\Misc\Confactories\ConCoroutines.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\ConGlobalEvents.cs" />
+    <Compile Include="Assets\_Scripts\Misc\Confactories\Tags\ConTags.cs" />
+    <Compile Include="Assets\_Scripts\Misc\Confactories\Tags\Tag.cs" />
     <Compile Include="Assets\_Scripts\Misc\DontDestroyOnLoadObject.cs" />
     <Compile Include="Assets\_Scripts\Misc\TouchDetector2D.cs" />
     <Compile Include="Assets\_Scripts\Objects\ObjectPicker.cs" />
@@ -87,16 +89,22 @@
     <Compile Include="Assets\_Scripts\Objects\Weapons\WeaponFactory.cs" />
     <Compile Include="Assets\_Scripts\Objects\Weapons\WeaponHolder.cs" />
     <Compile Include="Assets\_Scripts\Platformer2D\PlatformerMovement2D.cs" />
-    <Compile Include="Assets\_Scripts\Players\PlayerInfo.cs" />
+    <Compile Include="Assets\_Scripts\Players\Player.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\ArrowPlayerIndicator.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\PlayerUIInfo\UIPlayerInfo.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\PlayerUIInfo\UIPlayerInfos.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\UICharacterArrow.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\CharacterGameLobby.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\PlayerSlot.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\MainMenu.cs" />
     <Compile Include="Assets\_Scripts\UI\NotificationBar.cs" />
+    <Compile Include="Assets\_Scripts\Utils\BusyConsts.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfacotryParts\SceneSwitchChecker.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryFinder.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryTools.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\IConfactory.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\IConfactoryFinder.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ConfactoryUtilItems\ConCoroutines.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\Lobster_Two\OFL.txt" />

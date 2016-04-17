@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 public class PlayerSlot : MonoBehaviour
 {
-	public PlayerInfo PlayerOnSlot { get; private set; }
+	public Player PlayerOnSlot { get; private set; }
 	public bool IsReady { get { return readyObject.activeSelf; } }
  	[SerializeField]
 	private GameObject usedSlot;
@@ -15,7 +15,7 @@ public class PlayerSlot : MonoBehaviour
 	private Image colorFlag;
 
 
-	public void SetPlayerForSlot(PlayerInfo player)
+	public void SetPlayerForSlot(Player player)
 	{
 		PlayerOnSlot = player;
 

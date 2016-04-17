@@ -4,7 +4,13 @@ using System;
 
 public class Character : MonoBehaviour {
 
-[SerializeField]
+	public Collider2D CharacterCollider { get; private set; }
+    public WeaponInfo CurrentWeapon
+	{
+		get { return weaponHolder.CurrentWeapon; }
+	}
+
+	[SerializeField]
 	private DamageHitBox hitBox;
 	private BusyList busyList = new BusyList();
 	private Animator animator;
@@ -13,22 +19,20 @@ public class Character : MonoBehaviour {
 	private Rigidbody2D rigid;
     private PlatformerMovement2D platformerMovement;
 	private CharacterAnimationManager animationHandler;
-
 	private InputUser userInput;
 
-	private float throwForceMod = 1.1f;
-
-	public WeaponInfo CurrentWeapon {
-		get { return weaponHolder.CurrentWeapon; }
-	}
+	// Options
+	[SerializeField] private float throwForceMod = 1.1f;
+	[SerializeField] private float movementSpeed = 6f;
+	[SerializeField] private float jumpForce = 8f;
 
 	protected void Awake()
 	{
 		rigid = gameObject.AddComponent<Rigidbody2D>();
 		TouchDetector2D touch2D = gameObject.AddComponent<TouchDetector2D>();
-		Collider2D colliderPlayer = GetComponent<Collider2D>();
+		CharacterCollider = GetComponent<Collider2D>();
 		objectPicker = gameObject.AddComponent<ObjectPicker>();
-		touch2D.SetMaskLayers(Layers.LayerMaskIgnore(new int[] { Layers.PLAYERS, Layers.OBJECTS, Layers.HITBOXES }));
+		touch2D.SetMaskLayers(Layers.LayerMaskSeeOnly(new int[] { Layers.DEFAULT }));
 
 		animator = gameObject.GetComponent<Animator>();
 		animationHandler = gameObject.AddComponent<CharacterAnimationManager>();
@@ -44,7 +48,10 @@ public class Character : MonoBehaviour {
 		rigid.freezeRotation = true;
 		touch2D.DistanceCheck = 0.05f;
 
-		platformerMovement = new PlatformerMovement2D(transform, colliderPlayer, rigid, touch2D);
+		platformerMovement = new PlatformerMovement2D(transform, CharacterCollider, rigid, touch2D);
+		platformerMovement.movementSpeed = movementSpeed;
+		platformerMovement.jumpForce = jumpForce;
+
 		platformerMovement.MoveEvent += OnMovedEvent;
 		platformerMovement.LostContactWithGroundEvent += OnNoGroundEvent;
 		platformerMovement.LandOnGroundEvent += OnLandGroundEvent;
@@ -247,7 +254,6 @@ public class Character : MonoBehaviour {
 			}
 		}
 	}
-
 	private void OnNoGroundEvent()
 	{
 		busyList.AddBusyAction(BusyConsts.ACTION_IN_AIR, BusyConsts.BUSY_LAYER_MOVEMENT);

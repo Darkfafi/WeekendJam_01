@@ -6,20 +6,20 @@ using System.Collections.Generic;
 
 public class ConActivePlayers : IConfactory
 {
-	public delegate void PlayerHandler(PlayerInfo playerInfo);
+	public delegate void PlayerHandler(Player player);
 	public event PlayerHandler PlayerRegisteredEvent;
 	public event PlayerHandler PlayerUnRegisteredEvent;
 
 	public ColorHandler ColorHandler { get; private set; }
 
-	private List<PlayerInfo> allPlayers = new List<PlayerInfo>();
+	private List<Player> allPlayers = new List<Player>();
 
 	public void ConStruct()
 	{
 		ColorHandler = new ColorHandler();
 	}
 
-	public void RegisterPlayer(PlayerInfo player)
+	public void RegisterPlayer(Player player)
 	{
 		if (!allPlayers.Contains(player))
 		{
@@ -34,7 +34,7 @@ public class ConActivePlayers : IConfactory
 			Debug.LogWarning("Cannot Register player: " + player + " while already registered");
 		}
 	}
-	public void UnRegisterPlayer(PlayerInfo player)
+	public void UnRegisterPlayer(Player player)
 	{
 		if (allPlayers.Contains(player))
 		{
@@ -50,7 +50,19 @@ public class ConActivePlayers : IConfactory
 			Debug.LogWarning("Player: " + player + "Cannot be unregistered because it has not been registered");
 		}
 	}
-	public PlayerInfo[] GetAllPlayers()
+
+	public Character CreateCharacterForPlayer(Player player)
+	{
+		Character character = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Player")).GetComponent<Character>();
+		if(player.PlayerCharacter != null)
+		{
+			GameObject.Destroy(player.PlayerCharacter);
+		}
+		player.SetCharacter(character);
+		return character;
+	}
+
+	public Player[] GetAllPlayers()
 	{
 		return allPlayers.ToArray();
 	}

@@ -60,13 +60,16 @@ public class Weapon : PickAbleObject
 	{
 		if (gameObject.GetComponent<Collider2D>() != otherCollider)
 		{
-			if (otherCollider.GetComponent<Character>() != null)
+			if (RigidbodyItem.velocity.magnitude >= weaponHurtVelocity)
 			{
-				RigidbodyItem.velocity = new Vector2(0, 0);
-			}
-			else if (RigidbodyItem.velocity.magnitude >= weaponHurtVelocity)
-			{
-				RigidbodyItem.velocity = RigidbodyItem.velocity.normalized * (weaponHurtVelocity - 1);
+				if (otherCollider.GetComponent<Character>() != null)
+				{
+					RigidbodyItem.velocity = new Vector2(0, 0);
+				}
+				else
+				{
+					RigidbodyItem.velocity = RigidbodyItem.velocity * 0.5f;
+				}
 			}
 		}
 	}

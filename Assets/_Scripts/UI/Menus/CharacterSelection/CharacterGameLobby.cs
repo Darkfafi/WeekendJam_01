@@ -32,7 +32,7 @@ public class CharacterGameLobby : MonoBehaviour {
 				if (action.Name == InputNames.ATTACK)
 				{
 					//add to slot
-					PlayerInfo player = new PlayerInfo(type);
+					Player player = new Player(type);
 					player.SetPlayerColor(GivePlayerRandomColor());
 					if (AddPlayerToNextOpenSlot(player))
 					{
@@ -85,25 +85,25 @@ public class CharacterGameLobby : MonoBehaviour {
 		}
 	}
 
-	public bool AddPlayerToNextOpenSlot(PlayerInfo playerInfo)
+	public bool AddPlayerToNextOpenSlot(Player player)
 	{
 		for(int i = 0; i < playerSlots.Length; i++)
 		{
 			PlayerSlot slot = playerSlots[i];
             if (slot.PlayerOnSlot == null)
 			{
-				SetSlotInUse(slot, playerInfo);
+				SetSlotInUse(slot, player);
                 return true;
 			}
 		}
 		return false;
 	}
-	public void RemovePlayerFromSlot(PlayerInfo playerInfo,bool permanent = true)
+	public void RemovePlayerFromSlot(Player player, bool permanent = true)
 	{
 		for (int i = 0; i < playerSlots.Length; i++)
 		{
 			PlayerSlot slot = playerSlots[i];
-			if (slot.PlayerOnSlot == playerInfo)
+			if (slot.PlayerOnSlot == player)
 			{
 				RemovePlayerFromSlot(slot, permanent);
 				break;
@@ -120,10 +120,10 @@ public class CharacterGameLobby : MonoBehaviour {
 		RefreshPlayerSlots();
 	}
 
-	private void SetSlotInUse(PlayerSlot slot, PlayerInfo playerInfo)
+	private void SetSlotInUse(PlayerSlot slot, Player player)
 	{
-		slot.SetPlayerForSlot(playerInfo);
-		playerInfo.playerId = Array.IndexOf(playerSlots, slot);
+		slot.SetPlayerForSlot(player);
+		player.playerId = Array.IndexOf(playerSlots, slot);
 		//TODO sound effect in confactory for sounds or something..
 	}
 	private PlayerSlot CheckIfTypeInSlot(ConGameInputBindings.BindingTypes type)
@@ -204,7 +204,7 @@ public class CharacterGameLobby : MonoBehaviour {
 	{
 		PlayerSlot currentSlot;
 		PlayerSlot nextSlot;
-		PlayerInfo nextPlayer;
+		Player nextPlayer;
 		bool readyStatus = false;
 		for(int i = 0; i < playerSlots.Length - 1; i++)
 		{
