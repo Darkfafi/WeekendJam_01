@@ -37,13 +37,10 @@ public class GameHandler : MonoBehaviour {
 
 	public void SpawnPlayer(Player player, GameObject spawnpoint)
 	{
-		// if active character is null then create character
-		// if the character is dead then create a new one and delete old one or inactive it so it stays on the ground (for maybe x amount of time)
-		// if there is a character then just teleport him to the spawn and play the spawn animation (dont make a new one so it keeps its weapons and everything)
-
 		if(player.PlayerCharacter != null)
 		{
 			RemoveEventListenersFromCharacter(player.PlayerCharacter);
+			Destroy(player.PlayerCharacter.gameObject);
 		}
 
 		Character c = activePlayers.CreateCharacterForPlayer(player);
@@ -80,14 +77,20 @@ public class GameHandler : MonoBehaviour {
 
 	private void OnCharacterDestroyEvent(Character character)
 	{
-		// Delete character to place special item. look into battlehistory to fill in corpse info
 		if (!character.IsAlive)
 		{
 			Player playerOfCharacter = activePlayers.FindPlayerOfActiveCharacter(character);
 			Player killer = battleHistoryLog.GetLastKillerOfPlayer(playerOfCharacter);
 
-			Corpse corpse = Instantiate<Corpse>(Resources.Load<Corpse>("PlayerCorpse"));
-			corpse.transform.position = character.transform.position;
+			Corpse corpse = Instantiate<Corpse>(Resources.Load<Corpse>("PlayerCorpse"));	
+            corpse.transform.position = character.transform.position;
+
+			Color color = corpse.SpriteRenderer.color;
+			Color colorP = ColorHandler.ColorsToColor(playerOfCharacter.PlayerColor);
+			float playerColorIntensity = 0.2f;
+			colorP *= playerColorIntensity;
+			color += colorP;
+			corpse.SpriteRenderer.color = color;
 
 			corpse.playerOwnedCorpse = playerOfCharacter;
 			corpse.killerOfCorpse = killer;
@@ -98,7 +101,7 @@ public class GameHandler : MonoBehaviour {
 
 			if(CorpseSpawnedEvent != null)
 			{
-				CorpseSpawnedEvent(corpse);
+				CorpseSpawnedEvent(corpse); //Other game mods can interact with the corpse spawn. Even delete them and spawn zombie corpses or something crasy
 			}
 		}
 	}

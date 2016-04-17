@@ -10,8 +10,9 @@ public class ColorHandler {
 		Red,
 		Green,
 		Yellow,
-		Blue,
-		Cyan
+		Purple,
+		Cyan,
+		Orange
 	}
 
 	private List<Colors> availableColors = new List<Colors>((Colors[])Enum.GetValues(typeof(Colors)));
@@ -64,14 +65,16 @@ public class ColorHandler {
 		{
 			case Colors.Red:
 				return Color.red;
-			case Colors.Blue:
-				return Color.blue;
+			case Colors.Purple:
+				return new Color(0.498f, 0,1);
 			case Colors.Green:
 				return Color.green;
 			case Colors.Yellow:
 				return Color.yellow;
 			case Colors.Cyan:
 				return Color.cyan;
+			case Colors.Orange:
+				return new Color(1, 0.6f, 0.2f);
 			default:
 				return Color.black;
 		}
