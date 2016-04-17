@@ -4,6 +4,12 @@ using System;
 
 public class Character : MonoBehaviour {
 
+	public delegate void CharacterCorpseHandler(Character character);
+	public delegate void CharacterDualHandler(Character effected, Character effecter);
+
+	public event CharacterDualHandler CharacterGotKilledEvent;
+	public event CharacterCorpseHandler CharacterDeathAnimationEnded;
+
 	public Collider2D CharacterCollider { get; private set; }
     public WeaponInfo CurrentWeapon
 	{
@@ -12,6 +18,7 @@ public class Character : MonoBehaviour {
 
 	[SerializeField]
 	private DamageHitBox hitBox;
+
 	private BusyList busyList = new BusyList();
 	private Animator animator;
 	private ObjectPicker objectPicker;
@@ -20,6 +27,7 @@ public class Character : MonoBehaviour {
     private PlatformerMovement2D platformerMovement;
 	private CharacterAnimationManager animationHandler;
 	private InputUser userInput;
+	private TouchDetector2D touch2D;
 
 	// Options
 	[SerializeField] private float throwForceMod = 1.1f;
@@ -29,7 +37,7 @@ public class Character : MonoBehaviour {
 	protected void Awake()
 	{
 		rigid = gameObject.AddComponent<Rigidbody2D>();
-		TouchDetector2D touch2D = gameObject.AddComponent<TouchDetector2D>();
+		touch2D = gameObject.AddComponent<TouchDetector2D>();
 		CharacterCollider = GetComponent<Collider2D>();
 		objectPicker = gameObject.AddComponent<ObjectPicker>();
 		touch2D.SetMaskLayers(Layers.LayerMaskSeeOnly(new int[] { Layers.DEFAULT }));
@@ -43,6 +51,8 @@ public class Character : MonoBehaviour {
 
 		userInput.InputKeyEvent += OnInputKeyEvent;
 		userInput.InputAxisEvent += OnInputAxisEvent;
+
+		hitBox.SetOwner(this);
 
 		rigid.gravityScale = 2;
 		rigid.freezeRotation = true;
@@ -156,23 +166,31 @@ public class Character : MonoBehaviour {
 		{
 			if (dmgBox.HitType == DamageHitBox.HitTypes.Kill)
 			{
-				GetKilled();
+				GetKilled(dmgBox.Owner);
 			}
 			if (dmgBox.HitType == DamageHitBox.HitTypes.Ko)
 			{
-				GetStunned();
+				GetStunned(dmgBox.Owner);
 			}
 		}
 	}
 
-	private void GetKilled()
+	private void GetKilled(Character killer)
 	{
-		Debug.Log("Get Killed");
+		Destroy(CharacterCollider);
+		Destroy(rigid);
+		Destroy(touch2D);
+
+		if(CharacterGotKilledEvent != null)
+		{
+			CharacterGotKilledEvent(this, killer);
+		}
+
 		animationHandler.PlayAnimation("Death");
 		busyList.AddBusyAction(BusyConsts.ACTION_DYING,BusyConsts.BUSY_LAYER_INPUT_DISABLE);
 	}
 
-	private void GetStunned()
+	private void GetStunned(Character stunner)
 	{
 		animationHandler.PlayAnimation("KO");
 		busyList.AddBusyAction(BusyConsts.ACTION_STUNNED, BusyConsts.BUSY_LAYER_INPUT_DISABLE);
@@ -249,9 +267,18 @@ public class Character : MonoBehaviour {
 						objectThrown.transform.localScale = newScale;
 
 						objectThrown.RigidbodyItem.velocity += (new Vector2(Mathf.Sign(transform.localScale.x) * (throwForceMod * objectThrown.WeaponHurtVelocity), 2.1f));
+						objectThrown.SetHitboxItem(true, this);
 					}
 				}
 			}
+		}
+		if (animationName == animationHandler.GetAnimationName("Death"))
+		{
+			if(CharacterDeathAnimationEnded != null)
+			{
+				CharacterDeathAnimationEnded(this); // Game plaatst speciaale corpse. 
+			}
+			Destroy(this);
 		}
 	}
 	private void OnNoGroundEvent()
@@ -262,5 +289,13 @@ public class Character : MonoBehaviour {
 	private void OnLandGroundEvent()
 	{
 		busyList.RemoveBusyAction(BusyConsts.ACTION_IN_AIR, BusyConsts.BUSY_LAYER_MOVEMENT);
+	}
+
+	void OnDestroy()
+	{
+		Destroy(userInput);
+		Destroy(animationHandler);
+		Destroy(objectPicker);
+		Destroy(animator);
 	}
 }

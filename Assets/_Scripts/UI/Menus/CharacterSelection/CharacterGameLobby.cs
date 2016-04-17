@@ -20,8 +20,26 @@ public class CharacterGameLobby : MonoBehaviour {
 		conActivePlayers = Confactory.ConfactoryFinder.Instance.Give<ConActivePlayers>();
 		multiInputUser = gameObject.GetComponent<MultiInputUser>();
 		multiInputUser.InputBindingUsedEvent += OnInputBindingUsedEvent;
+
+		AddAlreadyRegisteredPlayers();
     }
 	
+	void AddAlreadyRegisteredPlayers()
+	{
+		foreach(Player player in conActivePlayers.GetAllPlayers())
+		{
+			SetSlotInUse(playerSlots[player.playerId], player);
+		}
+	}
+
+	void ClearAlreadyRegisteredPlayers()
+	{
+		foreach (Player player in conActivePlayers.GetAllPlayers())
+		{
+			RemovePlayerFromSlot(player, true);
+		}
+	}
+
 	void OnInputBindingUsedEvent(ConGameInputBindings.BindingTypes type, InputAction action)
 	{
 		if (action.KeyActionValue == InputAction.KeyAction.OnKeyDown) {
@@ -41,6 +59,7 @@ public class CharacterGameLobby : MonoBehaviour {
 				}
 				if (action.Name == InputNames.USE)
 				{
+					ClearAlreadyRegisteredPlayers();
 					SceneManager.LoadScene(backSceneToLoadName);
 				}
 			}

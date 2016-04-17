@@ -51,9 +51,22 @@ public class ConActivePlayers : IConfactory
 		}
 	}
 
+	public Player FindPlayerOfActiveCharacter(Character character)
+	{
+		foreach(Player p in allPlayers)
+		{
+			if(p.PlayerCharacter == character)
+			{
+				return p;
+			}
+		}
+		return null;
+	}
+
 	public Character CreateCharacterForPlayer(Player player)
 	{
 		Character character = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Player")).GetComponent<Character>();
+		character.gameObject.name += player.PlayerColor.ToString();
 		if(player.PlayerCharacter != null)
 		{
 			GameObject.Destroy(player.PlayerCharacter);

@@ -32,7 +32,7 @@ public class Weapon : PickAbleObject
 		rigidbodyItem.gravityScale = weight;
 	}
 
-	public void SetHitboxItem(bool attacking)
+	public void SetHitboxItem(bool attacking, Character owner = null)
 	{
 		if (attacking)
 		{
@@ -42,13 +42,17 @@ public class Weapon : PickAbleObject
 		{
 			hitBoxItem.HitType = DamageHitBox.HitTypes.None;
 		}
+		hitBoxItem.SetOwner(owner);
 	}
 
 	protected void Update()
 	{
 		if (RigidbodyItem.velocity.magnitude >= weaponHurtVelocity)
 		{
-			SetHitboxItem(true);
+			if (hitBoxItem.HitType != attackWeapon)
+			{
+				SetHitboxItem(true);
+			}
 		}
 		else if (hitBoxItem.HitType == attackWeapon)
 		{

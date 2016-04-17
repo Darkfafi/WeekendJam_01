@@ -26,7 +26,6 @@ public class PlatformerMovement2D {
 	public bool adjustScaleDirectionToMovement = true;
 	// TODO Add wallsliding and wall jumping booleans
 	#endregion
-
 	private TouchDetector2D touchDetector2D;
 	private Rigidbody2D rbody2D;
 	private Transform transformObject;

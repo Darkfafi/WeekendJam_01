@@ -22,7 +22,7 @@ public class UICharacterArrow : MonoBehaviour {
 	{
 		if (LinkedPlayer != null)
 		{
-			if (LinkedPlayer.PlayerCharacter != null)
+			if (LinkedPlayer.PlayerCharacter != null && LinkedPlayer.PlayerCharacter.CharacterCollider != null)
 			{
 				if (!gameObject.activeSelf)
 				{
