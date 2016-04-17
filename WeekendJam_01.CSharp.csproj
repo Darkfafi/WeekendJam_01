@@ -69,6 +69,7 @@
     <Compile Include="Assets\_Scripts\Characters\DamageHitBox.cs" />
     <Compile Include="Assets\_Scripts\Game\ColorHandler.cs" />
     <Compile Include="Assets\_Scripts\Game\ConActivePlayers.cs" />
+    <Compile Include="Assets\_Scripts\Game\GameControll\GameBattleHistoryLog.cs" />
     <Compile Include="Assets\_Scripts\Game\GameControll\GameHandler.cs" />
     <Compile Include="Assets\_Scripts\Game\GameRules\BaseGameRules.cs" />
     <Compile Include="Assets\_Scripts\Globals\Layers.cs" />

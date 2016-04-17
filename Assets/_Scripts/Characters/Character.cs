@@ -4,13 +4,14 @@ using System;
 
 public class Character : MonoBehaviour {
 
-	public delegate void CharacterCorpseHandler(Character character);
+	public delegate void CharacterHandler(Character character);
 	public delegate void CharacterDualHandler(Character effected, Character effecter);
 
 	public event CharacterDualHandler CharacterGotKilledEvent;
-	public event CharacterCorpseHandler CharacterDeathAnimationEnded;
+	public event CharacterHandler CharacterDestroyEvent;
 
 	public Collider2D CharacterCollider { get; private set; }
+	public bool IsAlive { get { return CharacterCollider != null && rigid != null; } }
     public WeaponInfo CurrentWeapon
 	{
 		get { return weaponHolder.CurrentWeapon; }
@@ -274,10 +275,6 @@ public class Character : MonoBehaviour {
 		}
 		if (animationName == animationHandler.GetAnimationName("Death"))
 		{
-			if(CharacterDeathAnimationEnded != null)
-			{
-				CharacterDeathAnimationEnded(this); // Game plaatst speciaale corpse. 
-			}
 			Destroy(this);
 		}
 	}
@@ -293,6 +290,11 @@ public class Character : MonoBehaviour {
 
 	void OnDestroy()
 	{
+		if (CharacterDestroyEvent != null)
+		{
+			CharacterDestroyEvent(this);
+		}
+
 		Destroy(userInput);
 		Destroy(animationHandler);
 		Destroy(objectPicker);
