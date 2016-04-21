@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using Confactory;
+using Ramses.Confactory;
 public class NotificationBar : MonoBehaviour {
 	[SerializeField]
 	private Image background;

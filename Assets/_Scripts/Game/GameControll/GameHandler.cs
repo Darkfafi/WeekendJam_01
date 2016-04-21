@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Confactory;
+using Ramses.Confactory;
+
 public class GameHandler : MonoBehaviour {
 
 	public delegate void PlayerHandler(Player player);

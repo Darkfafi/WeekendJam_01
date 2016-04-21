@@ -5,7 +5,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-namespace Confactory
+namespace Ramses.Confactory
 {
 	/// <summary>
 	/// This class is responsible for Creating, managing and destroying Confactories.

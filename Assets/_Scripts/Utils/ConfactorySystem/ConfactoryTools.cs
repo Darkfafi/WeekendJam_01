@@ -3,7 +3,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Confactory
+namespace Ramses.Confactory
 {
 	public static class ConfactoryTools
 	{

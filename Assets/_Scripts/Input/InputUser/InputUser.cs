@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Confactory;
+using Ramses.Confactory;
 public class InputUser : MonoBehaviour {
 
 	public delegate void InputHandler(InputAction action, InputUser user);

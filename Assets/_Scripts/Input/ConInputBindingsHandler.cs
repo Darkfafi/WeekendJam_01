@@ -2,7 +2,7 @@
 
 using UnityEngine;
 using System.Collections;
-using Confactory;
+using Ramses.Confactory;
 using System;
 using System.Collections.Generic;
 

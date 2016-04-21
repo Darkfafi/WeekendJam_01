@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Confactory;
+using Ramses.Confactory;
 using System.Collections.Generic;
 
 public class Tag : MonoBehaviour

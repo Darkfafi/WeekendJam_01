@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Confactory;
+using Ramses.Confactory;
 using System;
 
 public class ConTags : IConfactory{

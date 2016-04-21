@@ -3,7 +3,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
-namespace Confactory
+namespace Ramses.Confactory
 {
 	public interface IConfactoryFinder
 	{

@@ -2,7 +2,7 @@
 
 using UnityEngine;
 using System.Collections;
-namespace Confactory
+namespace Ramses.Confactory
 {
 	/// <summary>
 	/// The IConfactory interface is an interface which allowes for a singleton to be made with its own Constructor and variables

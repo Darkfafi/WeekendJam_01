@@ -17,7 +17,7 @@ public class CharacterGameLobby : MonoBehaviour {
 
 	void Awake ()
 	{
-		conActivePlayers = Confactory.ConfactoryFinder.Instance.Give<ConActivePlayers>();
+		conActivePlayers = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConActivePlayers>();
 		multiInputUser = gameObject.GetComponent<MultiInputUser>();
 		multiInputUser.InputBindingUsedEvent += OnInputBindingUsedEvent;
 
