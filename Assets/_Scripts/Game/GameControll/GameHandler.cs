@@ -93,8 +93,14 @@ public class GameHandler : MonoBehaviour {
 			Player playerOfCharacter = ActivePlayers.FindPlayerOfActiveCharacter(character);
 			Player killer = BattleHistoryLog.GetLastKillerOfPlayer(playerOfCharacter);
 
-			Corpse corpse = Instantiate<Corpse>(Resources.Load<Corpse>("PlayerCorpse"));	
+			Corpse corpse = Instantiate<Corpse>(Resources.Load<Corpse>("PlayerCorpse"));
+			Rigidbody2D corpseRigid = corpse.GetComponent<Rigidbody2D>();
+
+			corpseRigid.gravityScale = character.CharacterRigidbody2D.gravityScale;
+			corpseRigid.velocity = character.CharacterRigidbody2D.velocity;
+
             corpse.transform.position = character.transform.position;
+			corpse.transform.localScale = character.transform.localScale;
 
 			Color color = corpse.SpriteRenderer.color;
 			Color colorP = ColorHandler.ColorsToColor(playerOfCharacter.PlayerColor);

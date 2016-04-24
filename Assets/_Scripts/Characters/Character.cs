@@ -11,7 +11,11 @@ public class Character : MonoBehaviour {
 	public event CharacterHandler CharacterDestroyEvent; // Character script gets destroyed on corpse spawn and complete destruction of game
 
 	public Collider2D CharacterCollider { get; private set; }
-	public bool IsAlive { get { return CharacterCollider != null && rigid != null; } }
+	public Rigidbody2D CharacterRigidbody2D { get; private set; }
+	public Vector2 SizeCharacter { get; private set; }
+
+	public bool IsAlive { get; private set; }
+
     public WeaponInfo CurrentWeapon
 	{
 		get { return weaponHolder.CurrentWeapon; }
@@ -24,7 +28,6 @@ public class Character : MonoBehaviour {
 	private Animator animator;
 	private ObjectPicker objectPicker;
 	private WeaponHolder weaponHolder;
-	private Rigidbody2D rigid;
     private PlatformerMovement2D platformerMovement;
 	private CharacterAnimationManager animationHandler;
 	private InputUser userInput;
@@ -37,7 +40,8 @@ public class Character : MonoBehaviour {
 
 	protected void Awake()
 	{
-		rigid = gameObject.AddComponent<Rigidbody2D>();
+		IsAlive = true;
+		CharacterRigidbody2D = gameObject.AddComponent<Rigidbody2D>();
 		touch2D = gameObject.AddComponent<TouchDetector2D>();
 		CharacterCollider = GetComponent<Collider2D>();
 		objectPicker = gameObject.AddComponent<ObjectPicker>();
@@ -55,11 +59,12 @@ public class Character : MonoBehaviour {
 
 		hitBox.SetOwner(this);
 
-		rigid.gravityScale = 2;
-		rigid.freezeRotation = true;
-		touch2D.DistanceCheck = 0.05f;
+		CharacterRigidbody2D.gravityScale = 2;
+		CharacterRigidbody2D.freezeRotation = true;
+		SizeCharacter = CharacterCollider.bounds.size;
+        touch2D.DistanceCheck = 0.05f;
 
-		platformerMovement = new PlatformerMovement2D(transform, CharacterCollider, rigid, touch2D);
+		platformerMovement = new PlatformerMovement2D(transform, CharacterCollider, CharacterRigidbody2D, touch2D);
 		platformerMovement.movementSpeed = movementSpeed;
 		platformerMovement.jumpForce = jumpForce;
 
@@ -78,7 +83,7 @@ public class Character : MonoBehaviour {
 		}
 		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT) && busyList.InBusyAction(BusyConsts.ACTION_IN_AIR))
 		{
-			if (rigid.velocity.y < 0)
+			if (CharacterRigidbody2D.velocity.y < 0)
 			{
 				animationHandler.PlayAnimation("AirDown");
 			}
@@ -144,19 +149,23 @@ public class Character : MonoBehaviour {
 
 	private void OnInputAxisEvent(string name, float value)
 	{
-		if (value != 0) { 
-			if (name == InputNames.LEFT)
+		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_INPUT_DISABLE))
+		{ 
+			if (value != 0)
 			{
-				Move(PlatformerMovement2D.DIR_LEFT);
+				if (name == InputNames.LEFT)
+				{
+					Move(PlatformerMovement2D.DIR_LEFT);
+				}
+				else if (name == InputNames.RIGHT)
+				{
+					Move(PlatformerMovement2D.DIR_RIGHT);
+				}
 			}
-			else if (name == InputNames.RIGHT)
+			else if (busyList.InBusyAction(BusyConsts.ACTION_HOR_MOVING))
 			{
-				Move(PlatformerMovement2D.DIR_RIGHT);
+				busyList.RemoveBusyAction(BusyConsts.ACTION_HOR_MOVING);
 			}
-		}
-		else if (busyList.InBusyAction(BusyConsts.ACTION_HOR_MOVING))
-        {
-			busyList.RemoveBusyAction(BusyConsts.ACTION_HOR_MOVING);
 		}
 	}
 
@@ -178,8 +187,11 @@ public class Character : MonoBehaviour {
 
 	private void GetKilled(Character killer)
 	{
+		IsAlive = false;
+
+		weaponHolder.Disarm(transform.position - killer.transform.position, 6);
+
 		Destroy(CharacterCollider);
-		Destroy(rigid);
 		Destroy(touch2D);
 
 		if(CharacterGotKilledEvent != null)
@@ -188,12 +200,18 @@ public class Character : MonoBehaviour {
 		}
 
 		animationHandler.PlayAnimation("Death");
+		busyList.ClearBusyList();
 		busyList.AddBusyAction(BusyConsts.ACTION_DYING,BusyConsts.BUSY_LAYER_INPUT_DISABLE);
 	}
 
 	private void GetStunned(Character stunner)
 	{
 		animationHandler.PlayAnimation("KO");
+		busyList.ClearBusyList();
+		CharacterCollider.enabled = false;
+
+		weaponHolder.Disarm(transform.position - stunner.transform.position, 6);
+
 		busyList.AddBusyAction(BusyConsts.ACTION_STUNNED, BusyConsts.BUSY_LAYER_INPUT_DISABLE);
 		StartCoroutine(StunWaitTimer(3));
 	}
@@ -206,6 +224,7 @@ public class Character : MonoBehaviour {
 
 	private void ReleaseFromStun()
 	{
+		CharacterCollider.enabled = true;
 		busyList.RemoveBusyAction(BusyConsts.ACTION_STUNNED);
 	}
 
@@ -220,7 +239,7 @@ public class Character : MonoBehaviour {
 
 	private void Attack()
 	{
-		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT))
+		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT) && !animationHandler.AnimatorInAnimation(BusyConsts.ACTION_ATTACK))
 		{
 			busyList.AddBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT);
 			animationHandler.PlayAnimation(BusyConsts.ACTION_ATTACK);

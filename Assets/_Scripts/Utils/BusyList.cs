@@ -90,6 +90,12 @@ public class BusyList {
 
 		return false;
 	}
+
+	public void ClearBusyList()
+	{
+		busyActions = new Dictionary<int, List<string>>();
+    }
+
 	public bool InBusyAction(string action)
 	{
         foreach (KeyValuePair<int,List<string>> dicPart in busyActions)

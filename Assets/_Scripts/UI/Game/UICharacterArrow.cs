@@ -16,6 +16,7 @@ public class UICharacterArrow : MonoBehaviour {
 	}
 	private Player linkedPlayer = null;
 	private Vector3 pos = new Vector3();
+
 	[SerializeField] private Image arrowImage;
 
 	void Update()
@@ -29,7 +30,7 @@ public class UICharacterArrow : MonoBehaviour {
 					gameObject.SetActive(true);
 				}
 				pos = LinkedPlayer.PlayerCharacter.transform.position;
-				pos.y += linkedPlayer.PlayerCharacter.CharacterCollider.bounds.size.y;
+				pos.y += linkedPlayer.PlayerCharacter.SizeCharacter.y;
 
 				transform.position =  pos;
 			}

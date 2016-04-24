@@ -116,14 +116,25 @@ public class WeaponHolder {
 
 	private void Disarm(DamageHitBox ownBox, DamageHitBox otherBox, float forceMod = 1)
 	{
-		Weapon weapon = DropWeapon(true, new Vector2(0, 0.5f));
-		float xDiffWeapons = otherBox.transform.position.x - ownBox.transform.position.x;
-		float force = 4f;
-		if (otherBox.HitType == DamageHitBox.HitTypes.Kill)
+		if (CurrentWeapon != null)
 		{
-			force *= 1.5f;
+			float xDiffWeapons = otherBox.transform.position.x - ownBox.transform.position.x;
+			float force = 4f;
+			if (otherBox.HitType == DamageHitBox.HitTypes.Kill)
+			{
+				force *= 1.5f;
+			}
+			force *= forceMod;
+			Disarm(new Vector2(-Mathf.Sign(xDiffWeapons), 0.5f), force);
+        }
+	}
+
+	public void Disarm(Vector2 direction, float velocity)
+	{
+		if (CurrentWeapon != null)
+		{
+			Weapon weapon = DropWeapon(true, new Vector2(0, 0.5f));
+			weapon.RigidbodyItem.velocity += direction.normalized * velocity;
 		}
-		force *= forceMod;
-        weapon.RigidbodyItem.velocity += new Vector2(-Mathf.Sign(xDiffWeapons) * force, 0);
 	}
 }

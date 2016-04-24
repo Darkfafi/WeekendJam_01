@@ -55,6 +55,11 @@ public class AnimationManager : MonoBehaviour
 		return animString;
 	}
 
+	public bool AnimatorInAnimation(string name)
+	{
+		return animator.GetCurrentAnimatorStateInfo(0).IsName(GetAnimationName(name));
+    }
+
 	protected virtual void LateUpdate()
 	{
 		if (!string.IsNullOrEmpty(AnimationPlaying))

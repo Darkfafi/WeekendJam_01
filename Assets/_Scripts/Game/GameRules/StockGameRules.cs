@@ -30,8 +30,7 @@ public class StockGameRules : BaseGameRules {
 
 		foreach(Player p in gameHandler.ActivePlayers.GetAllPlayers())
 		{
-			playersAndStocks.Add(p, 0);
-			SetStockAmountPlayer(p, StartingStockAmount, false);
+			playersAndStocks.Add(p, StartingStockAmount);
         }
 	}
 
@@ -54,7 +53,7 @@ public class StockGameRules : BaseGameRules {
 		}
 	}
 
-	private void SetStockAmountPlayer(Player player, int amount, bool respawnTimer = true)
+	private void SetStockAmountPlayer(Player player, int amount)
 	{
 		if (playersAndStocks.ContainsKey(player))
 		{
@@ -72,11 +71,29 @@ public class StockGameRules : BaseGameRules {
 					PlayerOutOfStocksEvent(player);
 				}
 			}
-			else if(respawnTimer)
+			else
 			{
 				PrepairPlayerToSpawn(player);
 			}
+
+			if (CheckAmountOfPlayersLeft() == 1)
+			{
+				gameHandler.EndGame();
+			}
 		}
+	}
+
+	private int CheckAmountOfPlayersLeft()
+	{
+		int amount = 0;
+		foreach(KeyValuePair<Player, int> pair in playersAndStocks)
+		{
+			if(pair.Value > 0)
+			{
+				amount++;
+			}
+		}
+		return amount;
 	}
 
 	private void PrepairPlayerToSpawn(Player player)
