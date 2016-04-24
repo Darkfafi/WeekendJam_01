@@ -10,33 +10,38 @@ public class GameHandler : MonoBehaviour {
 	public PlayerHandler PlayerCharacterSpawnedEvent;
 	public CorpseHandler CorpseSpawnedEvent; // Game mods can let corpses disapear or even make zombies out of them if they so desire. IDEA (Haunted game mod maybe? be chaces by the ones you killed)
 
-	private BaseGameRules activeGameRules;
-	private GameBattleHistoryLog battleHistoryLog = new GameBattleHistoryLog();
-	private ConActivePlayers activePlayers;
-	private GameObject[] spawnpoints;
+	public ConActivePlayers ActivePlayers { get; private set; }
+	public GameBattleHistoryLog BattleHistoryLog { get; private set; }
+	public BaseGameRules ActiveGameRules { get; private set; } // Set on which game mod has been selected (In confactory)
+	public GameObject[] Spawnpoints { get; private set; }
 
 	void Awake()
-	{
-		activePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
-    }
+	{ 
+		BattleHistoryLog = new GameBattleHistoryLog();
+		ActiveGameRules = new StockGameRules(this, 3);// For debugging! TODO Remove this and replace with a real selected mod
+		ActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
+
+		ActiveGameRules.Start();
+	}
 
 	void Start()
 	{
-		spawnpoints = ConfactoryFinder.Instance.Give<ConTags>().GetTagObjects(ConTags.TagList.Spawnpoint);
+		Spawnpoints = ConfactoryFinder.Instance.Give<ConTags>().GetTagObjects(ConTags.TagList.Spawnpoint);
 		SpawnAllPlayers();
 	}
 
 	public void SpawnAllPlayers()
 	{
 		int i = 0;
-		foreach(Player p in activePlayers.GetAllPlayers())
+		foreach(Player p in ActivePlayers.GetAllPlayers())
 		{
-			SpawnPlayer(p, spawnpoints[i]);
+			SpawnPlayerCharacter(p, Spawnpoints[i]);
 			i++;
 		}
 	}
 
-	public void SpawnPlayer(Player player, GameObject spawnpoint)
+	//TODO Spawn animation  
+	public void SpawnPlayerCharacter(Player player, GameObject spawnpoint)
 	{
 		if(player.PlayerCharacter != null)
 		{
@@ -44,7 +49,7 @@ public class GameHandler : MonoBehaviour {
 			Destroy(player.PlayerCharacter.gameObject);
 		}
 
-		Character c = activePlayers.CreateCharacterForPlayer(player);
+		Character c = ActivePlayers.CreateCharacterForPlayer(player);
 		c.gameObject.transform.position = spawnpoint.transform.position;
 
 		AddEventListenersToCharacter(c);
@@ -53,6 +58,11 @@ public class GameHandler : MonoBehaviour {
 		{
 			PlayerCharacterSpawnedEvent(player);
         }
+	}
+
+	public void EndGame()
+	{
+		Debug.Log("Global End Game Method to end the game and its gamemod mechanics");
 	}
 
 	private void AddEventListenersToCharacter(Character character)
@@ -70,18 +80,18 @@ public class GameHandler : MonoBehaviour {
 	private void OnCharacterGotKilledEvent(Character killed, Character killer)
 	{
 		// place in history log
-		Player killerP = activePlayers.FindPlayerOfActiveCharacter(killer);
-		Player killedP = activePlayers.FindPlayerOfActiveCharacter(killed);
+		Player killerP = ActivePlayers.FindPlayerOfActiveCharacter(killer);
+		Player killedP = ActivePlayers.FindPlayerOfActiveCharacter(killed);
 
-		battleHistoryLog.AddData(killerP, killedP);
+		BattleHistoryLog.AddData(killerP, killedP);
     }
 
 	private void OnCharacterDestroyEvent(Character character)
 	{
 		if (!character.IsAlive)
 		{
-			Player playerOfCharacter = activePlayers.FindPlayerOfActiveCharacter(character);
-			Player killer = battleHistoryLog.GetLastKillerOfPlayer(playerOfCharacter);
+			Player playerOfCharacter = ActivePlayers.FindPlayerOfActiveCharacter(character);
+			Player killer = BattleHistoryLog.GetLastKillerOfPlayer(playerOfCharacter);
 
 			Corpse corpse = Instantiate<Corpse>(Resources.Load<Corpse>("PlayerCorpse"));	
             corpse.transform.position = character.transform.position;
@@ -93,8 +103,7 @@ public class GameHandler : MonoBehaviour {
 			color += colorP;
 			corpse.SpriteRenderer.color = color;
 
-			corpse.playerOwnedCorpse = playerOfCharacter;
-			corpse.killerOfCorpse = killer;
+			corpse.SetCorpseInfo(playerOfCharacter, killer);
 
 			RemoveEventListenersFromCharacter(character);
 

@@ -8,7 +8,7 @@ public class Character : MonoBehaviour {
 	public delegate void CharacterDualHandler(Character effected, Character effecter);
 
 	public event CharacterDualHandler CharacterGotKilledEvent;
-	public event CharacterHandler CharacterDestroyEvent;
+	public event CharacterHandler CharacterDestroyEvent; // Character script gets destroyed on corpse spawn and complete destruction of game
 
 	public Collider2D CharacterCollider { get; private set; }
 	public bool IsAlive { get { return CharacterCollider != null && rigid != null; } }

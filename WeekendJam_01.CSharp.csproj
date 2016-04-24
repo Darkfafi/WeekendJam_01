@@ -72,6 +72,7 @@
     <Compile Include="Assets\_Scripts\Game\GameControll\GameBattleHistoryLog.cs" />
     <Compile Include="Assets\_Scripts\Game\GameControll\GameHandler.cs" />
     <Compile Include="Assets\_Scripts\Game\GameRules\BaseGameRules.cs" />
+    <Compile Include="Assets\_Scripts\Game\GameRules\StockGameRules.cs" />
     <Compile Include="Assets\_Scripts\Globals\Layers.cs" />
     <Compile Include="Assets\_Scripts\Input\ConGameInputBindings.cs" />
     <Compile Include="Assets\_Scripts\Input\ConInputBindingsHandler.cs" />
@@ -92,6 +93,10 @@
     <Compile Include="Assets\_Scripts\Platformer2D\PlatformerMovement2D.cs" />
     <Compile Include="Assets\_Scripts\Players\Player.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\ArrowPlayerIndicator.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\GameRulesUI\IBaseGameRulesUI.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\GameRulesUI\StocksRulesUI.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\GameRulesUI\UIGameRules.cs" />
+    <Compile Include="Assets\_Scripts\UI\Game\PlayerUIInfo\TextIndicationUI.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\PlayerUIInfo\UIPlayerInfo.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\PlayerUIInfo\UIPlayerInfos.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\UICharacterArrow.cs" />
@@ -100,6 +105,8 @@
     <Compile Include="Assets\_Scripts\UI\Menus\MainMenu.cs" />
     <Compile Include="Assets\_Scripts\UI\NotificationBar.cs" />
     <Compile Include="Assets\_Scripts\Utils\BusyList.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ColorExtensions.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ImageExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfacotryParts\SceneSwitchChecker.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryFinder.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryTools.cs" />
