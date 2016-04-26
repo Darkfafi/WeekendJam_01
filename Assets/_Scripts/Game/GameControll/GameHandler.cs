@@ -51,6 +51,9 @@ public class GameHandler : MonoBehaviour {
 
 		Character c = ActivePlayers.CreateCharacterForPlayer(player);
 		c.gameObject.transform.position = spawnpoint.transform.position;
+		CharacterSpawnObject spawnObject = Instantiate<GameObject>(Resources.Load<GameObject>("SpawnerObject")).GetComponent<CharacterSpawnObject>();
+		spawnObject.transform.position = c.transform.position;
+		spawnObject.SpawnCharacter(c);
 
 		AddEventListenersToCharacter(c);
 

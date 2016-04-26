@@ -4,6 +4,14 @@ using System.Collections.Generic;
 
 public class CharacterAnimationManager : AnimationManager{
 
+	protected Character player { private set; get; }
+
+	public void SetAnimationHandler(Character player, Animator animator)
+	{
+		SetAnimationHandler(animator);
+		this.player = player;
+	}
+
 	public override string GetAnimationName(string animationString)
 	{
 		if ((animationString != "KO" && animationString != "Death"))

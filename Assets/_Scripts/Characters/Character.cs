@@ -50,7 +50,7 @@ public class Character : MonoBehaviour {
 		animator = gameObject.GetComponent<Animator>();
 		animationHandler = gameObject.AddComponent<CharacterAnimationManager>();
 		animationHandler.SetAnimationHandler(this, animator);
-		animationHandler.AnimationEnded += OnAnimEnd;
+		animationHandler.AnimationEndedEvent += OnAnimEnd;
 
 		userInput = gameObject.GetComponent<InputUser>();
 
@@ -150,7 +150,7 @@ public class Character : MonoBehaviour {
 	private void OnInputAxisEvent(string name, float value)
 	{
 		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_INPUT_DISABLE))
-		{ 
+		{
 			if (value != 0)
 			{
 				if (name == InputNames.LEFT)
@@ -189,7 +189,7 @@ public class Character : MonoBehaviour {
 	{
 		IsAlive = false;
 
-		weaponHolder.Disarm(transform.position - killer.transform.position, 6);
+		weaponHolder.Disarm(Vector2.up, 6);
 
 		Destroy(CharacterCollider);
 		Destroy(touch2D);
@@ -210,7 +210,7 @@ public class Character : MonoBehaviour {
 		busyList.ClearBusyList();
 		CharacterCollider.enabled = false;
 
-		weaponHolder.Disarm(transform.position - stunner.transform.position, 6);
+		weaponHolder.Disarm(Vector2.up, 6);
 
 		busyList.AddBusyAction(BusyConsts.ACTION_STUNNED, BusyConsts.BUSY_LAYER_INPUT_DISABLE);
 		StartCoroutine(StunWaitTimer(3));

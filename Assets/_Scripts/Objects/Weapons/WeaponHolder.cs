@@ -119,7 +119,7 @@ public class WeaponHolder {
 		if (CurrentWeapon != null)
 		{
 			float xDiffWeapons = otherBox.transform.position.x - ownBox.transform.position.x;
-			float force = 4f;
+			float force = 6f;
 			if (otherBox.HitType == DamageHitBox.HitTypes.Kill)
 			{
 				force *= 1.5f;

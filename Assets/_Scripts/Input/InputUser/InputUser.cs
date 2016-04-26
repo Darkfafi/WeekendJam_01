@@ -10,6 +10,7 @@ public class InputUser : MonoBehaviour {
 	public event InputKeyHandler InputKeyEvent;
 	public event InputAxisHandler InputAxisEvent;
 
+	public bool InputEnabled { get; private set; }
 	public ConGameInputBindings.BindingTypes InputUsing { get { return inputUsing;  } }
 	[SerializeField] private ConGameInputBindings.BindingTypes inputUsing;
 	private ConInputBindingsHandler inputCon;
@@ -21,12 +22,26 @@ public class InputUser : MonoBehaviour {
 
 	private void OnEnable()
 	{
-		inputCon.RegisterInputUser(this);
-	}
+		SetInputEnabled(true);
+    }
 	private void OnDisable()
 	{
-		inputCon.UnRegisterInputUser(this);
+		SetInputEnabled(false);
 	}
+
+	public void SetInputEnabled(bool enabledState)
+	{
+		InputEnabled = enabledState;
+
+		if(InputEnabled)
+		{
+			inputCon.RegisterInputUser(this);
+		}
+		else
+		{
+			inputCon.UnRegisterInputUser(this);
+		}
+    }
 
 	public void SetInputUsing(ConGameInputBindings.BindingTypes bindingType)
 	{

@@ -8,10 +8,9 @@ public class AnimationManager : MonoBehaviour
 	public delegate void AnimationHandler(string animation);
 	public delegate void AnimationFloatHandler(string animation, float finishNormTime);
 
-	public event AnimationHandler AnimationStarted;
-	public event AnimationFloatHandler AnimationEnded;
+	public event AnimationHandler AnimationStartedEvent;
+	public event AnimationFloatHandler AnimationEndedEvent;
 
-	protected Character player { private set; get; }
 	protected Animator animator { private set; get; }
 
 	public int AnimationLoopCounter { get; private set; }
@@ -37,10 +36,9 @@ public class AnimationManager : MonoBehaviour
 	}
 	private string animationPlaying = "";
 
-	public virtual void SetAnimationHandler(Character player, Animator animator)
+	public virtual void SetAnimationHandler(Animator animator)
 	{
 		this.animator = animator;
-		this.player = player;
 	}
 
 	public virtual void PlayAnimation(string animationString)
@@ -80,16 +78,16 @@ public class AnimationManager : MonoBehaviour
 	{
 		AnimationLoopCounter = 0;
 		AnimationNormalizedTime = 0;
-        if (AnimationStarted != null)
+        if (AnimationStartedEvent != null)
 		{
-			AnimationStarted(animationName);
+			AnimationStartedEvent(animationName);
 		}
 	}
 	protected void AnimationEnd(string animationName, float finishedTime)
 	{
-		if (AnimationEnded != null)
+		if (AnimationEndedEvent != null)
 		{
-			AnimationEnded(animationName, finishedTime);
+			AnimationEndedEvent(animationName, finishedTime);
 		}
 	}
 }
