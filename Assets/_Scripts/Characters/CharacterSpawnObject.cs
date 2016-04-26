@@ -23,6 +23,7 @@ public class CharacterSpawnObject : MonoBehaviour {
 		renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0);
 		character.transform.position = transform.position;
 		character.GetComponent<InputUser>().SetInputEnabled(false);
+		character.CharacterCollider.enabled = false;
 		gravityScaleObject = character.CharacterRigidbody2D.gravityScale;
 		character.CharacterRigidbody2D.gravityScale = 0;
 
@@ -63,6 +64,7 @@ public class CharacterSpawnObject : MonoBehaviour {
 			if (characterSpawning != null)
 			{
 				characterSpawning.GetComponent<InputUser>().SetInputEnabled(true);
+				characterSpawning.CharacterCollider.enabled = true;
 				characterSpawning.CharacterRigidbody2D.gravityScale = gravityScaleObject;
 			}
 
