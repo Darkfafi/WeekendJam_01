@@ -15,6 +15,7 @@ public class CharacterSpawnObject : MonoBehaviour {
 		animationManager = gameObject.AddComponent<AnimationManager>();
         animationManager.SetAnimationHandler(GetComponent<Animator>());
 		animationManager.AnimationEndedEvent += OnAnimationEndedEvent;
+		transform.Translate(new Vector3(0, 0, 1));
     }
 
 	public void SpawnCharacter(Character character)

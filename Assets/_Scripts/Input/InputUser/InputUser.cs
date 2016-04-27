@@ -51,17 +51,20 @@ public class InputUser : MonoBehaviour {
 	// May be called by AI script also. Thats why it is public
 	public void OnInput(InputAction inputAction)
 	{
-		if (InputEvent != null)
+		if (InputEnabled)
 		{
-			InputEvent(inputAction,this);
+			if (InputEvent != null)
+			{
+				InputEvent(inputAction, this);
+			}
+			if (InputKeyEvent != null && inputAction.Type == InputItem.InputType.KeyCode)
+			{
+				InputKeyEvent(inputAction.Name, inputAction.KeyActionValue);
+			}
+			if (InputAxisEvent != null && inputAction.Type == InputItem.InputType.Axis)
+			{
+				InputAxisEvent(inputAction.Name, inputAction.Value);
+			}
 		}
-		if (InputKeyEvent != null && inputAction.Type == InputItem.InputType.KeyCode)
-		{
-			InputKeyEvent(inputAction.Name, inputAction.KeyActionValue);
-        }
-		if (InputAxisEvent != null && inputAction.Type == InputItem.InputType.Axis)
-		{
-			InputAxisEvent(inputAction.Name, inputAction.Value);
-		}	
 	}
 }

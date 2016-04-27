@@ -15,7 +15,6 @@ public class InputItem {
 
 	private string axisString = string.Empty;
 	private int direction = 0;
-	private float preAxisCheck = 0;
 	private KeyCode keyCode = KeyCode.None;
 
 	public InputItem()
@@ -64,16 +63,7 @@ public class InputItem {
 
 	public InputAction GetInputActionInfo()
 	{
-		float value = InputAction.NOT_IN_USE_VALUE;
-		if (keyCode != KeyCode.None)
-		{
-			value = KeyCodeCheck();
-        }
-		else if(!string.IsNullOrEmpty(axisString))
-		{
-			value = AxisCheck();
-        }
-		return new InputAction(InputActionName, Type, value);
+		return new InputAction(InputActionName, Type, GetUseValue());
 	}
 
 	private float KeyCodeCheck()
@@ -97,10 +87,9 @@ public class InputItem {
 	{
 		float value = InputAction.NOT_IN_USE_VALUE;
 		float axisValue = Input.GetAxis(axisString);
-        if (Mathf.Abs(axisValue) / axisValue == direction || (preAxisCheck != 0 && axisValue == 0)) // || hits 0 for first time after pre value was in direction then return -1 
+        if (Mathf.Abs(axisValue) / axisValue == direction || axisValue == 0) // || hits 0 for first time after pre value was in direction then return -1 
 		{
 			value = Mathf.Abs(axisValue);
-			preAxisCheck = value;
         }
 		return value;
 	}

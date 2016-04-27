@@ -24,12 +24,12 @@ public class ConInputBindingsHandler : MonoBehaviour, IConfactory {
 	{
 		//TODO luisterd naar wanneer de Game keybindingsholder confactory bindings krijgt of checkt hier al of het, het al heeft. Dan als er naar gevraagt wordt geeft het geen error. Anders wel
 		gameBindings = ConfactoryFinder.Instance.Give<ConGameInputBindings>();
-	}
+    }
 
 	public void OnSceneSwitch(int newSceneIndex)
 	{
-		
-	}
+
+    }
 
 	public void RegisterInputUser(InputUser user)
 	{
@@ -50,7 +50,7 @@ public class ConInputBindingsHandler : MonoBehaviour, IConfactory {
 	{
 		if(allInputUsers.Count > 0)
 		{
-			foreach(InputUser user in allInputUsers)
+            foreach (InputUser user in allInputUsers)
 			{
 				if (user.InputUsing != ConGameInputBindings.BindingTypes.None)
 				{
@@ -60,7 +60,7 @@ public class ConInputBindingsHandler : MonoBehaviour, IConfactory {
 						InputAction action;
 						foreach (InputItem item in allBindingsForUser)
 						{
-							action = item.GetInputActionInfo();//new InputAction(item.InputActionName, item.Type, item.GetUseValue());
+							action = item.GetInputActionInfo();
 							if (action.Value != InputAction.NOT_IN_USE_VALUE)
 							{
 								user.OnInput(action);
