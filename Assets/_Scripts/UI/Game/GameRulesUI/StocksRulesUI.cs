@@ -22,7 +22,10 @@ public class StocksRulesUI : IBaseGameRulesUI
 
 	public void Stop()
 	{
-
+		foreach (UIPlayerInfo playerInfo in uiGameRules.PlayerInfos.GetUIPlayerInfos(true))
+		{
+			stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
+		}
 	}
 
 	private void OnPlayerStockChangedEvent(Player player, int stocks)

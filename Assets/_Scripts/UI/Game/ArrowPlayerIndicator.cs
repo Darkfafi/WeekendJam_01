@@ -9,11 +9,16 @@ public class ArrowPlayerIndicator : MonoBehaviour {
 
 	private List<UICharacterArrow> arrowsActive = new List<UICharacterArrow>();
 
-	void Awake()
+	void OnEnable()
 	{
+		gameHandler.PlayerCharacterSpawnedEvent -= OnPlayerCharacterSpawnedEvent;
 		gameHandler.PlayerCharacterSpawnedEvent += OnPlayerCharacterSpawnedEvent;
     }
 
+	void OnDisable()
+	{
+		gameHandler.PlayerCharacterSpawnedEvent -= OnPlayerCharacterSpawnedEvent;
+	}
 
 	private void OnPlayerCharacterSpawnedEvent(Player player)
 	{
@@ -25,8 +30,6 @@ public class ArrowPlayerIndicator : MonoBehaviour {
 		UICharacterArrow arrow = GetActiveArrowForPlayer(player);
 		if(arrow != null)
 		{
-			//arrowsActive.Remove(arrow);
-			//Destroy(arrow);
 			return;
 		}
 

@@ -20,4 +20,9 @@ public class UIGameRules : MonoBehaviour {
 
 		currentBaseRulesUI.Start(this);
 	}
+
+	void OnDestroy()
+	{
+		currentBaseRulesUI.Stop();
+	}
 }
