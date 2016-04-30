@@ -11,8 +11,6 @@ namespace Ramses.Entities
 	/// </summary>
 	public class MonoEntity : MonoBehaviour, IEntity
 	{
-		
-
 		public event TagHandler TagAddedEvent;
 		public event TagHandler TagRemovedEvent;
 

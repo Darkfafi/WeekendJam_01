@@ -5,7 +5,6 @@ using System;
 
 public class Weapon : PickAbleObject
 {
-
 	public WeaponInfo WeaponInfo { get; private set; }
 	public Rigidbody2D RigidbodyItem { get { return rigidbodyItem; } }
 	public float WeaponHurtVelocity { get { return weaponHurtVelocity; } }
@@ -25,8 +24,11 @@ public class Weapon : PickAbleObject
 	[SerializeField]
 	private WeaponFactory.AllWeapons weapon;
 
-	protected void Awake()
+
+	protected override void Awake()
 	{
+		base.Awake();
+		AddTag("Weapon");
 		WeaponInfo = new WeaponInfo(ItemId, idleWeapon, attackWeapon, weapon);
 		hitBoxItem.CollisionEvent += OnCollisionEvent;
 		rigidbodyItem.gravityScale = weight;

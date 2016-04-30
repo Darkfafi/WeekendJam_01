@@ -116,6 +116,7 @@ public class CameraBoundFocus : MonoBehaviour
 		thisCamera.orthographicSize = Mathf.Clamp(thisCamera.orthographicSize, MinZoom, MaxZoom);
 	}
 
+	// Max bounds calculations found on internet. 
 	private void Refresh()
 	{
 		//calculate current screen ratio

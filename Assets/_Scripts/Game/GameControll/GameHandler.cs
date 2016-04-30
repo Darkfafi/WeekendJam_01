@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Ramses.Confactory;
+using Ramses.Entities;
 
 public class GameHandler : MonoBehaviour {
 
@@ -28,7 +29,11 @@ public class GameHandler : MonoBehaviour {
 	{
 		Spawnpoints = ConfactoryFinder.Instance.Give<ConTags>().GetTagObjects(ConTags.TagList.Spawnpoint);
 		SpawnAllPlayers();
-	}
+		Vector3 spawn = new Vector2(Random.Range(0, Screen.width), Screen.height);
+		spawn = Camera.main.ScreenToWorldPoint(spawn);
+		spawn.z = -1;
+		SpawnObject(Instantiate<Weapon>(Resources.Load<Weapon>("Weapons/Spear")), spawn);
+    }
 
 	public void SpawnAllPlayers()
 	{
@@ -51,9 +56,9 @@ public class GameHandler : MonoBehaviour {
 
 		Character c = ActivePlayers.CreateCharacterForPlayer(player);
 		c.gameObject.transform.position = spawnpoint.transform.position;
-		CharacterSpawnObject spawnObject = Instantiate<GameObject>(Resources.Load<GameObject>("SpawnerObject")).GetComponent<CharacterSpawnObject>();
+		CharacterSpawnObject spawnObject = Instantiate<GameObject>(Resources.Load<GameObject>("CharacterSpawnerObject")).GetComponent<CharacterSpawnObject>();
 		spawnObject.transform.position = c.transform.position;
-		spawnObject.SpawnCharacter(c);
+		spawnObject.Spawn(c);
 
 		AddEventListenersToCharacter(c);
 
@@ -62,6 +67,14 @@ public class GameHandler : MonoBehaviour {
 			PlayerCharacterSpawnedEvent(player);
         }
 	}
+
+	public void SpawnObject(MonoEntity objectEntity, Vector3 position)
+	{
+		objectEntity.gameObject.transform.position = position;
+		EntitySpawnObject spawnAnimationObject = Instantiate<EntitySpawnObject>(Resources.Load<EntitySpawnObject>("SpawnerObject"));
+		spawnAnimationObject.transform.position = objectEntity.transform.position;
+		spawnAnimationObject.Spawn(objectEntity);
+    }
 
 	public void EndGame()
 	{

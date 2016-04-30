@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-
-public class Character : MonoBehaviour {
+using Ramses.Entities;
+public class Character : MonoEntity {
 
 	public delegate void CharacterHandler(Character character);
 	public delegate void CharacterDualHandler(Character effected, Character effecter);

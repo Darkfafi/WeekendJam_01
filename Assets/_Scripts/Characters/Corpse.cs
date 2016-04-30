@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-public class Corpse : MonoBehaviour {
+using Ramses.Entities;
+public class Corpse : MonoEntity {
 
 	public SpriteRenderer SpriteRenderer { get { return corpseSpriteRenderer; } }
 	public Player PlayerOwnedCorpse { get; private set; }

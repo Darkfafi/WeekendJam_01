@@ -67,7 +67,6 @@
     <Compile Include="Assets\_Scripts\Camera\CameraMassEntity.cs" />
     <Compile Include="Assets\_Scripts\Characters\Character.cs" />
     <Compile Include="Assets\_Scripts\Characters\CharacterAnimationHandler.cs" />
-    <Compile Include="Assets\_Scripts\Characters\CharacterSpawnObject.cs" />
     <Compile Include="Assets\_Scripts\Characters\Corpse.cs" />
     <Compile Include="Assets\_Scripts\Characters\DamageHitBox.cs" />
     <Compile Include="Assets\_Scripts\Game\ColorHandler.cs" />
@@ -95,6 +94,8 @@
     <Compile Include="Assets\_Scripts\Objects\Weapons\WeaponHolder.cs" />
     <Compile Include="Assets\_Scripts\Platformer2D\PlatformerMovement2D.cs" />
     <Compile Include="Assets\_Scripts\Players\Player.cs" />
+    <Compile Include="Assets\_Scripts\Spawning\CharacterSpawnObject.cs" />
+    <Compile Include="Assets\_Scripts\Spawning\EntitySpawnObject.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\ArrowPlayerIndicator.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\GameRulesUI\IBaseGameRulesUI.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\GameRulesUI\StocksRulesUI.cs" />
