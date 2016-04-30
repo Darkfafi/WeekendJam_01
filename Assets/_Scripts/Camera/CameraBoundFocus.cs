@@ -62,7 +62,7 @@ public class CameraBoundFocus : MonoBehaviour
 				if (mostLeft > entities[i].Position.x)
 				{
 					mostLeft = entities[i].Position.x;
-					startCamCalcPos = entities[i].Position;
+					startCamCalcPos.x = entities[i].Position.x;
                 }
 				if (mostRight < entities[i].Position.x)
 				{
@@ -75,6 +75,7 @@ public class CameraBoundFocus : MonoBehaviour
 				if (mostDown > entities[i].Position.y)
 				{
 					mostDown = entities[i].Position.y;
+					startCamCalcPos.y = entities[i].Position.y;
 				}
 			}
 			float x = mostRight - mostLeft;
