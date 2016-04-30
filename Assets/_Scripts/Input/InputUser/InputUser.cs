@@ -46,6 +46,7 @@ public class InputUser : MonoBehaviour {
 	public void SetInputUsing(ConGameInputBindings.BindingTypes bindingType)
 	{
 		inputUsing = bindingType;
+		// TODO Idea: Do the single 0 axis check here (with preAxis and all) so the inputAxisEvent is only called once when the axis hits 0
     }
 
 	// May be called by AI script also. Thats why it is public

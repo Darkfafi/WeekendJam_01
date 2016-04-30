@@ -123,7 +123,7 @@ public class Character : MonoBehaviour {
 						platformerMovement.Jump();
 					}
 
-					if (name == InputNames.USE)
+					if (name == InputNames.GRAB_THROW)
 					{
 						if (CurrentWeapon == null)
 						{

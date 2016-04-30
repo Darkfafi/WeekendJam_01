@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Animation\AnimationManager.cs" />
+    <Compile Include="Assets\_Scripts\Camera\CameraBoundFocus.cs" />
+    <Compile Include="Assets\_Scripts\Camera\CameraMassEntity.cs" />
     <Compile Include="Assets\_Scripts\Characters\Character.cs" />
     <Compile Include="Assets\_Scripts\Characters\CharacterAnimationHandler.cs" />
     <Compile Include="Assets\_Scripts\Characters\CharacterSpawnObject.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Assets\_Scripts\Utils\BusyList.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ColorExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ImageExtensions.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ClassExtensions\Vactor2DExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfacotryParts\SceneSwitchChecker.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryFinder.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\ConfactoryTools.cs" />
@@ -117,6 +120,7 @@
     <Compile Include="Assets\_Scripts\Utils\DontDestroyOnLoadObject.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\ConEntityDatabase.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\Entity.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Entities\EntityFilter.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\IEntity.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\MonoEntity.cs" />
   </ItemGroup>
