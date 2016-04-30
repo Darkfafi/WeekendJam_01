@@ -25,7 +25,7 @@ public class CameraBoundFocus : MonoBehaviour
 
 
 	private Camera thisCamera;
-	private CameraMassEntity boundsEntity;
+	private MassEntity boundsEntity;
 	private List<string> tagsToFocusOn = new List<string>();
 	private ConEntityDatabase conEntityDatabase;
 
@@ -36,13 +36,13 @@ public class CameraBoundFocus : MonoBehaviour
 
 	void Start()
 	{
-		boundsEntity = conEntityDatabase.GetAnyEntity<CameraMassEntity>("CamBoundsItem");
+		boundsEntity = conEntityDatabase.GetAnyEntity<MassEntity>("CamBoundsItem");
 		Refresh();
 	}
 
 	void FixedUpdate ()
 	{
-		CameraMassEntity[] entities = conEntityDatabase.GetEntities<CameraMassEntity>("CamFocusItem");
+		MassEntity[] entities = conEntityDatabase.GetEntities<MassEntity>("CamFocusItem");
 
 		if (entities.Length > 0)
 		{

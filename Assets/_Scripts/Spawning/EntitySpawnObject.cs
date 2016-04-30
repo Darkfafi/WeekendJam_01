@@ -30,15 +30,14 @@ public class EntitySpawnObject<T> : MonoBehaviour where T : MonoEntity{
 		animationManager = gameObject.AddComponent<AnimationManager>();
 		animationManager.SetAnimationHandler(GetComponent<Animator>());
 		animationManager.AnimationEndedEvent += OnAnimationEndedEvent;
-		transform.Translate(new Vector3(0, 0, 1));
 	}
 
 	public void Spawn(T entity)
 	{
+		transform.Translate(new Vector3(0, 0, 3));
 		SpriteRenderer renderer = entity.GetComponent<SpriteRenderer>();
 		renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0);
 
-		entity.transform.position = transform.position;
 		colliderEntity = entity.GetComponent<Collider2D>();
 		rigidBodyEntity = entity.GetComponent<Rigidbody2D>();
 		entitySpawning = entity;

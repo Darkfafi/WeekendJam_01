@@ -2,7 +2,7 @@
 using System.Collections;
 using Ramses.Entities;
 
-public class CameraMassEntity : MonoEntity {
+public class MassEntity : MonoEntity {
 
 	public Vector2 Position { get { return offset.Vec3Add(transform.position); } }
 	public Vector2 Size { get { return size; } }

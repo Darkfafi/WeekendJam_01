@@ -10,7 +10,7 @@ public class WeaponFactory {
 		Spear
 	}
 
-	public static GameObject GetWeaponGameObject(AllWeapons weapon)
+	public static Weapon GetWeaponObject(AllWeapons weapon)
 	{
 		string resourcePath = WEAPONS_PATH;
 		switch(weapon)
@@ -20,6 +20,6 @@ public class WeaponFactory {
                 break;
 		}
 
-		return Resources.Load<GameObject>(resourcePath) as GameObject;
+		return Resources.Load<Weapon>(resourcePath) as Weapon;
 	}
 }

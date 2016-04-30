@@ -5,36 +5,38 @@ using Ramses.Entities;
 
 public class GameHandler : MonoBehaviour {
 
+	public delegate void BaseGameRulesHandler(BaseGameRules gameRules);
 	public delegate void PlayerHandler(Player player);
 	public delegate void CorpseHandler(Corpse corpse);
 
 	public PlayerHandler PlayerCharacterSpawnedEvent;
 	public CorpseHandler CorpseSpawnedEvent; // Game mods can let corpses disapear or even make zombies out of them if they so desire. IDEA (Haunted game mod maybe? be chaces by the ones you killed)
+	public BaseGameRulesHandler GameRulesActivatedEvent;
 
 	public ConActivePlayers ActivePlayers { get; private set; }
 	public GameBattleHistoryLog BattleHistoryLog { get; private set; }
 	public BaseGameRules ActiveGameRules { get; private set; } // Set on which game mod has been selected (In confactory)
 	public GameObject[] Spawnpoints { get; private set; }
-
+	public MassEntity SpawnArea;
 	void Awake()
 	{ 
 		BattleHistoryLog = new GameBattleHistoryLog();
 		ActiveGameRules = new StockGameRules(this, 3);// For debugging! TODO Remove this and replace with a real selected mod
 		ActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
-
-		ActiveGameRules.Start();
-	}
+    }
 
 	void Start()
 	{
 		Spawnpoints = ConfactoryFinder.Instance.Give<ConTags>().GetTagObjects(ConTags.TagList.Spawnpoint);
-		SpawnAllPlayers();
-		Vector3 spawn = new Vector2(Random.Range(0, Screen.width), Screen.height);
-		spawn = Camera.main.ScreenToWorldPoint(spawn);
-		spawn.z = -1;
-		SpawnObject(Instantiate<Weapon>(Resources.Load<Weapon>("Weapons/Spear")), spawn);
-    }
+		SpawnArea = ConfactoryFinder.Instance.Give<ConEntityDatabase>().GetAnyEntity<MassEntity>("CamBoundsItem");
+		ActiveGameRules.Start();
+		if(GameRulesActivatedEvent != null)
+		{
+			GameRulesActivatedEvent(ActiveGameRules);
+        }
+	}
 
+	// Spawning Game  
 	public void SpawnAllPlayers()
 	{
 		int i = 0;
@@ -45,7 +47,6 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
-	//TODO Spawn animation  
 	public void SpawnPlayerCharacter(Player player, GameObject spawnpoint)
 	{
 		if(player.PlayerCharacter != null)
@@ -68,19 +69,37 @@ public class GameHandler : MonoBehaviour {
         }
 	}
 
-	public void SpawnObject(MonoEntity objectEntity, Vector3 position)
+	public void SpawnWeapon(WeaponFactory.AllWeapons weapon)
 	{
-		objectEntity.gameObject.transform.position = position;
+		//Vector3 spawn = new Vector2(Random.Range(0, Screen.width), Screen.height);
+		float spawnX = Random.Range(0, 100) * 0.01f;
+		Vector3 spawn = new Vector3((SpawnArea.Size.x * spawnX) - SpawnArea.Size.x / 2, SpawnArea.Size.y / 2, -1);
+        Weapon weaponSpawning = Instantiate<Weapon>(WeaponFactory.GetWeaponObject(weapon));
+		weaponSpawning.transform.eulerAngles = new Vector3(0, 0, -92);
+		SpawnObject(weaponSpawning, spawn, new Vector2(0, -0.6f));
+	}
+
+	public void SpawnObject(MonoEntity objectEntity, Vector2 position, Vector2? offsetObject = null)
+	{
+		objectEntity.gameObject.transform.position = new Vector3(position.x,position.y,-1);
 		EntitySpawnObject spawnAnimationObject = Instantiate<EntitySpawnObject>(Resources.Load<EntitySpawnObject>("SpawnerObject"));
 		spawnAnimationObject.transform.position = objectEntity.transform.position;
-		spawnAnimationObject.Spawn(objectEntity);
+		if (offsetObject.HasValue)
+		{
+			objectEntity.gameObject.transform.position = objectEntity.gameObject.transform.position + new Vector3(offsetObject.Value.x, offsetObject.Value.y, 0);
+		}
+        spawnAnimationObject.Spawn(objectEntity);
     }
+	// End spawning section game
 
+	// Game Controll
 	public void EndGame()
 	{
 		Debug.Log("Global End Game Method to end the game and its gamemod mechanics");
 	}
 
+
+	// Events
 	private void AddEventListenersToCharacter(Character character)
 	{
 		character.CharacterGotKilledEvent += OnCharacterGotKilledEvent;

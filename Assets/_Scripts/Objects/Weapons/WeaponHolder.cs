@@ -74,7 +74,7 @@ public class WeaponHolder {
 
 	public Weapon DropWeapon(bool dropObject = true, Vector3? spawnOffset = null)
 	{
-		GameObject dropWeaponObject = null;
+		Weapon dropWeaponObject = null;
 		if (CurrentWeapon != null)
 		{
 			if (dropObject)
@@ -84,12 +84,12 @@ public class WeaponHolder {
 				{
 					spawnPos += spawnOffset.Value;
 				}
-                dropWeaponObject = GameObject.Instantiate(WeaponFactory.GetWeaponGameObject(CurrentWeapon.weapon), spawnPos, Quaternion.identity) as GameObject;
+                dropWeaponObject = GameObject.Instantiate(WeaponFactory.GetWeaponObject(CurrentWeapon.weapon), spawnPos, Quaternion.identity) as Weapon;
 			}
 			CurrentWeapon = null;
 		}
 		SetWeaponHitbox(false);
-        return (dropWeaponObject == null) ? null : dropWeaponObject.GetComponent<Weapon>();
+		return (dropWeaponObject == null) ? null : dropWeaponObject;
 	}
 
 	private void OnHitBoxClashEvent(DamageHitBox ownBox, DamageHitBox otherBox)

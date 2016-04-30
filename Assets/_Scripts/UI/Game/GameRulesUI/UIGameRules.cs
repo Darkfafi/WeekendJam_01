@@ -11,18 +11,31 @@ public class UIGameRules : MonoBehaviour {
 
 	private IBaseGameRulesUI currentBaseRulesUI = null;
 
-	void Start ()
+	void Awake ()
 	{
-		if (gameHandler.ActiveGameRules is StockGameRules)
-		{
-			currentBaseRulesUI = new StocksRulesUI();
-        }
-
-		currentBaseRulesUI.Start(this);
+		GameHandler.GameRulesActivatedEvent += OnGameRulesActivatedEvent;
+      
 	}
 
 	void OnDestroy()
 	{
+		GameHandler.GameRulesActivatedEvent -= OnGameRulesActivatedEvent;
 		currentBaseRulesUI.Stop();
+	}
+
+	private void OnGameRulesActivatedEvent(BaseGameRules rulesActivated)
+	{
+		if (currentBaseRulesUI != null)
+		{
+			currentBaseRulesUI.Stop();
+			currentBaseRulesUI = null;
+		}
+
+		if (rulesActivated is StockGameRules)
+		{
+			currentBaseRulesUI = new StocksRulesUI();
+		}
+
+		currentBaseRulesUI.Start(this);
 	}
 }

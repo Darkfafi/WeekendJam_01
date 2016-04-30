@@ -32,7 +32,10 @@ public class StockGameRules : BaseGameRules {
 		{
 			playersAndStocks.Add(p, StartingStockAmount);
         }
-	}
+		gameHandler.SpawnAllPlayers();
+		object spearContext = new object();
+		conCoroutines.StartCoroutine(WaitToSpawnSpear(spearContext), spearContext);
+    }
 
 	public override void OnCorpseSpawnedEvent(Corpse corpse)
 	{
@@ -106,6 +109,13 @@ public class StockGameRules : BaseGameRules {
 	{
 		yield return new WaitForSeconds(time);
 		gameHandler.SpawnPlayerCharacter(p, gameHandler.Spawnpoints[Random.Range(0, gameHandler.Spawnpoints.Length)]);
+		conCoroutines.StopContext(context);
+	}
+
+	private IEnumerator WaitToSpawnSpear(object context)
+	{
+		yield return new WaitForSeconds(3);
+		gameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear);
 		conCoroutines.StopContext(context);
 	}
 }

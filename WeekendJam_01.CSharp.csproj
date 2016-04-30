@@ -64,7 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Animation\AnimationManager.cs" />
     <Compile Include="Assets\_Scripts\Camera\CameraBoundFocus.cs" />
-    <Compile Include="Assets\_Scripts\Camera\CameraMassEntity.cs" />
+    <Compile Include="Assets\_Scripts\Camera\MassEntity.cs" />
     <Compile Include="Assets\_Scripts\Characters\Character.cs" />
     <Compile Include="Assets\_Scripts\Characters\CharacterAnimationHandler.cs" />
     <Compile Include="Assets\_Scripts\Characters\Corpse.cs" />
