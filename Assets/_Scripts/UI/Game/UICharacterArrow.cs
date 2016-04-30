@@ -32,7 +32,7 @@ public class UICharacterArrow : MonoBehaviour {
 				pos = LinkedPlayer.PlayerCharacter.transform.position;
 				pos.y += linkedPlayer.PlayerCharacter.SizeCharacter.y;
 
-				transform.position =  pos;
+				transform.position =  Camera.main.WorldToScreenPoint(pos);
 			}
 			else
 			{
