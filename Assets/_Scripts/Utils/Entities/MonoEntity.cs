@@ -11,11 +11,24 @@ namespace Ramses.Entities
 	/// </summary>
 	public class MonoEntity : MonoBehaviour, IEntity
 	{
+		
+
+		public event TagHandler TagAddedEvent;
+		public event TagHandler TagRemovedEvent;
+
 		private Entity entity = null;
+
+		[SerializeField] private string[] entityTags;
 
 		protected virtual void Awake()
 		{
-			entity = new Entity(this);
+			entity = new Entity(this, entityTags);
+
+			entity.TagRemovedEvent -= OnTagRemovedEvent;
+			entity.TagAddedEvent -= OnTagAddedEvent;
+
+			entity.TagRemovedEvent += OnTagRemovedEvent;
+			entity.TagAddedEvent += OnTagAddedEvent;
 		}
 
 		public void AddTag(string tag)
@@ -25,7 +38,10 @@ namespace Ramses.Entities
 
 		public void Dispose()
 		{
+			entity.TagRemovedEvent -= OnTagRemovedEvent;
+			entity.TagAddedEvent -= OnTagAddedEvent;
 			entity.Dispose();
+			entity = null;
 			Destroy(this.gameObject);
 		}
 
@@ -42,6 +58,27 @@ namespace Ramses.Entities
 		protected virtual void OnDestroy()
 		{
 			this.Dispose();
+		}
+
+		private void OnTagAddedEvent(IEntity entity, string tag)
+		{
+			if(TagRemovedEvent != null)
+			{
+				TagRemovedEvent(this, tag);
+            }
+		}
+
+		private void OnTagRemovedEvent(IEntity entity, string tag)
+		{
+			if (TagAddedEvent != null)
+			{
+				TagAddedEvent(this, tag);
+			}
+		}
+
+		public bool HasAnyOfTags(string[] tags)
+		{
+			return entity.HasAnyOfTags(tags);
 		}
 	}
 }

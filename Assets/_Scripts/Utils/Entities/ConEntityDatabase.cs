@@ -16,10 +16,15 @@ namespace Ramses.Entities
 	{
 
 		public delegate void EntityHandler(IEntity entity);
+		public delegate void EntityTagHandler(IEntity entity, string tag);
+
 		public event EntityHandler EntityRegisteredEvent;
 		public event EntityHandler EntityUnRegisteredEvent;
+		public event EntityTagHandler EntityAddedTagEvent;
+		public event EntityTagHandler EntityRemovedTagEvent;
 
 		private List<IEntity> allEntities = new List<IEntity>();
+		private Dictionary<string[], EntityFilter> allActiveFilters = new Dictionary<string[], EntityFilter>();
 
 		// register section
 		/// <summary>
@@ -33,6 +38,8 @@ namespace Ramses.Entities
 				if (!allEntities.Contains(entity))
 				{
 					allEntities.Add(entity);
+					entity.TagAddedEvent += OnTagAddedEvent;
+					entity.TagRemovedEvent += OnTagRemovedEvent;
 					if (EntityRegisteredEvent != null)
 					{
 						EntityRegisteredEvent(entity);
@@ -60,6 +67,8 @@ namespace Ramses.Entities
 				if (allEntities.Contains(entity))
 				{
 					allEntities.Remove(entity);
+					entity.TagAddedEvent -= OnTagAddedEvent;
+					entity.TagRemovedEvent -= OnTagRemovedEvent;
 					if (EntityUnRegisteredEvent != null)
 					{
 						EntityUnRegisteredEvent(entity);
@@ -76,6 +85,14 @@ namespace Ramses.Entities
 			}
 		}
 
+		public EntityFilter CreateEntityFilter(string[] tags)
+		{
+			//EntityFilter returnValue;
+			//if(allActiveFilters.ContainsKey(tags))
+			return new EntityFilter(tags, this);
+		}
+
+
 		// Tag only
 
 		public IEntity[] GetEntities(string tag)
@@ -83,9 +100,19 @@ namespace Ramses.Entities
 			return GetEntitiesWithTagFromList(allEntities.ToArray(), tag);
 		}
 
+		public IEntity[] GetEntities(string[] tags)
+		{
+			return GetEntitiesWithAnyOfTagsFromList(allEntities.ToArray(), tags);
+		}
+
 		public IEntity GetAnyEntity(string tag)
 		{
 			return GetEntityWithTagFromList(allEntities.ToArray(), tag);
+		}
+
+		public IEntity GetAnyEntity(string[] tags)
+		{
+			return GetEntityWithAnyOfTagsFromList(allEntities.ToArray(), tags);
 		}
 
 		// Type only
@@ -114,6 +141,18 @@ namespace Ramses.Entities
 			return GetEntityOfTypeFromList<T>(checkEntityList);
 		}
 
+		public T[] GetEntities<T>(string[] tags) where T : class, IEntity
+		{
+			IEntity[] checkEntityList = GetEntitiesWithAnyOfTagsFromList(allEntities.ToArray(), tags);
+			return GetEntitiesOfTypeFromList<T>(checkEntityList);
+		}
+
+		public T GetAnyEntity<T>(string[] tags) where T : class, IEntity
+		{
+			IEntity[] checkEntityList = GetEntitiesWithAnyOfTagsFromList(allEntities.ToArray(), tags);
+			return GetEntityOfTypeFromList<T>(checkEntityList);
+		}
+
 		// other
 
 		private IEntity[] GetEntitiesWithTagFromList(IEntity[] list, string tag)
@@ -134,6 +173,31 @@ namespace Ramses.Entities
 			foreach (IEntity entity in list)
 			{
 				if (entity.HasTag(tag))
+				{
+					return entity;
+				}
+			}
+			return null;
+		}
+
+		private IEntity[] GetEntitiesWithAnyOfTagsFromList(IEntity[] list, string[] tags)
+		{
+			List<IEntity> returns = new List<IEntity>();
+			foreach (IEntity entity in list)
+			{
+				if (entity.HasAnyOfTags(tags))
+				{
+					returns.Add(entity);
+				}
+			}
+			return returns.ToArray();
+		}
+
+		private IEntity GetEntityWithAnyOfTagsFromList(IEntity[] list, string[] tags)
+		{
+			foreach (IEntity entity in list)
+			{
+				if (entity.HasAnyOfTags(tags))
 				{
 					return entity;
 				}
@@ -165,6 +229,22 @@ namespace Ramses.Entities
 			}
 
 			return null;
+		}
+
+		private void OnTagAddedEvent(IEntity entity, string tag)
+		{
+			if(EntityAddedTagEvent != null)
+			{
+				EntityAddedTagEvent(entity, tag);
+            }
+		}
+
+		private void OnTagRemovedEvent(IEntity entity, string tag)
+		{
+			if (EntityRemovedTagEvent != null)
+			{
+				EntityRemovedTagEvent(entity, tag);
+			}
 		}
 
 		public void ConStruct()

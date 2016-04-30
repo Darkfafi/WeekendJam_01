@@ -7,6 +7,9 @@ namespace Ramses.Entities
 {
 	public class Entity : IEntity
 	{
+		public event TagHandler TagAddedEvent;
+		public event TagHandler TagRemovedEvent;
+
 		protected ConEntityDatabase database;
 		private List<string> allTags = new List<string>();
 		private IEntity trueEntity = null;
@@ -15,10 +18,14 @@ namespace Ramses.Entities
 		/// When realEntity is left null, the Entity will register itself. Else it will register whoever is the realEntity
 		/// WARNING: Don't use the RealEntity if you are inheriting from this class.
 		/// </summary>
-		public Entity(IEntity realEntity = null)
+		public Entity(IEntity realEntity = null, string[] tags = null)
 		{
 			database = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConEntityDatabase>();
 			this.trueEntity = (realEntity == null) ? this : realEntity;
+			if (tags != null)
+			{
+				allTags = new List<string>(tags);
+			}
 			RegisterToDatabase(trueEntity);
         }
 
@@ -27,6 +34,10 @@ namespace Ramses.Entities
 			if (!allTags.Contains(tag))
 			{
 				allTags.Add(tag);
+				if(TagAddedEvent != null)
+				{
+					TagAddedEvent(trueEntity, tag);
+                }
 			}
 		}
 
@@ -46,7 +57,27 @@ namespace Ramses.Entities
 			if (allTags.Contains(tag))
 			{
 				allTags.Remove(tag);
+				if(TagRemovedEvent != null)
+				{
+					TagRemovedEvent(trueEntity, tag);
+                }
 			}
+		}
+
+		public virtual bool HasAnyOfTags(string[] tags)
+		{
+			if (tags.Length > 0)
+			{
+				for(int i = 0; i < tags.Length; i++)
+				{
+					if(HasTag(tags[i]))
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
 		}
 
 		private void RegisterToDatabase(IEntity entity)
