@@ -35,14 +35,14 @@ public class StocksEndResultDisplay : MonoBehaviour {
 		{
 			for (int i = killIcons.Count - 1; i >= 0; i--)
 			{
-				Destroy(killIcons[i].gameObject);
+				Destroy(killIcons[i].transform.parent.gameObject);
 			}
 		} 
 		if(deathIcons.Count > 0)
 		{
 			for(int i = deathIcons.Count - 1; i >= 0; i--)
 			{
-				Destroy(deathIcons[i].gameObject);
+				Destroy(deathIcons[i].transform.parent.gameObject);
 			}
 		}
 
@@ -62,17 +62,19 @@ public class StocksEndResultDisplay : MonoBehaviour {
 		}
 
 		deathsText.text = "Deaths: " + allKillers.Length;
-	}
 
+		AnimateKillAndDeathIcons();
+    }
 
 	private Image CreateIcon(Player p, string iconTypeString)
 	{
+		GameObject iconObject = new GameObject(iconTypeString + "[Holder]");
 		Image iconImage = new GameObject(iconTypeString).AddComponent<Image>();
 		Transform parent = transform;
 		switch(iconTypeString)
 		{
 			case ICON_TYPE_KILL:
-				iconImage.sprite = killerIconSprite;
+				iconImage.sprite = killIconSprite;
 				parent = killsIconHolderTransform;
                 break;
 			case ICON_TYPE_DEATH:
@@ -81,8 +83,54 @@ public class StocksEndResultDisplay : MonoBehaviour {
 				break;
 		}
 		iconImage.color = p.PlayerRealColor;
-		iconImage.transform.SetParent(parent, false);
+		iconObject.AddComponent<RectTransform>().localScale = new Vector3(1,1,1);
+		iconObject.gameObject.transform.SetParent(parent, false);
+        iconImage.transform.SetParent(iconObject.transform, false);
+		iconImage.rectTransform.sizeDelta = new Vector2(20, 20);
 		return iconImage;
 	}
 
+	private void AnimateKillAndDeathIcons(float size = 20,float speed = 80f)
+	{
+		StartCoroutine(IconsAnimation(killIcons.ToArray(), size, speed));
+		StartCoroutine(IconsAnimation(deathIcons.ToArray(), size, speed));
+    }
+
+	private IEnumerator IconsAnimation(Image[] icons, float size = 20, float speed = 80f)
+	{
+		yield return null;
+		foreach (Image icon in icons)
+		{
+			icon.rectTransform.sizeDelta = new Vector2(0, 0);
+		}
+
+		bool reachedOverFlowAnim = false;
+		bool animating = false;
+		foreach (Image icon in icons)
+		{
+			animating = true;
+			while (animating)
+			{
+				if (icon.rectTransform.sizeDelta.x < size * 1.25f && !reachedOverFlowAnim)
+				{
+					icon.rectTransform.sizeDelta = new Vector2(icon.rectTransform.sizeDelta.x + Time.deltaTime * speed, icon.rectTransform.sizeDelta.y + Time.deltaTime * speed);
+				}
+				else if (icon.rectTransform.sizeDelta.x >= size * 1.25f && !reachedOverFlowAnim)
+				{
+					reachedOverFlowAnim = true;
+				}
+				else if (reachedOverFlowAnim && icon.rectTransform.sizeDelta.x > size)
+				{
+					icon.rectTransform.sizeDelta = new Vector2(icon.rectTransform.sizeDelta.x - Time.deltaTime * speed, icon.rectTransform.sizeDelta.y - Time.deltaTime * speed);
+				}
+				else if (icon.rectTransform.sizeDelta.x < size)
+				{
+					icon.rectTransform.sizeDelta = new Vector2(size, size);
+					reachedOverFlowAnim = false;
+					animating = false;
+				}
+				yield return null;
+			}
+		}
+	}
 }

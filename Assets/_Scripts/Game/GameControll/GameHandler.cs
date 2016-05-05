@@ -25,7 +25,7 @@ public class GameHandler : MonoBehaviour {
 		BattleHistoryLog = ConfactoryFinder.Instance.Give<ConGameBattleHistoryLog>(); // = new GameBattleHistoryLog();
 		((ConGameBattleHistoryLog)BattleHistoryLog).Reset();
 		
-		ActiveGameRules = new StockGameRules(this, 3);// For debugging! TODO Remove this and replace with a real selected mod
+		ActiveGameRules = new StockGameRules(this, 5);// For debugging! TODO Remove this and replace with a real selected mod
 		ConfactoryFinder.Instance.Give<ConSelectedGameRules>().SetSelectedGameRules(ActiveGameRules);
 		ActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
     }
