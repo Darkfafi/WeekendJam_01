@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ObjectPicker : MonoBehaviour {
-	
+
 	public PickUpInfo PickUpObject<T>(Vector2 direction, Vector2 startRayPosition, float pickUpLength, bool destroyOnPickUp = true) where T : PickAbleObject
 	{
 		PickUpInfo info;
@@ -12,6 +12,24 @@ public class ObjectPicker : MonoBehaviour {
 		PickAbleObject pickedUpGameObject = null;
 		
         if (hit.collider != null)
+		{
+			if (hit.collider.gameObject.GetComponent<T>() != null)
+			{
+				hit.collider.gameObject.GetComponent<T>().PickUpObject(out pickedUpGameObject, out idObject, destroyOnPickUp);
+			}
+		}
+		info = new PickUpInfo(pickedUpGameObject, idObject);
+		return info;
+	}
+
+	public PickUpInfo PickUpObject<T>(Vector2 direction, Vector2 startRayPosition, Vector2 sizeBoxCheck, float pickUpLength, bool destroyOnPickUp = true) where T : PickAbleObject
+	{
+		PickUpInfo info;
+		RaycastHit2D hit = Physics2D.BoxCast(startRayPosition, sizeBoxCheck,0, direction, pickUpLength, Layers.LayerMaskSeeOnly(Layers.OBJECTS));
+		string idObject = "";
+		PickAbleObject pickedUpGameObject = null;
+
+		if (hit.collider != null)
 		{
 			if (hit.collider.gameObject.GetComponent<T>() != null)
 			{

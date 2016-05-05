@@ -19,7 +19,7 @@ public class WeaponHolder {
 
 	public void PickUpWeapon(bool dropHoldingWeapon = true)
 	{
-			PickUpInfo infoPickUp = objectPicker.PickUpObject<Weapon>(Vector2.up, holderTransform.position, 1f, true);
+			PickUpInfo infoPickUp = objectPicker.PickUpObject<Weapon>(Vector2.up, holderTransform.position + new Vector3(0,0.6f,0),new Vector2(0.5f,1.35f), 1f, true);
 			Weapon weapon;
 			if (infoPickUp.objectPickedUp != null)
 			{
