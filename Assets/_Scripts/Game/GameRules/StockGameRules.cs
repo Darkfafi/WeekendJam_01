@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class StockGameRules : BaseGameRules {
 
@@ -43,6 +44,27 @@ public class StockGameRules : BaseGameRules {
 		SetStockAmountPlayer(corpse.PlayerOwnedCorpse, playersAndStocks[corpse.PlayerOwnedCorpse] - 1);
 	}
 
+	public override Dictionary<Player, int> GetPlayersSortedOnRank()
+	{
+		Dictionary<Player, int> returnDic = new Dictionary<Player, int>();
+
+		Player prePlayerCheck = null;
+		int rank = 0;
+		foreach (KeyValuePair<Player, int> item in playersAndStocks.OrderByDescending(key => key.Value))
+		{
+			if(prePlayerCheck != null)
+			{
+				if(playersAndStocks[prePlayerCheck] > item.Value)
+				{
+					rank++;
+				}
+			}
+			returnDic.Add(item.Key, rank);
+			prePlayerCheck = item.Key;
+        }
+		return returnDic;
+	}
+
 	public int GetStockAmountOfPlayer(Player player)
 	{
 		if(playersAndStocks.ContainsKey(player))
@@ -81,6 +103,7 @@ public class StockGameRules : BaseGameRules {
 
 			if (CheckAmountOfPlayersLeft() == 1)
 			{
+				// TODO CHECK FOR SUDDEN DEATH
 				gameHandler.EndGame();
 			}
 		}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class BaseGameRules
 {
@@ -26,4 +27,20 @@ public abstract class BaseGameRules
 	{
 
 	}
+
+	/// <summary>
+	/// Returns an array of players sorted on rank.
+	/// Best player key with int 0 is first rank. The higher the number, the lower the rank.
+	/// </summary>
+	/// <returns></returns>
+	public virtual Dictionary<Player, int> GetPlayersSortedOnRank()
+	{
+		Debug.LogError("Unimplemented Method 'GetPlayersSortedOnRank' is called but not overwriten");
+		return null;
+	}
+
+	public int GetPlayerRank(Player player)
+	{
+		return GetPlayersSortedOnRank()[player];
+    }
 }

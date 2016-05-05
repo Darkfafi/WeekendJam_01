@@ -22,7 +22,7 @@ public class PlayerSlot : MonoBehaviour
 		if (PlayerOnSlot != null)
 		{
 			usedSlot.SetActive(true);
-			SetFlagColor(ColorHandler.ColorsToColor(player.PlayerColor)); // Dont forget that you can always access the ColorHandler through the ConActivePlayers confactory!
+			SetFlagColor(player.PlayerRealColor); // Dont forget that you can always access the ColorHandler through the ConActivePlayers confactory!
 			unusedSlot.SetActive(false);
 		}
 		else

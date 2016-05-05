@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class GameBattleHistoryLog
 {
-	private Dictionary<Player, List<Player>> playerKillsData = new Dictionary<Player, List<Player>>();
-	private Dictionary<Player, List<Player>> playerDeathsData = new Dictionary<Player, List<Player>>();
+	protected Dictionary<Player, List<Player>> playerKillsData = new Dictionary<Player, List<Player>>();
+	protected Dictionary<Player, List<Player>> playerDeathsData = new Dictionary<Player, List<Player>>();
 
 	public void AddData(Player killer, Player killed)
 	{

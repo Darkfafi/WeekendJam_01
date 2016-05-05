@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using Ramses.Entities;
+
 public class Character : MonoEntity {
 
 	public delegate void CharacterHandler(Character character);

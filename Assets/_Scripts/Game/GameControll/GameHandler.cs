@@ -2,6 +2,7 @@
 using System.Collections;
 using Ramses.Confactory;
 using Ramses.Entities;
+using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour {
 
@@ -18,10 +19,14 @@ public class GameHandler : MonoBehaviour {
 	public BaseGameRules ActiveGameRules { get; private set; } // Set on which game mod has been selected (In confactory)
 	public GameObject[] Spawnpoints { get; private set; }
 	public MassEntity SpawnArea;
+
 	void Awake()
-	{ 
-		BattleHistoryLog = new GameBattleHistoryLog();
+	{
+		BattleHistoryLog = ConfactoryFinder.Instance.Give<ConGameBattleHistoryLog>(); // = new GameBattleHistoryLog();
+		((ConGameBattleHistoryLog)BattleHistoryLog).Reset();
+		
 		ActiveGameRules = new StockGameRules(this, 3);// For debugging! TODO Remove this and replace with a real selected mod
+		ConfactoryFinder.Instance.Give<ConSelectedGameRules>().SetSelectedGameRules(ActiveGameRules);
 		ActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
     }
 
@@ -29,11 +34,16 @@ public class GameHandler : MonoBehaviour {
 	{
 		Spawnpoints = ConfactoryFinder.Instance.Give<ConTags>().GetTagObjects(ConTags.TagList.Spawnpoint);
 		SpawnArea = ConfactoryFinder.Instance.Give<ConEntityDatabase>().GetAnyEntity<MassEntity>("CamBoundsItem");
+		StartGameRules();
+	}
+
+	private void StartGameRules()
+	{
 		ActiveGameRules.Start();
-		if(GameRulesActivatedEvent != null)
+		if (GameRulesActivatedEvent != null)
 		{
 			GameRulesActivatedEvent(ActiveGameRules);
-        }
+		}
 	}
 
 	// Spawning Game  
@@ -95,7 +105,8 @@ public class GameHandler : MonoBehaviour {
 	// Game Controll
 	public void EndGame()
 	{
-		Debug.Log("Global End Game Method to end the game and its gamemod mechanics");
+		//Debug.Log("Global End Game Method to end the game and its gamemod mechanics");
+		SceneManager.LoadScene("End");
 	}
 
 
@@ -138,7 +149,7 @@ public class GameHandler : MonoBehaviour {
 			corpse.transform.localScale = character.transform.localScale;
 
 			Color color = corpse.SpriteRenderer.color;
-			Color colorP = ColorHandler.ColorsToColor(playerOfCharacter.PlayerColor);
+			Color colorP = playerOfCharacter.PlayerRealColor; //ColorHandler.ColorsToColor(playerOfCharacter.PlayerColor);
 			float playerColorIntensity = 0.2f;
 			colorP *= playerColorIntensity;
 			color += colorP;

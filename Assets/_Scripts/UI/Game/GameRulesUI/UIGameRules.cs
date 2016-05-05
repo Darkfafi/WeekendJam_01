@@ -20,7 +20,10 @@ public class UIGameRules : MonoBehaviour {
 	void OnDestroy()
 	{
 		GameHandler.GameRulesActivatedEvent -= OnGameRulesActivatedEvent;
-		currentBaseRulesUI.Stop();
+		if (currentBaseRulesUI != null)
+		{
+			currentBaseRulesUI.Stop();
+		}
 	}
 
 	private void OnGameRulesActivatedEvent(BaseGameRules rulesActivated)

@@ -10,7 +10,7 @@ public class UICharacterArrow : MonoBehaviour {
 			linkedPlayer = value;
 			if(linkedPlayer != null)
 			{
-				arrowImage.color = ColorHandler.ColorsToColor(linkedPlayer.PlayerColor);
+				arrowImage.color = linkedPlayer.PlayerRealColor; //ColorHandler.ColorsToColor(linkedPlayer.PlayerColor);
             }
 		}
 	}
