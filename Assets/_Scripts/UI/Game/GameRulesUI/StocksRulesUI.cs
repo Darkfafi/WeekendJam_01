@@ -16,16 +16,14 @@ public class StocksRulesUI : IBaseGameRulesUI
 			stocksGameRules = (StockGameRules)uiGameRules.GameHandler.ActiveGameRules;
 			playerInfo.SetScoreIndication(UIPlayerInfo.ScoreIndications.Stocks);
 			playerInfo.CurrentIndication.IndicationText.text = stocksGameRules.GetStockAmountOfPlayer(playerInfo.LinkedPlayer).ToString();
-			stocksGameRules.PlayerStockChangedEvent += OnPlayerStockChangedEvent;
 		}
+		stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
+		stocksGameRules.PlayerStockChangedEvent += OnPlayerStockChangedEvent;
 	}
 
 	public void Stop()
 	{
-		foreach (UIPlayerInfo playerInfo in uiGameRules.PlayerInfos.GetUIPlayerInfos(true))
-		{
-			stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
-		}
+		stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
 	}
 
 	private void OnPlayerStockChangedEvent(Player player, int stocks)

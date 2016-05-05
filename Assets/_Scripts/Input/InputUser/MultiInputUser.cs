@@ -8,17 +8,20 @@ public class MultiInputUser : MonoBehaviour {
 	public event BindingHandler InputBindingUsedEvent;
 
 	[SerializeField]
-	private List<ConGameInputBindings.BindingTypes> allBindingTypes;
+	private List<ConGameInputBindings.BindingTypes> allBindingTypes = new List<ConGameInputBindings.BindingTypes>();
 
 	private Dictionary<ConGameInputBindings.BindingTypes,InputUser> allInputUsers = new Dictionary<ConGameInputBindings.BindingTypes, InputUser>(); 
 
 	void Awake()
 	{
-		foreach (ConGameInputBindings.BindingTypes bindingType in allBindingTypes)
+		if (allBindingTypes.Count > 0)
 		{
-			if (!allInputUsers.ContainsKey(bindingType))
+			foreach (ConGameInputBindings.BindingTypes bindingType in allBindingTypes)
 			{
-				CreateInputUser(bindingType);
+				if (!allInputUsers.ContainsKey(bindingType))
+				{
+					CreateInputUser(bindingType);
+				}
 			}
 		}
 	}

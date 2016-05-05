@@ -39,8 +39,9 @@ public class Character : MonoEntity {
 	[SerializeField] private float movementSpeed = 6f;
 	[SerializeField] private float jumpForce = 8f;
 
-	protected void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		IsAlive = true;
 		CharacterRigidbody2D = gameObject.AddComponent<Rigidbody2D>();
 		touch2D = gameObject.AddComponent<TouchDetector2D>();
@@ -308,7 +309,7 @@ public class Character : MonoEntity {
 		busyList.RemoveBusyAction(BusyConsts.ACTION_IN_AIR, BusyConsts.BUSY_LAYER_MOVEMENT);
 	}
 
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		if (CharacterDestroyEvent != null)
 		{
@@ -319,5 +320,7 @@ public class Character : MonoEntity {
 		Destroy(animationHandler);
 		Destroy(objectPicker);
 		Destroy(animator);
+
+		base.OnDestroy();
 	}
 }

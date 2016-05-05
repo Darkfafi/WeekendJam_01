@@ -26,7 +26,6 @@ public class CameraBoundFocus : MonoBehaviour
 
 	private Camera thisCamera;
 	private MassEntity boundsEntity;
-	private List<string> tagsToFocusOn = new List<string>();
 	private ConEntityDatabase conEntityDatabase;
 
 	void Awake () {
