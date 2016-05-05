@@ -38,6 +38,10 @@ public class PlayerDisplay : MonoBehaviour {
 			rankText.text = "Winner!";
 			backgroundImage.color = new Color(1, 0.99f, 0.2f);
 		}
+		else if (rank == 1)
+		{
+			backgroundImage.color = Color.white;
+		}
 		else
 		{
 			backgroundImage.color = new Color(0.5f, 0.3f, 0.15f);

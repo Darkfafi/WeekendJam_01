@@ -54,10 +54,17 @@ public class StockGameRules : BaseGameRules {
 		{
 			if(prePlayerCheck != null)
 			{
-				if(playersAndStocks[prePlayerCheck] > item.Value)
+				// If the player has died more times, or has died the same amount of times but has less kills then his rank is lower then the other player
+				if (playersAndStocks[prePlayerCheck] > item.Value
+					|| (playersAndStocks[prePlayerCheck] == item.Value && 
+						gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(prePlayerCheck).Length > gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(item.Key).Length))
 				{
 					rank++;
-				}
+				}else if(playersAndStocks[prePlayerCheck] == item.Value &&
+						gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(prePlayerCheck).Length < gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(item.Key).Length)
+				{
+					returnDic[prePlayerCheck] += 1;
+                }
 			}
 			returnDic.Add(item.Key, rank);
 			prePlayerCheck = item.Key;
