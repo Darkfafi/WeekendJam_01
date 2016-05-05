@@ -11,6 +11,7 @@ public class PlayerDisplaySlots : MonoBehaviour {
 	private ConActivePlayers conActivePlayers;
 	private ConSelectedGameRules conSelectedGameRules;
 	private MultiInputUser inputUser;
+
     private void Awake()
 	{
 		conActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
@@ -38,6 +39,7 @@ public class PlayerDisplaySlots : MonoBehaviour {
 		{
 			inputUser.AddBindingType(p.BindingType);
         }
+		inputUser.InputBindingUsedEvent -= OnInputBindingUsedEvent;
 		inputUser.InputBindingUsedEvent += OnInputBindingUsedEvent;
     }
 
@@ -57,5 +59,10 @@ public class PlayerDisplaySlots : MonoBehaviour {
 		{
 			display.StocksEndResultDisplay.DisplayPlayerResult(display.Player);
 		}
+	}
+
+	private void OnDestroy()
+	{
+		inputUser.InputBindingUsedEvent -= OnInputBindingUsedEvent;
 	}
 }

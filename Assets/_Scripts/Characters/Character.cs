@@ -265,7 +265,7 @@ public class Character : MonoEntity {
     }
 	private void OnAnimEnd(string animationName, float animFinishedTime)
 	{
-		if (animationName == animationHandler.GetAnimationName(BusyConsts.ACTION_ATTACK))
+		if (animationHandler.PlayedAnimationNameCheck(animationName, BusyConsts.ACTION_ATTACK))
 		{
 			if (busyList.InBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT))
 			{ 
@@ -273,8 +273,8 @@ public class Character : MonoEntity {
 				weaponHolder.SetWeaponHitbox(false);
 			}
 		}
-		if (animationName == animationHandler.GetAnimationName(BusyConsts.ACTION_THROW))
-		{
+		if (animationHandler.PlayedAnimationNameCheck(animationName, BusyConsts.ACTION_THROW))//animationName == animationHandler.GetAnimationName(BusyConsts.ACTION_THROW))
+        {
 			if (busyList.InBusyAction(BusyConsts.ACTION_THROW, BusyConsts.BUSY_LAYER_COMBAT))
 			{
 				busyList.RemoveBusyAction(BusyConsts.ACTION_THROW, BusyConsts.BUSY_LAYER_COMBAT);
@@ -294,7 +294,7 @@ public class Character : MonoEntity {
 				}
 			}
 		}
-		if (animationName == animationHandler.GetAnimationName("Death"))
+		if (animationHandler.PlayedAnimationNameCheck(animationName, "Death"))
 		{
 			Destroy(this);
 		}

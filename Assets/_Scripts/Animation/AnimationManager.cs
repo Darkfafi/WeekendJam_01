@@ -16,6 +16,8 @@ public class AnimationManager : MonoBehaviour
 	public int AnimationLoopCounter { get; private set; }
 	public float AnimationNormalizedTime { get; private set; }
 
+	private Dictionary<string, string> GivenAndActiveAnimationNames = new Dictionary<string, string>();
+
 	public string AnimationPlaying
 	{
 		get { return animationPlaying; }
@@ -46,11 +48,41 @@ public class AnimationManager : MonoBehaviour
 		string realNameAnim = GetAnimationName(animationString);
         animator.Play(realNameAnim);
 		AnimationPlaying = realNameAnim;
+		if (!GivenAndActiveAnimationNames.ContainsKey(realNameAnim))
+		{
+			GivenAndActiveAnimationNames.Add(realNameAnim, animationString);
+		}
 	}
 
 	public virtual string GetAnimationName(string animString)
 	{
 		return animString;
+	}
+
+	/// <summary>
+	/// Returns if any of the converted versions of the baseOfCheckName is in play or around end of playing.
+	/// if checkIfPlayedAnimation == true it will only look if the specific animationNameToCheck has been played and is a version of baseOfCheckName.
+	/// Example: animationNameToCheck == 'AttackSpear'. baseOfCheckName == 'Attack'. if AttackSpear is playing then this will return true.
+	/// if 'AttackGun' is playing and checkIfPlayedAnimation == true then it will return false. Else it will return true because its a converted version of 'Attack'
+	/// </summary>
+	/// <param name="animationString"></param>
+	/// <param name="compairAnimationName"></param>
+	/// <returns></returns>
+	public virtual bool PlayedAnimationNameCheck(string animationNameToCheck, string baseOfCheckName, bool checkIfPlayedAnimation = false)
+	{
+		bool isEqual = animationNameToCheck == baseOfCheckName;
+		if(!isEqual)
+		{
+			if (checkIfPlayedAnimation)
+			{
+				isEqual = GivenAndActiveAnimationNames.ContainsValue(baseOfCheckName) && GivenAndActiveAnimationNames.ContainsKey(animationNameToCheck);
+			}
+			else
+			{
+				isEqual = GivenAndActiveAnimationNames.ContainsValue(baseOfCheckName);
+            }
+        }
+		return isEqual;
 	}
 
 	public bool AnimatorInAnimation(string name)
@@ -88,6 +120,10 @@ public class AnimationManager : MonoBehaviour
 		if (AnimationEndedEvent != null)
 		{
 			AnimationEndedEvent(animationName, finishedTime);
+		}
+		if (GivenAndActiveAnimationNames.ContainsKey(animationName))
+		{
+			GivenAndActiveAnimationNames.Remove(animationName);
 		}
 	}
 }

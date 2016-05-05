@@ -79,7 +79,7 @@ public class WeaponHolder {
 		{
 			if (dropObject)
 			{
-				Vector3 spawnPos = holderTransform.position; //(spawnOffset.HasValue) ? spawnOffset.Value : holderTransform.position;
+				Vector3 spawnPos = holderTransform.position;
 				if(spawnOffset.HasValue)
 				{
 					spawnPos += spawnOffset.Value;
