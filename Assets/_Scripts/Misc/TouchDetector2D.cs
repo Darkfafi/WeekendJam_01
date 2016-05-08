@@ -142,7 +142,6 @@ public class TouchDetector2D : MonoBehaviour
 							checkCoordinates.y + (coll2D.bounds.size.y / 2) + ((coll2D.bounds.size.y / 2) * side.y) + (StartDistance * side.y));
 					}
 
-#if UNITY_EDITOR
 					if (hit2D.collider == null)
 					{
 						LayerMask maskToCheck = new LayerMask();
@@ -164,7 +163,7 @@ public class TouchDetector2D : MonoBehaviour
 						}
 						hit2D = Physics2D.Raycast(checkCoordinates, side, DistanceCheck, maskToCheck);
 					}
-
+#if UNITY_EDITOR
 					if (hit2D.collider != null)
 					{
 						Debug.DrawRay(checkCoordinates, side * ((hit2D.collider.transform.position - coll2D.transform.position).magnitude - StartDistance), Color.red);
@@ -178,13 +177,6 @@ public class TouchDetector2D : MonoBehaviour
                         }
 
 						Debug.DrawRay(checkCoordinates, side * DistanceCheck, color);
-					}
-					
-#else
-					hit2D = Physics2D.Raycast(checkCoordinates, side, DistanceCheck);
-					if (hit2D.collider != null)
-					{
-						break;
 					}
 #endif
 				}
