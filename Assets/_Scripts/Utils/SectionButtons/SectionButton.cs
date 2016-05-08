@@ -19,8 +19,9 @@ namespace Ramses.SectionButtons
 		public event ButtonHandler ButtonSelectedEvent;
 		public event ButtonHandler ButtonUnselectedEvent;
 
+		public string ButtonName { get { return name; } }
+		[SerializeField] private string buttonName = "Button";
 		public bool Selected { get; private set; }
-
 		public bool Activated { get; private set; }
 
 		protected virtual void Awake()
@@ -80,7 +81,7 @@ namespace Ramses.SectionButtons
 					}
 				}
 			}
-        }
+		}
 
 		public virtual void SetActiveState(bool activeState)
 		{

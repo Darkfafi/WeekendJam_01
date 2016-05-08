@@ -48,7 +48,7 @@ namespace Ramses.SectionButtons
 		{
 			activated = true;
 			ListenToSections(true);
-			SetSection(currentlySelectedSectionIndex);
+			SetSection(currentlySelectedSectionIndex, false);
 			SetSectionActiveState();
         }
 
@@ -88,12 +88,12 @@ namespace Ramses.SectionButtons
 			SetSection(allSections.GetLoopIndex(currentlySelectedSectionIndex - 1));
 		}
 
-		private void SetSection(int index)
+		private void SetSection(int index, bool selectButton = true)
 		{
 			int selectedButtonIndex = CurrentlySelectedSection.CurrentButtonIndex;
             CurrentlySelectedSection.Unselected();
 			currentlySelectedSectionIndex = index;
-			if (CurrentlySelectedSection.CurrentlySelectedButton == null)
+			if (selectButton && CurrentlySelectedSection.CurrentlySelectedButton == null)
 			{
 				CurrentlySelectedSection.SetButton(selectedButtonIndex, false);
 			}
