@@ -90,13 +90,13 @@ public class StocksEndResultDisplay : MonoBehaviour {
 		return iconImage;
 	}
 
-	private void AnimateKillAndDeathIcons(float size = 20,float speed = 80f)
+	private void AnimateKillAndDeathIcons(float size = 20,float speed = 20f)
 	{
 		StartCoroutine(IconsAnimation(killIcons.ToArray(), size, speed));
 		StartCoroutine(IconsAnimation(deathIcons.ToArray(), size, speed));
     }
 
-	private IEnumerator IconsAnimation(Image[] icons, float size = 20, float speed = 80f)
+	private IEnumerator IconsAnimation(Image[] icons, float size = 20, float speed = 20f)
 	{
 		yield return null;
 		foreach (Image icon in icons)
@@ -106,6 +106,7 @@ public class StocksEndResultDisplay : MonoBehaviour {
 
 		bool reachedOverFlowAnim = false;
 		bool animating = false;
+		speed = (speed * 4);
 		foreach (Image icon in icons)
 		{
 			animating = true;

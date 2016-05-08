@@ -215,7 +215,7 @@ public class Character : MonoEntity {
 		weaponHolder.Disarm(Vector2.up, 6);
 
 		busyList.AddBusyAction(BusyConsts.ACTION_STUNNED, BusyConsts.BUSY_LAYER_INPUT_DISABLE);
-		StartCoroutine(StunWaitTimer(3));
+		StartCoroutine(StunWaitTimer(1.5f));
 	}
 
 	private IEnumerator StunWaitTimer(float timeInSeconds)
