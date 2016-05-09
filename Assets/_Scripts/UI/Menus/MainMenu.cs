@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour {
 		{
 			SceneManager.LoadScene("Lobby");
 		}
-		if(button.ButtonName == "Quit")
+		if (button.ButtonName == "Quit")
 		{
 			Application.Quit();
 		}
@@ -32,7 +32,8 @@ public class MainMenu : MonoBehaviour {
 
 	private void OnInputBindingUsedEvent(ConGameInputBindings.BindingTypes type, InputAction action)
 	{
-		if (lastAxis == 0)
+		if ((lastAxis == 0 && action.Type == InputItem.InputType.Axis)||
+			(action.Type == InputItem.InputType.KeyCode && action.KeyActionValue == InputAction.KeyAction.OnKeyDown))
 		{
 			if (action.Name == InputNames.UP)
 			{
