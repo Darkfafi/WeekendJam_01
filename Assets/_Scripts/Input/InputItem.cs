@@ -47,7 +47,7 @@ public class InputItem {
 		InputActionName = nameInputAction;
 	}
 
-	public float GetUseValue()
+	public float GetUseValue(float lastValueForUser)
 	{
 		float value = InputAction.NOT_IN_USE_VALUE;
 		if (keyCode != KeyCode.None)
@@ -56,14 +56,14 @@ public class InputItem {
 		}
 		else if (!string.IsNullOrEmpty(axisString))
 		{
-			value = AxisCheck();
+			value = AxisCheck(lastValueForUser);
 		}
 		return value;
 	}
 
-	public InputAction GetInputActionInfo()
+	public InputAction GetInputActionInfo(float lastValueForUser)
 	{
-		return new InputAction(InputActionName, Type, GetUseValue());
+		return new InputAction(InputActionName, Type, GetUseValue(lastValueForUser));
 	}
 
 	private float KeyCodeCheck()
@@ -83,18 +83,18 @@ public class InputItem {
 
 		return value;
 	}
-	private float AxisCheck()
+	private float AxisCheck(float lastValueForUser)
 	{
 		float value = InputAction.NOT_IN_USE_VALUE;
 		float axisValue = Input.GetAxis(axisString);
-        if (Mathf.Abs(axisValue) / axisValue == direction || axisValue == 0) // || hits 0 for first time after pre value was in direction then return -1 
+        if (Mathf.Abs(axisValue) / axisValue == direction || (lastValueForUser != 0 && axisValue == 0)) // || hits 0 for first time after pre value was in direction then return -1 
 		{
 			value = Mathf.Abs(axisValue);
         }
 		return value;
 	}
 }
-public class InputAction
+public struct InputAction
 {
 	public const float NOT_IN_USE_VALUE = 1337;
 

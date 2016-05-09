@@ -60,7 +60,7 @@ public class ConInputBindingsHandler : MonoBehaviour, IConfactory {
 						InputAction action;
 						foreach (InputItem item in allBindingsForUser)
 						{
-							action = item.GetInputActionInfo();
+							action = item.GetInputActionInfo(user.GetPreviousItemValue(item.InputActionName));
 							if (action.Value != InputAction.NOT_IN_USE_VALUE)
 							{
 								user.OnInput(action);

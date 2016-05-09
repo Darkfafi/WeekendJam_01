@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Ramses.Confactory;
 public class InputUser : MonoBehaviour {
 
@@ -14,6 +15,8 @@ public class InputUser : MonoBehaviour {
 	public ConGameInputBindings.BindingTypes InputUsing { get { return inputUsing;  } }
 	[SerializeField] private ConGameInputBindings.BindingTypes inputUsing;
 	private ConInputBindingsHandler inputCon;
+
+	private Dictionary<string, float> itemValueHistories = new Dictionary<string, float>();
 
 	private void Awake()
 	{
@@ -46,8 +49,16 @@ public class InputUser : MonoBehaviour {
 	public void SetInputUsing(ConGameInputBindings.BindingTypes bindingType)
 	{
 		inputUsing = bindingType;
-		// TODO Idea: Do the single 0 axis check here (with preAxis and all) so the inputAxisEvent is only called once when the axis hits 0
     }
+
+	public float GetPreviousItemValue(string itemName)
+	{
+		if (itemValueHistories.ContainsKey(itemName))
+		{
+			return itemValueHistories[itemName];
+		}
+		return InputAction.NOT_IN_USE_VALUE; // if not in list then it has not been used yet.
+	}
 
 	// May be called by AI script also. Thats why it is public
 	public void OnInput(InputAction inputAction)
@@ -66,6 +77,11 @@ public class InputUser : MonoBehaviour {
 			{
 				InputAxisEvent(inputAction.Name, inputAction.Value);
 			}
+			if(!itemValueHistories.ContainsKey(inputAction.Name))
+			{
+				itemValueHistories.Add(inputAction.Name, 0);
+            }
+			itemValueHistories[inputAction.Name] = inputAction.Value;
 		}
 	}
 }
