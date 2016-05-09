@@ -19,7 +19,7 @@ namespace Ramses.SectionButtons
 		public event ButtonHandler ButtonSelectedEvent;
 		public event ButtonHandler ButtonUnselectedEvent;
 
-		public string ButtonName { get { return name; } }
+		public string ButtonName { get { return buttonName; } }
 		[SerializeField] private string buttonName = "Button";
 		public bool Selected { get; private set; }
 		public bool Activated { get; private set; }

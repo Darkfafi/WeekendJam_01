@@ -88,7 +88,6 @@
     <Compile Include="Assets\_Scripts\Misc\Confactories\ConGlobalEvents.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\Tags\ConTags.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\Tags\Tag.cs" />
-    <Compile Include="Assets\_Scripts\Misc\TouchDetector2D.cs" />
     <Compile Include="Assets\_Scripts\Objects\ObjectPicker.cs" />
     <Compile Include="Assets\_Scripts\Objects\PickAbleObject.cs" />
     <Compile Include="Assets\_Scripts\Objects\Weapons\Weapon.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="Assets\_Scripts\UI\Menus\ResultScreen\PlayerDisplay.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\ResultScreen\PlayerDisplaySlots.cs" />
     <Compile Include="Assets\_Scripts\UI\NotificationBar.cs" />
-    <Compile Include="Assets\_Scripts\Utils\BusyList.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ArrayExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ColorExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ImageExtensions.cs" />
@@ -132,6 +130,8 @@
     <Compile Include="Assets\_Scripts\Utils\Entities\EntityFilter.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\IEntity.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\MonoEntity.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Misc\BusyList.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Misc\TouchDetector2D.cs" />
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\ButtonSection.cs" />
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\ButtonSectionManager.cs" />
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\SectionButton.cs" />
