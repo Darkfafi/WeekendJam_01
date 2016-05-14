@@ -57,7 +57,7 @@ public static class TimerUtils {
 		}
 		else
 		{
-			timeString += (minuteCounter > 0 || hourCounter > 0) ? "00" : "0";
+			timeString += (minuteCounter > 0 || hourCounter > 0 || visibleRange >= TimeVisibleRange.Minutes) ? "00" : "0";
 		}
 
 

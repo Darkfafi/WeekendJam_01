@@ -71,7 +71,7 @@ public class Weapon : PickAbleObject
 				{
 					RigidbodyItem.velocity = new Vector2(0, 0);
 				}
-				else
+				else if (gameObject.tag != otherCollider.gameObject.tag)
 				{
 					RigidbodyItem.velocity = RigidbodyItem.velocity * 0.5f;
 				}

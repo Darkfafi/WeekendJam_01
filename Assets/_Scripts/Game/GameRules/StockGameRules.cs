@@ -10,11 +10,12 @@ public class StockGameRules : BaseGameRules {
 
 	public event PlayerStockHandler PlayerStockChangedEvent;
 	public event PlayerHandler PlayerOutOfStocksEvent;
-
+	public bool SuddenDeathActivated { get; private set; }
 	public int StartingStockAmount { get; private set; }
 
 	private Dictionary<Player, int> playersAndStocks = new Dictionary<Player, int>();
 	private float waitForSpawnInSeconds = 2f;
+	private bool listeningToDeathEvents = true;
 
 	public StockGameRules(GameHandler handler, int stockAmount) : base(handler)
 	{
@@ -35,14 +36,17 @@ public class StockGameRules : BaseGameRules {
 
 	public override void OnCorpseSpawnedEvent(Corpse corpse)
 	{
-		base.OnCorpseSpawnedEvent(corpse);
-		if (StartingStockAmount != 0)
+		if (listeningToDeathEvents)
 		{
-			SetStockAmountPlayer(corpse.PlayerOwnedCorpse, playersAndStocks[corpse.PlayerOwnedCorpse] - 1);
-		}
-		else
-		{
-			PrepairPlayerToSpawn(corpse.PlayerOwnedCorpse);
+			base.OnCorpseSpawnedEvent(corpse);
+			if (StartingStockAmount != 0)
+			{
+				SetStockAmountPlayer(corpse.PlayerOwnedCorpse, playersAndStocks[corpse.PlayerOwnedCorpse] - 1);
+			}
+			else
+			{
+				PrepairPlayerToSpawn(corpse.PlayerOwnedCorpse);
+			}
 		}
 	}
 
@@ -117,15 +121,57 @@ public class StockGameRules : BaseGameRules {
 	{
 		if (CheckAmountOfPlayersLeft() == 1)
 		{
-			// TODO CHECK FOR SUDDEN DEATH
 			EndGame();
         }
 	}
 
 	protected virtual void EndGame()
 	{
-		gameHandler.EndGame();
+		List<Player> playersOnFirstPlace = new List<Player>();
+		listeningToDeathEvents = false;
+        foreach (KeyValuePair<Player,int> pWithRank in GetPlayersSortedOnRank())
+		{
+			if(pWithRank.Value == 0)
+			{
+				playersOnFirstPlace.Add(pWithRank.Key);
+            }
+		}
+		if (playersOnFirstPlace.Count > 1)
+		{
+			Timer t = new Timer(3,0);
+			t.TimerEndedEvent += () => { SuddenDeathTimerEnded(playersOnFirstPlace.ToArray(), t); };
+			t.Start();
+        }
+		else
+		{
+			gameHandler.EndGame();
+		}
 	}
+
+	private void SuddenDeathTimerEnded(Player[] playersForSuddenDeath, Timer timer)
+	{
+        timer.TimerEndedEvent -= () => { SuddenDeathTimerEnded(playersForSuddenDeath.ToArray(), timer); };
+		timer.Stop();
+		timer = null;
+		SuddenDeath(playersForSuddenDeath);
+    }
+
+
+	protected virtual void SuddenDeath(Player[] playersForSuddenDeath)
+	{
+		SuddenDeathActivated = true;
+		listeningToDeathEvents = true;
+        Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>().FakeSwitchScreen();
+		foreach(Player p in playersForSuddenDeath)
+		{
+			gameHandler.DestroyPlayerCharacter(p);
+			SetStockAmountPlayer(p, 1);
+		}
+		for(int i = 0; i < 35; i++)
+		{
+			gameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, i * 0.25f);
+		}
+    }
 
 	private int CheckAmountOfPlayersLeft()
 	{
