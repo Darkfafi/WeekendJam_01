@@ -16,9 +16,15 @@ public class PlayerDisplaySlots : MonoBehaviour {
 	{
 		conActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
 		conSelectedGameRules = ConfactoryFinder.Instance.Give<ConSelectedGameRules>();
-		ActivateKeyListener();
+		StartCoroutine(WaitForKeyActivation());
 		SetPlayerDisplays();
     }
+
+	private IEnumerator WaitForKeyActivation()
+	{
+		yield return new WaitForSeconds(1.5f);
+		ActivateKeyListener();
+	}
 
 	private void SetPlayerDisplays()
 	{
@@ -47,7 +53,7 @@ public class PlayerDisplaySlots : MonoBehaviour {
 	{
 		if(action.Name == InputNames.ATTACK)
 		{
-			SceneManager.LoadScene("Lobby");
+			ConfactoryFinder.Instance.Give<ConSceneSwitcher>().SwitchScreen("Lobby");
 		}
 	}
 
@@ -63,6 +69,9 @@ public class PlayerDisplaySlots : MonoBehaviour {
 
 	private void OnDestroy()
 	{
-		inputUser.InputBindingUsedEvent -= OnInputBindingUsedEvent;
+		if (inputUser != null)
+		{
+			inputUser.InputBindingUsedEvent -= OnInputBindingUsedEvent;
+		}
 	}
 }

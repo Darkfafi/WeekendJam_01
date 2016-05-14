@@ -14,10 +14,12 @@ public class CharacterGameLobby : MonoBehaviour {
 
 	private MultiInputUser multiInputUser;
 	private ConActivePlayers conActivePlayers;
+	private ConSceneSwitcher conSceneSwitcher;
 
 	void Awake ()
 	{
 		conActivePlayers = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConActivePlayers>();
+		conSceneSwitcher = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>();
 		multiInputUser = gameObject.GetComponent<MultiInputUser>();
 		multiInputUser.InputBindingUsedEvent += OnInputBindingUsedEvent;
 
@@ -60,7 +62,7 @@ public class CharacterGameLobby : MonoBehaviour {
 				if (action.Name == InputNames.USE)
 				{
 					ClearAlreadyRegisteredPlayers();
-					SceneManager.LoadScene(backSceneToLoadName);
+					conSceneSwitcher.SwitchScreen(backSceneToLoadName);
 				}
 			}
 			else
@@ -76,7 +78,7 @@ public class CharacterGameLobby : MonoBehaviour {
 					{
 						if (AmountOfSlotsInUse() > 1)
 						{
-							SceneManager.LoadScene(startSceneToLoadName);
+							conSceneSwitcher.SwitchScreen(startSceneToLoadName);
 						}else
 						{
 							Debug.Log("Need more then one player to start!");

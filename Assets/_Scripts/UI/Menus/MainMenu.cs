@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour {
 	{
 		if (button.ButtonName == "Start")
 		{
-			SceneManager.LoadScene("Lobby");
+			Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>().SwitchScreen("Lobby");
 		}
 		if (button.ButtonName == "Quit")
 		{
