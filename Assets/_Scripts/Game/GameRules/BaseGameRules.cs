@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public abstract class BaseGameRules
 {
-	protected GameHandler gameHandler { get; private set; }
+	public GameHandler gameHandler { get; private set; }
 
 	public BaseGameRules(GameHandler handler)
 	{

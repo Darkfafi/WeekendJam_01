@@ -10,21 +10,51 @@ public class StocksRulesUI : IBaseGameRulesUI
 	public void Start(UIGameRules uiGameRules)
 	{
 		this.uiGameRules = uiGameRules;
-
+		stocksGameRules = (StockGameRules)uiGameRules.GameHandler.ActiveGameRules;
 		foreach (UIPlayerInfo playerInfo in uiGameRules.PlayerInfos.GetUIPlayerInfos(true))
 		{
-			stocksGameRules = (StockGameRules)uiGameRules.GameHandler.ActiveGameRules;
-			playerInfo.SetScoreIndication(UIPlayerInfo.ScoreIndications.Stocks);
-			playerInfo.CurrentIndication.IndicationText.text = stocksGameRules.GetStockAmountOfPlayer(playerInfo.LinkedPlayer).ToString();
+			if (stocksGameRules.StartingStockAmount > 0)
+			{
+				playerInfo.SetScoreIndication(UIPlayerInfo.ScoreIndications.Stocks);
+				playerInfo.CurrentIndication.IndicationText.text = stocksGameRules.GetStockAmountOfPlayer(playerInfo.LinkedPlayer).ToString();
+				stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
+				stocksGameRules.PlayerStockChangedEvent += OnPlayerStockChangedEvent;
+			}
+			else
+			{
+				playerInfo.SetScoreIndication(UIPlayerInfo.ScoreIndications.Score);
+				stocksGameRules.gameHandler.BattleHistoryLog.DataAddedEvent -= OnBattleDataAddedEvent;
+				stocksGameRules.gameHandler.BattleHistoryLog.DataAddedEvent += OnBattleDataAddedEvent;
+				playerInfo.CurrentIndication.IndicationText.text = "Kills: 0";
+            }
+
+			if(stocksGameRules is TimeGameRules)
+			{
+				TimeGameRules timeRules = (TimeGameRules)stocksGameRules;
+				uiGameRules.Clock.gameObject.SetActive(true);
+				uiGameRules.Clock.IndicationText.text = TimerUtils.MinutesToClockString(timeRules.StartingTimeInMinutes);
+				timeRules.Timer.TimerTikkedEvent -= OnTimerTik;
+				timeRules.Timer.TimerTikkedEvent += OnTimerTik;
+            }
 		}
-		stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
-		stocksGameRules.PlayerStockChangedEvent += OnPlayerStockChangedEvent;
+		
 	}
 
 	public void Stop()
 	{
 		stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
+		stocksGameRules.gameHandler.BattleHistoryLog.DataAddedEvent -= OnBattleDataAddedEvent;
+		uiGameRules.Clock.gameObject.SetActive(false);
+		if (stocksGameRules is TimeGameRules)
+		{
+			((TimeGameRules)stocksGameRules).Timer.TimerTikkedEvent -= OnTimerTik;
+		}
 	}
+
+	private void OnBattleDataAddedEvent(GameBattleHistoryLog log, Player killer, Player killed)
+	{
+		uiGameRules.PlayerInfos.GetUIPlayerInfo(killer).CurrentIndication.IndicationText.text = "Kills: " + log.GetAllKillsOfPlayer(killer).Length;
+    }
 
 	private void OnPlayerStockChangedEvent(Player player, int stocks)
 	{
@@ -38,4 +68,9 @@ public class StocksRulesUI : IBaseGameRulesUI
 			playerInfo.PortraitImage.SetAlpha(0.8f);
 		}
 	}
+
+	private void OnTimerTik(int currentTik)
+	{
+		uiGameRules.Clock.IndicationText.text = TimerUtils.SecondsToClockString(((TimeGameRules)stocksGameRules).Timer.TimesToLoop - currentTik);
+    }
 }

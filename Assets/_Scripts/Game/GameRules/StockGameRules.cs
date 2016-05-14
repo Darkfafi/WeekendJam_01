@@ -16,12 +16,8 @@ public class StockGameRules : BaseGameRules {
 	private Dictionary<Player, int> playersAndStocks = new Dictionary<Player, int>();
 	private float waitForSpawnInSeconds = 2f;
 
-	// confactories
-	private ConCoroutines conCoroutines;
-
 	public StockGameRules(GameHandler handler, int stockAmount) : base(handler)
 	{
-		conCoroutines = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConCoroutines>();
 		StartingStockAmount = stockAmount;
     }
 
@@ -34,14 +30,20 @@ public class StockGameRules : BaseGameRules {
 			playersAndStocks.Add(p, StartingStockAmount);
         }
 		gameHandler.SpawnAllPlayers();
-		object spearContext = new object();
-		conCoroutines.StartCoroutine(WaitToSpawnSpear(spearContext), spearContext);
+		gameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, 3);
     }
 
 	public override void OnCorpseSpawnedEvent(Corpse corpse)
 	{
 		base.OnCorpseSpawnedEvent(corpse);
-		SetStockAmountPlayer(corpse.PlayerOwnedCorpse, playersAndStocks[corpse.PlayerOwnedCorpse] - 1);
+		if (StartingStockAmount != 0)
+		{
+			SetStockAmountPlayer(corpse.PlayerOwnedCorpse, playersAndStocks[corpse.PlayerOwnedCorpse] - 1);
+		}
+		else
+		{
+			PrepairPlayerToSpawn(corpse.PlayerOwnedCorpse);
+		}
 	}
 
 	public override Dictionary<Player, int> GetPlayersSortedOnRank()
@@ -107,12 +109,16 @@ public class StockGameRules : BaseGameRules {
 			{
 				PrepairPlayerToSpawn(player);
 			}
+			EndGameCheck();
+		}
+	}
 
-			if (CheckAmountOfPlayersLeft() == 1)
-			{
-				// TODO CHECK FOR SUDDEN DEATH
-				gameHandler.EndGame();
-			}
+	protected virtual void EndGameCheck()
+	{
+		if (CheckAmountOfPlayersLeft() == 1)
+		{
+			// TODO CHECK FOR SUDDEN DEATH
+			gameHandler.EndGame();
 		}
 	}
 
@@ -121,7 +127,7 @@ public class StockGameRules : BaseGameRules {
 		int amount = 0;
 		foreach(KeyValuePair<Player, int> pair in playersAndStocks)
 		{
-			if(pair.Value > 0)
+			if(pair.Value > 0 || StartingStockAmount == 0)
 			{
 				amount++;
 			}
@@ -131,21 +137,6 @@ public class StockGameRules : BaseGameRules {
 
 	private void PrepairPlayerToSpawn(Player player)
 	{
-		object spawnContext = new object();
-		conCoroutines.StartCoroutine(SpawnProcess(player, waitForSpawnInSeconds, spawnContext), spawnContext);
-	}
-
-	private IEnumerator SpawnProcess(Player p, float time, object context)
-	{
-		yield return new WaitForSeconds(time);
-		gameHandler.SpawnPlayerCharacter(p, gameHandler.Spawnpoints[Random.Range(0, gameHandler.Spawnpoints.Length)]);
-		conCoroutines.StopContext(context);
-	}
-
-	private IEnumerator WaitToSpawnSpear(object context)
-	{
-		yield return new WaitForSeconds(3);
-		gameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear);
-		conCoroutines.StopContext(context);
+		gameHandler.SpawnPlayerCharacter(player, gameHandler.Spawnpoints[Random.Range(0, gameHandler.Spawnpoints.Length)], waitForSpawnInSeconds);
 	}
 }

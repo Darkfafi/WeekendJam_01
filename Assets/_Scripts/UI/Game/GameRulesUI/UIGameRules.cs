@@ -5,9 +5,11 @@ public class UIGameRules : MonoBehaviour {
 
 	public GameHandler GameHandler { get { return gameHandler;  } }
     public UIPlayerInfos PlayerInfos { get { return playerInfos;  } }
+	public TextIndicationUI Clock { get { return clock; } }
 
 	[SerializeField] private GameHandler gameHandler;
 	[SerializeField] private UIPlayerInfos playerInfos;
+	[SerializeField] private TextIndicationUI clock;
 
 	private IBaseGameRulesUI currentBaseRulesUI = null;
 

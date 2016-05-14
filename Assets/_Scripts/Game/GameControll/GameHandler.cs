@@ -25,7 +25,7 @@ public class GameHandler : MonoBehaviour {
 		BattleHistoryLog = ConfactoryFinder.Instance.Give<ConGameBattleHistoryLog>(); // = new GameBattleHistoryLog();
 		((ConGameBattleHistoryLog)BattleHistoryLog).Reset();
 		
-		ActiveGameRules = new StockGameRules(this, 5);// For debugging! TODO Remove this and replace with a real selected mod
+		ActiveGameRules = new TimeGameRules(this, 1);// For debugging! TODO Remove this and replace with a real selected mod
 		ConfactoryFinder.Instance.Give<ConSelectedGameRules>().SetSelectedGameRules(ActiveGameRules);
 		ActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
     }
@@ -35,6 +35,11 @@ public class GameHandler : MonoBehaviour {
 		Spawnpoints = ConfactoryFinder.Instance.Give<ConTags>().GetTagObjects(ConTags.TagList.Spawnpoint);
 		SpawnArea = ConfactoryFinder.Instance.Give<ConEntityDatabase>().GetAnyEntity<MassEntity>("CamBoundsItem");
 		StartGameRules();
+	}
+
+	void OnDestroy()
+	{
+		StopAllCoroutines();
 	}
 
 	private void StartGameRules()
@@ -55,6 +60,28 @@ public class GameHandler : MonoBehaviour {
 			SpawnPlayerCharacter(p, Spawnpoints[i]);
 			i++;
 		}
+	}
+
+	public void SpawnPlayerCharacter(Player player, GameObject spawnpoint, float timeToWaitTillSpawn)
+	{
+		StartCoroutine(WaitForSpawnPlayer(player, spawnpoint, timeToWaitTillSpawn));
+	}
+
+	public void SpawnWeapon(WeaponFactory.AllWeapons weapon, float timeToWaitTillSpawn)
+	{
+		StartCoroutine(WaitForSpawnWeapon(weapon, timeToWaitTillSpawn));
+	}
+
+	private IEnumerator WaitForSpawnPlayer(Player player, GameObject spawnpoint, float timeToWaitTillSpawn)
+	{
+		yield return new WaitForSeconds(timeToWaitTillSpawn);
+		SpawnPlayerCharacter(player, spawnpoint);
+	}
+
+	private IEnumerator WaitForSpawnWeapon(WeaponFactory.AllWeapons weapon, float timeToWaitTillSpawn)
+	{
+		yield return new WaitForSeconds(timeToWaitTillSpawn);
+		SpawnWeapon(weapon);
 	}
 
 	public void SpawnPlayerCharacter(Player player, GameObject spawnpoint)

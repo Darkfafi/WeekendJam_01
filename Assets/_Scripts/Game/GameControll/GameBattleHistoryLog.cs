@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class GameBattleHistoryLog
 {
+	public delegate void DataHandler(GameBattleHistoryLog log, Player killer, Player killed);
+	public event DataHandler DataAddedEvent;
+
 	protected Dictionary<Player, List<Player>> playerKillsData = new Dictionary<Player, List<Player>>();
 	protected Dictionary<Player, List<Player>> playerDeathsData = new Dictionary<Player, List<Player>>();
 
@@ -21,6 +24,11 @@ public class GameBattleHistoryLog
 
 		playerKillsData[killer].Add(killed); // if killer == null then its a world kill
 		playerDeathsData[killed].Add(killer); 
+
+		if(DataAddedEvent != null)
+		{
+			DataAddedEvent(this, killer, killed);
+        }
     }
 
 	public Player GetFirstKilledOfPlayer(Player player)
