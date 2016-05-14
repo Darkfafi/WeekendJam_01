@@ -30,6 +30,16 @@ namespace Ramses.SectionButtons
 			SetState();
 		}
 
+		protected void OnEnable()
+		{
+			SetActiveState(true);
+		}
+
+		protected void OnDisable()
+		{
+			SetActiveState(false);
+		}
+
 		public virtual void Press()
 		{
 			if (Activated)

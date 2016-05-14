@@ -77,6 +77,7 @@
     <Compile Include="Assets\_Scripts\Game\GameControll\GameHandler.cs" />
     <Compile Include="Assets\_Scripts\Game\GameRules\BaseGameRules.cs" />
     <Compile Include="Assets\_Scripts\Game\GameRules\StockGameRules.cs" />
+    <Compile Include="Assets\_Scripts\Game\GameRules\TimeGameRules.cs" />
     <Compile Include="Assets\_Scripts\Globals\Layers.cs" />
     <Compile Include="Assets\_Scripts\Input\ConGameInputBindings.cs" />
     <Compile Include="Assets\_Scripts\Input\ConInputBindingsHandler.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Assets\_Scripts\Input\InputUser\MultiInputUser.cs" />
     <Compile Include="Assets\_Scripts\Misc\BusyConsts.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\ConGlobalEvents.cs" />
+    <Compile Include="Assets\_Scripts\Misc\Confactories\ScreenSwitching\ConSceneSwitcher.cs" />
+    <Compile Include="Assets\_Scripts\Misc\Confactories\ScreenSwitching\ScreenTransitionObject.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\Tags\ConTags.cs" />
     <Compile Include="Assets\_Scripts\Misc\Confactories\Tags\Tag.cs" />
     <Compile Include="Assets\_Scripts\Objects\ObjectPicker.cs" />
@@ -97,6 +100,7 @@
     <Compile Include="Assets\_Scripts\Players\Player.cs" />
     <Compile Include="Assets\_Scripts\Spawning\CharacterSpawnObject.cs" />
     <Compile Include="Assets\_Scripts\Spawning\EntitySpawnObject.cs" />
+    <Compile Include="Assets\_Scripts\Spawning\SpawnPointObject.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\ArrowPlayerIndicator.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\GameRulesUI\IBaseGameRulesUI.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\GameRulesUI\StocksRulesUI.cs" />
@@ -136,7 +140,8 @@
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\ButtonSectionManager.cs" />
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\SectionButton.cs" />
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\SectionColorButton.cs" />
-    <Compile Include="Assets\_Scripts\Utils\Timer.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Timer\Timer.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Timer\TimerUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\Lobster_Two\OFL.txt" />

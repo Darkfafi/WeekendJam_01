@@ -102,7 +102,17 @@ namespace Ramses.SectionButtons
 
 		public void NextButton()
 		{
-			SetButton(currentlySelectedButtonIndex + 1);
+			int index = currentlySelectedButtonIndex + 1;
+            for (int i = 0; i < allButtonsOfSection.Length; i++)
+			{
+				int innerIndex = index + i;
+				if(allButtonsOfSection.GetLoop(innerIndex).Activated)
+				{
+					index = innerIndex;
+					break;
+				}
+			}
+			SetButton(index);
 		}
 
 		public void PreviousButton()
