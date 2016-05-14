@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Ramses.Confactory;
 using Ramses.Entities;
 using UnityEngine.SceneManagement;
@@ -17,7 +18,7 @@ public class GameHandler : MonoBehaviour {
 	public ConActivePlayers ActivePlayers { get; private set; }
 	public GameBattleHistoryLog BattleHistoryLog { get; private set; }
 	public BaseGameRules ActiveGameRules { get; private set; } // Set on which game mod has been selected (In confactory)
-	public GameObject[] Spawnpoints { get; private set; }
+	public SpawnPointObject[] Spawnpoints { get; private set; }
 	public MassEntity SpawnArea;
 
 	void Awake()
@@ -32,7 +33,7 @@ public class GameHandler : MonoBehaviour {
 
 	void Start()
 	{
-		Spawnpoints = ConfactoryFinder.Instance.Give<ConTags>().GetTagObjects(ConTags.TagList.Spawnpoint);
+		Spawnpoints = ConfactoryFinder.Instance.Give<ConEntityDatabase>().GetEntities<SpawnPointObject>();
 		SpawnArea = ConfactoryFinder.Instance.Give<ConEntityDatabase>().GetAnyEntity<MassEntity>("CamBoundsItem");
 		StartGameRules();
 	}
@@ -54,15 +55,13 @@ public class GameHandler : MonoBehaviour {
 	// Spawning Game  
 	public void SpawnAllPlayers()
 	{
-		int i = 0;
 		foreach(Player p in ActivePlayers.GetAllPlayers())
 		{
-			SpawnPlayerCharacter(p, Spawnpoints[i]);
-			i++;
+			SpawnPlayerCharacter(p);
 		}
 	}
 
-	public void SpawnPlayerCharacter(Player player, GameObject spawnpoint, float timeToWaitTillSpawn)
+	public void SpawnPlayerCharacter(Player player, SpawnPointObject spawnpoint, float timeToWaitTillSpawn)
 	{
 		StartCoroutine(WaitForSpawnPlayer(player, spawnpoint, timeToWaitTillSpawn));
 	}
@@ -72,7 +71,7 @@ public class GameHandler : MonoBehaviour {
 		StartCoroutine(WaitForSpawnWeapon(weapon, timeToWaitTillSpawn));
 	}
 
-	private IEnumerator WaitForSpawnPlayer(Player player, GameObject spawnpoint, float timeToWaitTillSpawn)
+	private IEnumerator WaitForSpawnPlayer(Player player, SpawnPointObject spawnpoint, float timeToWaitTillSpawn)
 	{
 		yield return new WaitForSeconds(timeToWaitTillSpawn);
 		SpawnPlayerCharacter(player, spawnpoint);
@@ -84,19 +83,40 @@ public class GameHandler : MonoBehaviour {
 		SpawnWeapon(weapon);
 	}
 
-	public void SpawnPlayerCharacter(Player player, GameObject spawnpoint)
+	public void DestroyPlayerCharacter(Player player)
 	{
-		if(player.PlayerCharacter != null)
+		if (player.PlayerCharacter != null)
 		{
 			RemoveEventListenersFromCharacter(player.PlayerCharacter);
 			Destroy(player.PlayerCharacter.gameObject);
 		}
+	}
 
-		Character c = ActivePlayers.CreateCharacterForPlayer(player);
-		c.gameObject.transform.position = spawnpoint.transform.position;
-		CharacterSpawnObject spawnObject = Instantiate<GameObject>(Resources.Load<GameObject>("CharacterSpawnerObject")).GetComponent<CharacterSpawnObject>();
-		spawnObject.transform.position = c.transform.position;
-		spawnObject.Spawn(c);
+	public void SpawnPlayerCharacter(Player player, SpawnPointObject spawnpoint = null)
+	{
+		DestroyPlayerCharacter(player);
+
+		if(spawnpoint == null || spawnpoint.PlayerUsingSpawn != null)
+		{
+			foreach(SpawnPointObject listSpawn in Spawnpoints)
+			{
+				if(listSpawn.PlayerUsingSpawn == null)
+				{
+					spawnpoint = listSpawn;
+                }
+			}
+			if(spawnpoint == null)
+			{
+				spawnpoint = Spawnpoints[Random.Range(0, Spawnpoints.Length)];
+			}
+		}
+
+		if(spawnpoint.PlayerUsingSpawn != null)
+		{
+			Debug.LogWarning("Player spawned on same spawnpoint as: " + spawnpoint.PlayerUsingSpawn + " Because there are no free spawns left");
+		}
+
+		Character c = spawnpoint.SpawnPlayerCharacter(player);
 
 		AddEventListenersToCharacter(c);
 
@@ -108,8 +128,7 @@ public class GameHandler : MonoBehaviour {
 
 	public void SpawnWeapon(WeaponFactory.AllWeapons weapon)
 	{
-		//Vector3 spawn = new Vector2(Random.Range(0, Screen.width), Screen.height);
-		float spawnX = Random.Range(0, 100) * 0.01f;
+		float spawnX = Random.Range(10, 90) * 0.01f;
 		Vector3 spawn = new Vector3((SpawnArea.Size.x * spawnX) - SpawnArea.Size.x / 2, SpawnArea.Size.y / 2, -1);
         Weapon weaponSpawning = Instantiate<Weapon>(WeaponFactory.GetWeaponObject(weapon));
 		weaponSpawning.transform.eulerAngles = new Vector3(0, 0, -92);
@@ -133,9 +152,16 @@ public class GameHandler : MonoBehaviour {
 	public void EndGame()
 	{
 		//Debug.Log("Global End Game Method to end the game and its gamemod mechanics");
-		SceneManager.LoadScene("End");
+		StopAllCoroutines();
+		StartCoroutine(WaitForEndScreen());
+		
 	}
 
+	private IEnumerator WaitForEndScreen()
+	{
+		yield return new WaitForSeconds(2.5f);
+		ConfactoryFinder.Instance.Give<ConSceneSwitcher>().SwitchScreen("End");
+	}
 
 	// Events
 	private void AddEventListenersToCharacter(Character character)
