@@ -35,7 +35,9 @@ public class StocksRulesUI : IBaseGameRulesUI
 				uiGameRules.Clock.IndicationText.text = TimerUtils.MinutesToClockString(timeRules.StartingTimeInMinutes);
 				timeRules.Timer.TimerTikkedEvent -= OnTimerTik;
 				timeRules.Timer.TimerTikkedEvent += OnTimerTik;
-            }
+				timeRules.Timer.TimerStoppedEvent -= ClockStopped;
+				timeRules.Timer.TimerStoppedEvent += ClockStopped;
+			}
 		}
 		
 	}
@@ -45,8 +47,14 @@ public class StocksRulesUI : IBaseGameRulesUI
 		stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
 		stocksGameRules.gameHandler.BattleHistoryLog.DataAddedEvent -= OnBattleDataAddedEvent;
 		uiGameRules.Clock.gameObject.SetActive(false);
+		ClockStopped(0);
+    }
+
+	private void ClockStopped(int tiks)
+	{
 		if (stocksGameRules is TimeGameRules)
 		{
+			((TimeGameRules)stocksGameRules).Timer.TimerStoppedEvent -= ClockStopped;
 			((TimeGameRules)stocksGameRules).Timer.TimerTikkedEvent -= OnTimerTik;
 		}
 	}

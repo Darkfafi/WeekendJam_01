@@ -23,6 +23,12 @@ public class TimeGameRules : StockGameRules {
 
 	private void OnTimerEndedEvent()
 	{
-		gameHandler.EndGame();
+		EndGame();
+    }
+
+	protected override void EndGame()
+	{
+		Timer.Stop();
+        base.EndGame();
 	}
 }

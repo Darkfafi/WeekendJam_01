@@ -118,8 +118,13 @@ public class StockGameRules : BaseGameRules {
 		if (CheckAmountOfPlayersLeft() == 1)
 		{
 			// TODO CHECK FOR SUDDEN DEATH
-			gameHandler.EndGame();
-		}
+			EndGame();
+        }
+	}
+
+	protected virtual void EndGame()
+	{
+		gameHandler.EndGame();
 	}
 
 	private int CheckAmountOfPlayersLeft()
