@@ -54,7 +54,7 @@ public class StockGameRules : BaseGameRules {
 	public override Dictionary<Player, int> GetPlayersSortedOnRank()
 	{
 		Dictionary<Player, int> returnDic = new Dictionary<Player, int>();
-
+		Dictionary<int, List<Player>> playersSortedOnLifesRank = new Dictionary<int, List<Player>>();
 		Player prePlayerCheck = null;
 		int rank = 0;
 		foreach (KeyValuePair<Player, int> item in playersAndStocks.OrderByDescending(key => key.Value))
@@ -62,21 +62,55 @@ public class StockGameRules : BaseGameRules {
 			if(prePlayerCheck != null)
 			{
 				// If the player has died more times, or has died the same amount of times but has less kills then his rank is lower then the other player
-				if (playersAndStocks[prePlayerCheck] > item.Value
-					|| (playersAndStocks[prePlayerCheck] == item.Value && 
-						gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(prePlayerCheck).Length > gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(item.Key).Length))
+				if (playersAndStocks[prePlayerCheck] > item.Value)
 				{
 					rank++;
-				}else if(playersAndStocks[prePlayerCheck] == item.Value &&
-						gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(prePlayerCheck).Length < gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(item.Key).Length)
-				{
-					returnDic[prePlayerCheck] += 1;
-                }
+				}
+            }
+			if (!playersSortedOnLifesRank.ContainsKey(rank))
+			{
+				playersSortedOnLifesRank.Add(rank, new List<Player>());
 			}
-			returnDic.Add(item.Key, rank);
+			playersSortedOnLifesRank[rank].Add(item.Key);
 			prePlayerCheck = item.Key;
         }
+		int realRank = 0;
+		foreach(KeyValuePair<int, List<Player>> rankPair in playersSortedOnLifesRank)
+		{
+			prePlayerCheck = null;
+			rank = 0;
+			if(rankPair.Value.Count > 1)
+			{
+				rankPair.Value.Sort(SortOnKillsMethod);
+			}
+
+			foreach(Player p in rankPair.Value)
+			{
+				if (prePlayerCheck != null)
+				{
+					if (gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(prePlayerCheck).Length > gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(p).Length)
+					{
+						rank++;
+					}
+				}
+				prePlayerCheck = p;
+				realRank = rank + rankPair.Key;
+				returnDic.Add(p, realRank);
+			}
+		}
 		return returnDic;
+	}
+	
+	private int SortOnKillsMethod(Player pOne, Player pTwo)
+	{
+		if(gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(pOne).Length > gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(pTwo).Length)
+		{
+			return -1;
+		}
+		else
+		{
+			return 1;
+		}
 	}
 
 	public int GetStockAmountOfPlayer(Player player)
