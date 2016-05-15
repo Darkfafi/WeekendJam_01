@@ -27,6 +27,31 @@ public class ConAudioManager : MonoBehaviour, IConfactory {
 		PlayAudio(Library.GetAudioClip(name), station, volumeScale);
     }
 
+	public void PlaySoloAudio(string name, int station = 0, float volumeScale = 1)
+	{
+		PlaySoloAudio(Library.GetAudioClip(name), station, volumeScale);
+	}
+
+	public void PlaySoloAudio(AudioClip clip, int station = 0, float volumeScale = 1)
+	{
+		if (audioStations.ContainsKey(station))
+		{
+			if (audioStations[station] == null)
+			{
+				audioStations.Remove(station);
+			}
+		}
+		AudioSource currentStation = GetAudioStation(station);
+		currentStation.clip = clip;
+		currentStation.Play();
+	}
+
+	public void SoloAudioLoopToggle(int station, bool loop)
+	{
+		GetStationSettings(station).Loop = loop;
+		SetSettingsForAudioStation(station);
+    }
+
 	public void StopAudio()
 	{
 		foreach (KeyValuePair<int, AudioSource> pair in audioStations)
@@ -81,6 +106,7 @@ public class ConAudioManager : MonoBehaviour, IConfactory {
 		AudioSource aStation = GetAudioStation(station);
 		aStation.pitch = settings.Pitch;
 		aStation.volume = settings.Volume;
+		aStation.loop = settings.Loop;
 	}
 
 	public float GetAudioStationVolume(int station)
@@ -120,6 +146,7 @@ public class ConAudioManager : MonoBehaviour, IConfactory {
 		SetAudioStationPitch(DEFAULT_STATION, startDefaultPitch);
 		SetAudioStationPitch(EFFECTS_STATION, startEffectsPitch);
 		SetAudioStationPitch(MUSIC_STATION, startMusicPitch);
+		SoloAudioLoopToggle(MUSIC_STATION, true);
 	}
 
 	public void OnSceneSwitch(int newSceneIndex)
@@ -131,5 +158,6 @@ public class ConAudioManager : MonoBehaviour, IConfactory {
 	{
 		public float Pitch = 1;
 		public float Volume = 1;
+		public bool Loop = false;
 	}
 }

@@ -10,14 +10,17 @@ public class PlayerDisplaySlots : MonoBehaviour {
 
 	private ConActivePlayers conActivePlayers;
 	private ConSelectedGameRules conSelectedGameRules;
+	private ConAudioManager audioManager;
 	private MultiInputUser inputUser;
 
     private void Awake()
 	{
 		conActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
 		conSelectedGameRules = ConfactoryFinder.Instance.Give<ConSelectedGameRules>();
+		audioManager = ConfactoryFinder.Instance.Give<ConAudioManager>();
 		StartCoroutine(WaitForKeyActivation());
 		SetPlayerDisplays();
+		audioManager.PlayAudio("VictoryMusic", ConAudioManager.MUSIC_STATION, 0.5f);
     }
 
 	private IEnumerator WaitForKeyActivation()
@@ -69,7 +72,11 @@ public class PlayerDisplaySlots : MonoBehaviour {
 
 	private void OnDestroy()
 	{
-		if (inputUser != null)
+		if (audioManager != null)
+		{
+			audioManager.StopAudio();
+		}
+        if (inputUser != null)
 		{
 			inputUser.InputBindingUsedEvent -= OnInputBindingUsedEvent;
 		}

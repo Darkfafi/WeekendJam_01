@@ -110,6 +110,7 @@ public class StocksEndResultDisplay : MonoBehaviour {
 		foreach (Image icon in icons)
 		{
 			animating = true;
+			ConfactoryFinder.Instance.Give<ConAudioManager>().PlayAudio("Tik", ConAudioManager.EFFECTS_STATION, 0.2f);
 			while (animating)
 			{
 				if (icon.rectTransform.sizeDelta.x < size * 1.25f && !reachedOverFlowAnim)

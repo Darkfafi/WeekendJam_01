@@ -25,7 +25,7 @@ public class StockGameRules : BaseGameRules {
 	public override void Start()
 	{
 		base.Start(); 
-        audioManager.PlayAudio("TrompetMusic1", ConAudioManager.MUSIC_STATION, 0.5f);
+        audioManager.PlaySoloAudio("TrompetMusic1", ConAudioManager.MUSIC_STATION, 0.5f);
 		audioManager.PlayAudio("VoiceFight");
 		foreach (Player p in gameHandler.ActivePlayers.GetAllPlayers())
 		{
@@ -171,7 +171,7 @@ public class StockGameRules : BaseGameRules {
        // Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>().FakeSwitchScreen();
 		audioManager.StopAudio(ConAudioManager.MUSIC_STATION);
 		audioManager.PlayAudio("VoiceSuddenDeath");
-		audioManager.PlayAudio("HolyMusic1", ConAudioManager.MUSIC_STATION, 0.3f);
+		audioManager.PlaySoloAudio("HolyMusic1", ConAudioManager.MUSIC_STATION, 0.3f);
 		foreach (Player p in playersForSuddenDeath)
 		{
 			gameHandler.DestroyPlayerCharacter(p);

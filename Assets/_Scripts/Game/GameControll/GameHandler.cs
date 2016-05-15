@@ -29,7 +29,7 @@ public class GameHandler : MonoBehaviour {
 		BattleHistoryLog = ConfactoryFinder.Instance.Give<ConGameBattleHistoryLog>(); // = new GameBattleHistoryLog();
 		((ConGameBattleHistoryLog)BattleHistoryLog).Reset();
 		
-		ActiveGameRules = new TimeGameRules(this, 1, 2);// For debugging! TODO Remove this and replace with a real selected mod
+		ActiveGameRules = new TimeGameRules(this, 8, 5);// For debugging! TODO Remove this and replace with a real selected mod
 		ConfactoryFinder.Instance.Give<ConSelectedGameRules>().SetSelectedGameRules(ActiveGameRules);
 		ActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
     }
