@@ -6,7 +6,7 @@ public class StocksRulesUI : IBaseGameRulesUI
 {
 	private UIGameRules uiGameRules;
 	StockGameRules stocksGameRules;
-
+	
 	public void Start(UIGameRules uiGameRules)
 	{
 		this.uiGameRules = uiGameRules;
@@ -79,6 +79,7 @@ public class StocksRulesUI : IBaseGameRulesUI
 
 	private void OnTimerTik(int currentTik)
 	{
-		uiGameRules.Clock.IndicationText.text = TimerUtils.SecondsToClockString(((TimeGameRules)stocksGameRules).Timer.TimesToLoop - currentTik);
+		int secondsRemaining = ((TimeGameRules)stocksGameRules).Timer.TimesToLoop - currentTik;
+        uiGameRules.Clock.IndicationText.text = TimerUtils.SecondsToClockString(secondsRemaining);
     }
 }

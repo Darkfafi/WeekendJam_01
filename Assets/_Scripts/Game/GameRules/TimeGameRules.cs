@@ -12,7 +12,7 @@ public class TimeGameRules : StockGameRules {
 		StartingTimeInMinutes = timeInMinutes;
 
 		Timer = new Timer(1, StartingTimeInMinutes * 60);
-		Timer.TimerEndedEvent += OnTimerEndedEvent;
+		Timer.TimerTikkedEvent += OnTimerTikkedEvent;
     }
 
 	public override void Start()
@@ -21,9 +21,25 @@ public class TimeGameRules : StockGameRules {
 		Timer.Start();
 	}
 
-	private void OnTimerEndedEvent()
+	private void OnTimerTikkedEvent(int tik)
 	{
-		EndGame();
+		int secondsLeft = Timer.TimesToLoop - tik;
+		switch (secondsLeft)
+		{
+			case 3:
+				audioManager.PlayAudio("VoiceThree");
+				break;
+			case 2:
+				audioManager.PlayAudio("VoiceTwo");
+				break;
+			case 1:
+				audioManager.PlayAudio("VoiceOne");
+				break;
+			case 0:
+				EndGame();
+				break;
+		}
+		
     }
 
 	protected override void EndGame()

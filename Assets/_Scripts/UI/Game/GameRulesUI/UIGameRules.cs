@@ -6,6 +6,7 @@ public class UIGameRules : MonoBehaviour {
 	public GameHandler GameHandler { get { return gameHandler;  } }
     public UIPlayerInfos PlayerInfos { get { return playerInfos;  } }
 	public TextIndicationUI Clock { get { return clock; } }
+	public ConAudioManager audioManager { get; private set; }
 
 	[SerializeField] private GameHandler gameHandler;
 	[SerializeField] private UIPlayerInfos playerInfos;
@@ -15,8 +16,8 @@ public class UIGameRules : MonoBehaviour {
 
 	void Awake ()
 	{
-		GameHandler.GameRulesActivatedEvent += OnGameRulesActivatedEvent;
-      
+		audioManager = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConAudioManager>();
+        GameHandler.GameRulesActivatedEvent += OnGameRulesActivatedEvent;
 	}
 
 	void OnDestroy()

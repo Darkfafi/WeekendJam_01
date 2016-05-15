@@ -79,6 +79,8 @@ public class Character : MonoEntity {
 		platformerMovement.MoveEvent += OnMovedEvent;
 		platformerMovement.LostContactWithGroundEvent += OnNoGroundEvent;
 		platformerMovement.LandOnGroundEvent += OnLandGroundEvent;
+		platformerMovement.JumpEvent += OnJumpEvent;
+
 		weaponHolder = new WeaponHolder(this.transform, hitBox, objectPicker);
         weaponHolder.DropWeapon(false);
     }
@@ -135,13 +137,16 @@ public class Character : MonoEntity {
 					{
 						if (CurrentWeapon == null)
 						{
-							weaponHolder.PickUpWeapon();
+							if (weaponHolder.PickUpWeapon())
+							{
+								audioManager.PlayAudio("Grab", ConAudioManager.EFFECTS_STATION, 1.5f);
+							}
 						}
 						else
 						{
 							busyList.AddBusyAction(BusyConsts.ACTION_THROW, BusyConsts.BUSY_LAYER_COMBAT);
 							animationHandler.PlayAnimation(BusyConsts.ACTION_THROW);
-							audioManager.PlayAudio("ThrowEffect", ConAudioManager.EFFECTS_STATION);
+							audioManager.PlayAudio("ThrowEffect", ConAudioManager.EFFECTS_STATION, 0.5f);
 						}
 					}
 				}
@@ -190,6 +195,7 @@ public class Character : MonoEntity {
 			}
 			if (dmgBox.HitType == DamageHitBox.HitTypes.Ko)
 			{
+				audioManager.PlayAudio("PunchHit", ConAudioManager.EFFECTS_STATION,0.35f);
 				GetStunned(dmgBox.Owner);
 			}
 		}
@@ -254,7 +260,16 @@ public class Character : MonoEntity {
 			busyList.AddBusyAction(BusyConsts.ACTION_ATTACK, BusyConsts.BUSY_LAYER_COMBAT);
 			animationHandler.PlayAnimation(BusyConsts.ACTION_ATTACK);
 			weaponHolder.SetWeaponHitbox(true);
-        }
+			if(weaponHolder.CurrentWeapon != null &&
+				weaponHolder.CurrentWeapon.WeaponAttackType == DamageHitBox.HitTypes.Kill)
+			{
+				audioManager.PlayAudio("AirForce3", ConAudioManager.EFFECTS_STATION, 2);
+			}
+			else
+			{
+				audioManager.PlayAudio("AirForce4", ConAudioManager.EFFECTS_STATION, 2);
+			}
+		}
 	}
 
 	private void OnMovedEvent(float velocity)
@@ -310,12 +325,18 @@ public class Character : MonoEntity {
 
 	private void FootstepTriggered()
 	{
-		audioManager.PlayAudio("Step");
+		audioManager.PlayAudio("Step", ConAudioManager.EFFECTS_STATION, 2);
 	}
 
 	private void OnNoGroundEvent()
 	{
 		busyList.AddBusyAction(BusyConsts.ACTION_IN_AIR, BusyConsts.BUSY_LAYER_MOVEMENT);
+		audioManager.PlayAudio("AirForce4", ConAudioManager.EFFECTS_STATION, 0.7f);
+	}
+
+	private void OnJumpEvent(float force)
+	{
+		audioManager.PlayAudio("AirForceSound2", ConAudioManager.EFFECTS_STATION, 1.55f);
 	}
 
 	private void OnLandGroundEvent()
@@ -325,6 +346,8 @@ public class Character : MonoEntity {
 
 	protected override void OnDestroy()
 	{
+		RemoveEventListeners();
+
 		if (CharacterDestroyEvent != null)
 		{
 			CharacterDestroyEvent(this);
@@ -336,5 +359,25 @@ public class Character : MonoEntity {
 		Destroy(animator);
 
 		base.OnDestroy();
+	}
+
+	private void RemoveEventListeners()
+	{
+		if (platformerMovement != null)
+		{
+			platformerMovement.MoveEvent -= OnMovedEvent;
+			platformerMovement.LostContactWithGroundEvent -= OnNoGroundEvent;
+			platformerMovement.LandOnGroundEvent -= OnLandGroundEvent;
+			platformerMovement.JumpEvent -= OnJumpEvent;
+		}
+		if (animationHandler != null)
+		{
+			animationHandler.AnimationEndedEvent += OnAnimEnd;
+		}
+		if (userInput != null)
+		{
+			userInput.InputKeyEvent += OnInputKeyEvent;
+			userInput.InputAxisEvent += OnInputAxisEvent;
+		}
 	}
 }

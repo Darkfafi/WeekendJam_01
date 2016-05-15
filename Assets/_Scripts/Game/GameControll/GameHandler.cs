@@ -136,7 +136,7 @@ public class GameHandler : MonoBehaviour {
         Weapon weaponSpawning = Instantiate<Weapon>(WeaponFactory.GetWeaponObject(weapon));
 		weaponSpawning.transform.eulerAngles = new Vector3(0, 0, -92);
 		SpawnObject(weaponSpawning, spawn, new Vector2(0, -0.6f));
-		audioManager.PlayAudio("HolyVoice", ConAudioManager.EFFECTS_STATION);
+		audioManager.PlayAudio("HolyVoice", ConAudioManager.EFFECTS_STATION, 0.5f);
     }
 
 	public void SpawnObject(MonoEntity objectEntity, Vector2 position, Vector2? offsetObject = null)

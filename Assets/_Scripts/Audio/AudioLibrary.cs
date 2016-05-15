@@ -17,11 +17,24 @@ public class AudioLibrary : ScriptableObject {
 			audioDic = new Dictionary<string, AudioClip>();
 			foreach(AudioInfo info in allAudio)
 			{
-				audioDic.Add(info.Name, info.AudioClip);
+				if (!audioDic.ContainsKey(info.Name))
+				{
+					audioDic.Add(info.Name, info.AudioClip);
+				}
+				else
+				{
+					Debug.LogError("Cannot have multiple audioclips in AudioLibrary with the name: '" + info.Name+"'!");
+				}
 			}
 		}
-
-		return audioDic[nameAudio];
+		if (audioDic.ContainsKey(nameAudio))
+		{
+			return audioDic[nameAudio];
+		}else
+		{
+			Debug.LogError("Could not find audio with name: " + nameAudio + "! Be sure the audioLibrary item you desire has the name given!");
+			return null;
+		}
     }
 
 	[Serializable]

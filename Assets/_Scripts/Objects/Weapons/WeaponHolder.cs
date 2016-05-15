@@ -17,23 +17,25 @@ public class WeaponHolder {
 		weaponsHitBox.HitBoxClashEvent += OnHitBoxClashEvent;
     }
 
-	public void PickUpWeapon(bool dropHoldingWeapon = true)
+	public bool PickUpWeapon(bool dropHoldingWeapon = true)
 	{
-			PickUpInfo infoPickUp = objectPicker.PickUpObject<Weapon>(Vector2.up, holderTransform.position + new Vector3(0,0.6f,0),new Vector2(0.5f,1.35f), 1f, true);
-			Weapon weapon;
-			if (infoPickUp.objectPickedUp != null)
+		PickUpInfo infoPickUp = objectPicker.PickUpObject<Weapon>(Vector2.up, holderTransform.position + new Vector3(0,0.6f,0),new Vector2(0.5f,1.35f), 1f, true);
+		Weapon weapon;
+		if (infoPickUp.objectPickedUp != null)
+		{
+			weapon = infoPickUp.objectPickedUp.GetComponent<Weapon>();
+			if (weapon != null)
 			{
-				weapon = infoPickUp.objectPickedUp.GetComponent<Weapon>();
-				if (weapon != null)
+				if (dropHoldingWeapon)
 				{
-					if (dropHoldingWeapon)
-					{
-						DropWeapon(true);
-					}
-					GainWeapon(weapon.WeaponInfo);
-					GameObject.Destroy(weapon.gameObject);
+					DropWeapon(true);
 				}
+				GainWeapon(weapon.WeaponInfo);
+				GameObject.Destroy(weapon.gameObject);
+				return true;
 			}
+		}
+		return false;
 	}
 
 	public void GainWeapon(WeaponInfo weapon)

@@ -9,22 +9,19 @@ public class ConSceneSwitcher : IConfactory
 	ScreenTransitionObject transitionObject;
 	private string nextSceneName = "NO_SCENE";
 	private bool fakeSwitch = false;
-	private float fadeOutSpeed = 2.5f;
 
 
-	public void SwitchScreen(string sceneName, float fadeInSpeed = 2.5f, float fadeOutSpeed = 2.5f)
+	public void SwitchScreen(string sceneName)
 	{
 		nextSceneName = sceneName;
-		this.fadeOutSpeed = fadeOutSpeed;
-        transitionObject.FadeIn(fadeInSpeed);
+        transitionObject.FadeIn();
     }
 
-	public void FakeSwitchScreen(float fadeInSpeed = 2.5f, float fadeOutSpeed = 2.5f)
+	public void FakeSwitchScreen()
 	{
 		nextSceneName = "Fake";
-		this.fadeOutSpeed = fadeOutSpeed;
         fakeSwitch = true;
-        transitionObject.FadeIn(fadeInSpeed);
+        transitionObject.FadeIn();
 	}
 
 	public void ConClear()
@@ -43,7 +40,7 @@ public class ConSceneSwitcher : IConfactory
 
 	public void OnSceneSwitch(int newSceneIndex)
 	{
-		transitionObject.FadeOut(fadeOutSpeed);
+		transitionObject.FadeOut();
 	}
 
 	private void FadeInComplete()

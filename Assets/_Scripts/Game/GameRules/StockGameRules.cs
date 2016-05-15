@@ -24,9 +24,10 @@ public class StockGameRules : BaseGameRules {
 
 	public override void Start()
 	{
-		base.Start();
-		audioManager.PlayAudio("TompetMusic1", ConAudioManager.MUSIC_STATION);
-		foreach(Player p in gameHandler.ActivePlayers.GetAllPlayers())
+		base.Start(); 
+        audioManager.PlayAudio("TrompetMusic1", ConAudioManager.MUSIC_STATION, 0.5f);
+		audioManager.PlayAudio("VoiceFight");
+		foreach (Player p in gameHandler.ActivePlayers.GetAllPlayers())
 		{
 			playersAndStocks.Add(p, StartingStockAmount);
         }
@@ -136,9 +137,15 @@ public class StockGameRules : BaseGameRules {
 				playersOnFirstPlace.Add(pWithRank.Key);
             }
 		}
+
+		if (!SuddenDeathActivated)
+		{
+			audioManager.PlayAudio("VoiceRound");
+		}
+
 		if (playersOnFirstPlace.Count > 1)
 		{
-			Timer t = new Timer(3,0);
+			Timer t = new Timer(3, 0);
 			t.TimerEndedEvent += () => { SuddenDeathTimerEnded(playersOnFirstPlace.ToArray(), t); };
 			t.Start();
         }
@@ -161,13 +168,16 @@ public class StockGameRules : BaseGameRules {
 	{
 		SuddenDeathActivated = true;
 		listeningToDeathEvents = true;
-        Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>().FakeSwitchScreen();
-		foreach(Player p in playersForSuddenDeath)
+       // Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>().FakeSwitchScreen();
+		audioManager.StopAudio(ConAudioManager.MUSIC_STATION);
+		audioManager.PlayAudio("VoiceSuddenDeath");
+		audioManager.PlayAudio("HolyMusic1", ConAudioManager.MUSIC_STATION, 0.3f);
+		foreach (Player p in playersForSuddenDeath)
 		{
 			gameHandler.DestroyPlayerCharacter(p);
 			SetStockAmountPlayer(p, 1);
 		}
-		for(int i = 0; i < 35; i++)
+		for(int i = 0; i < 20; i++)
 		{
 			gameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, i * 0.25f);
 		}

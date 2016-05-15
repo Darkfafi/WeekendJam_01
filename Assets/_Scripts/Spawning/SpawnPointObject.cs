@@ -26,7 +26,7 @@ public class SpawnPointObject : MonoEntity {
 		currentSpawningObject.SpawningEndedEvent -= OnAnimationEndEvent;
 		currentSpawningObject.SpawningEndedEvent += OnAnimationEndEvent;
 		
-		audioManager.PlayAudio("HolyVoice2", ConAudioManager.EFFECTS_STATION);
+		audioManager.PlayAudio("HolyVoice2", ConAudioManager.EFFECTS_STATION, 0.6f);
 		audioManager.GetAudioStation(1).volume = 0.3f;
 		return c;
 	}
