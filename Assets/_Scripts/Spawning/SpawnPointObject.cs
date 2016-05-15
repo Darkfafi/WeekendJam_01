@@ -6,11 +6,13 @@ public class SpawnPointObject : MonoEntity {
 	public Player PlayerUsingSpawn { get; private set; }
 	private CharacterSpawnObject currentSpawningObject = null;
 	private ConActivePlayers conActivePlayers;
+	private ConAudioManager audioManager;
 
 	protected override void Awake()
 	{
 		base.Awake();
 		conActivePlayers = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConActivePlayers>();
+		audioManager = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConAudioManager>();
     }
 
 	public Character SpawnPlayerCharacter(Player player)
@@ -23,6 +25,9 @@ public class SpawnPointObject : MonoEntity {
         currentSpawningObject.Spawn(c);
 		currentSpawningObject.SpawningEndedEvent -= OnAnimationEndEvent;
 		currentSpawningObject.SpawningEndedEvent += OnAnimationEndEvent;
+		
+		audioManager.PlayAudio("HolyVoice2", ConAudioManager.EFFECTS_STATION);
+		audioManager.GetAudioStation(1).volume = 0.3f;
 		return c;
 	}
 

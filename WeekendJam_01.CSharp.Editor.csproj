@@ -98,13 +98,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Cinema Suite\About\Editor\CinemaSuiteWelcome.cs" />
-    <Compile Include="Assets\Cinema Suite\About\Editor\ProductInfo.cs" />
-    <Compile Include="Assets\Cinema Suite\Cinema Themes\Editor\CinemaThemesProductInfo.cs" />
-    <Compile Include="Assets\Cinema Suite\Cinema Themes\Editor\CinemaThemesWindow.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Editor\ScriptableObjectFactory.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Editor\ScriptableObjectWindow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Cinema Suite\Cinema Themes\ReadMe.txt" />
     <None Include="Assets\Fonts\Lobster_Two\OFL.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

@@ -21,8 +21,11 @@ public class GameHandler : MonoBehaviour {
 	public SpawnPointObject[] Spawnpoints { get; private set; }
 	public MassEntity SpawnArea;
 
+	private ConAudioManager audioManager;
+
 	void Awake()
 	{
+		audioManager = ConfactoryFinder.Instance.Give<ConAudioManager>();
 		BattleHistoryLog = ConfactoryFinder.Instance.Give<ConGameBattleHistoryLog>(); // = new GameBattleHistoryLog();
 		((ConGameBattleHistoryLog)BattleHistoryLog).Reset();
 		
@@ -133,7 +136,8 @@ public class GameHandler : MonoBehaviour {
         Weapon weaponSpawning = Instantiate<Weapon>(WeaponFactory.GetWeaponObject(weapon));
 		weaponSpawning.transform.eulerAngles = new Vector3(0, 0, -92);
 		SpawnObject(weaponSpawning, spawn, new Vector2(0, -0.6f));
-	}
+		audioManager.PlayAudio("HolyVoice", ConAudioManager.EFFECTS_STATION);
+    }
 
 	public void SpawnObject(MonoEntity objectEntity, Vector2 position, Vector2? offsetObject = null)
 	{
@@ -160,6 +164,7 @@ public class GameHandler : MonoBehaviour {
 	private IEnumerator WaitForEndScreen()
 	{
 		yield return new WaitForSeconds(2.5f);
+		audioManager.StopAudio();
 		ConfactoryFinder.Instance.Give<ConSceneSwitcher>().SwitchScreen("End");
 	}
 

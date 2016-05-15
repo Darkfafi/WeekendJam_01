@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using Ramses.Entities;
+using Ramses.Confactory;
 
 public class Character : MonoEntity {
 
@@ -34,6 +35,8 @@ public class Character : MonoEntity {
 	private InputUser userInput;
 	private TouchDetector2D touch2D;
 
+	private ConAudioManager audioManager;
+
 	// Options
 	[SerializeField] private float throwForceMod = 1.1f;
 	[SerializeField] private float movementSpeed = 6f;
@@ -43,6 +46,9 @@ public class Character : MonoEntity {
 	{
 		base.Awake();
 		IsAlive = true;
+
+		audioManager = ConfactoryFinder.Instance.Give<ConAudioManager>();
+
 		CharacterRigidbody2D = gameObject.AddComponent<Rigidbody2D>();
 		touch2D = gameObject.AddComponent<TouchDetector2D>();
 		CharacterCollider = GetComponent<Collider2D>();
@@ -135,6 +141,7 @@ public class Character : MonoEntity {
 						{
 							busyList.AddBusyAction(BusyConsts.ACTION_THROW, BusyConsts.BUSY_LAYER_COMBAT);
 							animationHandler.PlayAnimation(BusyConsts.ACTION_THROW);
+							audioManager.PlayAudio("ThrowEffect", ConAudioManager.EFFECTS_STATION);
 						}
 					}
 				}
@@ -178,6 +185,7 @@ public class Character : MonoEntity {
 		{
 			if (dmgBox.HitType == DamageHitBox.HitTypes.Kill)
 			{
+				audioManager.PlayAudio("Stab", ConAudioManager.EFFECTS_STATION);
 				GetKilled(dmgBox.Owner);
 			}
 			if (dmgBox.HitType == DamageHitBox.HitTypes.Ko)
@@ -290,7 +298,7 @@ public class Character : MonoEntity {
 
 						objectThrown.RigidbodyItem.velocity += (new Vector2(Mathf.Sign(transform.localScale.x) * (throwForceMod * objectThrown.WeaponHurtVelocity), 2.1f));
 						objectThrown.SetHitboxItem(true, this);
-					}
+                    }
 				}
 			}
 		}
@@ -299,6 +307,12 @@ public class Character : MonoEntity {
 			Destroy(this);
 		}
 	}
+
+	private void FootstepTriggered()
+	{
+		audioManager.PlayAudio("Step");
+	}
+
 	private void OnNoGroundEvent()
 	{
 		busyList.AddBusyAction(BusyConsts.ACTION_IN_AIR, BusyConsts.BUSY_LAYER_MOVEMENT);

@@ -25,7 +25,7 @@ public class StockGameRules : BaseGameRules {
 	public override void Start()
 	{
 		base.Start();
-
+		audioManager.PlayAudio("TompetMusic1", ConAudioManager.MUSIC_STATION);
 		foreach(Player p in gameHandler.ActivePlayers.GetAllPlayers())
 		{
 			playersAndStocks.Add(p, StartingStockAmount);

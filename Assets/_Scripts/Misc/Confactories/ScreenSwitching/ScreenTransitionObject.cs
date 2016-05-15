@@ -18,7 +18,7 @@ public class ScreenTransitionObject : MonoBehaviour {
 	public void FadeIn(float speed = 2.5f)
 	{
 		StopAllCoroutines();
-        Time.timeScale = 0;
+        Time.timeScale = 0.6f;
 		StartCoroutine(Animate(1, speed));
 	}
 	public void FadeOut(float speed = 2.5f)

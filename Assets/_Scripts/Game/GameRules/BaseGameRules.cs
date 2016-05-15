@@ -5,11 +5,12 @@ using System.Collections.Generic;
 public abstract class BaseGameRules
 {
 	public GameHandler gameHandler { get; private set; }
-
+	protected ConAudioManager audioManager { get; private set; }
 	public BaseGameRules(GameHandler handler)
 	{
 		this.gameHandler = handler;
-		gameHandler.PlayerCharacterSpawnedEvent += OnPlayerCharacterSpawn;
+		audioManager = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConAudioManager>();
+        gameHandler.PlayerCharacterSpawnedEvent += OnPlayerCharacterSpawn;
         gameHandler.CorpseSpawnedEvent += OnCorpseSpawnedEvent;
     }
 

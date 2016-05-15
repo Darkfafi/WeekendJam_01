@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Animation\AnimationManager.cs" />
+    <Compile Include="Assets\_Scripts\Audio\AudioLibrary.cs" />
+    <Compile Include="Assets\_Scripts\Audio\ConAudioManager.cs" />
     <Compile Include="Assets\_Scripts\Camera\CameraBoundFocus.cs" />
     <Compile Include="Assets\_Scripts\Camera\MassEntity.cs" />
     <Compile Include="Assets\_Scripts\Characters\Character.cs" />
