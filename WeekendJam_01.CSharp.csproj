@@ -138,10 +138,13 @@
     <Compile Include="Assets\_Scripts\Utils\Entities\MonoEntity.cs" />
     <Compile Include="Assets\_Scripts\Utils\Misc\BusyList.cs" />
     <Compile Include="Assets\_Scripts\Utils\Misc\TouchDetector2D.cs" />
-    <Compile Include="Assets\_Scripts\Utils\SectionButtons\ButtonSection.cs" />
-    <Compile Include="Assets\_Scripts\Utils\SectionButtons\ButtonSectionManager.cs" />
-    <Compile Include="Assets\_Scripts\Utils\SectionButtons\SectionButton.cs" />
-    <Compile Include="Assets\_Scripts\Utils\SectionButtons\SectionColorButton.cs" />
+    <Compile Include="Assets\_Scripts\Utils\SectionButtons\Buttons\ListButtons\SectionIntListButton.cs" />
+    <Compile Include="Assets\_Scripts\Utils\SectionButtons\Buttons\ListButtons\SectionListButton.cs" />
+    <Compile Include="Assets\_Scripts\Utils\SectionButtons\Buttons\ListButtons\SectionStringListButton.cs" />
+    <Compile Include="Assets\_Scripts\Utils\SectionButtons\Buttons\SectionButton.cs" />
+    <Compile Include="Assets\_Scripts\Utils\SectionButtons\Buttons\SectionColorButton.cs" />
+    <Compile Include="Assets\_Scripts\Utils\SectionButtons\Section.cs" />
+    <Compile Include="Assets\_Scripts\Utils\SectionButtons\SectionHolder.cs" />
     <Compile Include="Assets\_Scripts\Utils\Timer\Timer.cs" />
     <Compile Include="Assets\_Scripts\Utils\Timer\TimerUtils.cs" />
   </ItemGroup>

@@ -7,18 +7,18 @@ using System.Collections.Generic;
 public class MainMenu : MonoBehaviour {
 
 	[SerializeField]
-	private ButtonSectionManager manager;
+	private SectionHolder holder;
 	private MultiInputUser multiInputUser;
 	private float lastAxis = 0;
 
 	private void Awake()
 	{
-		manager.ButtonPressedEvent += OnButtonPressedEvent;
+		holder.ButtonPressedEvent += OnButtonPressedEvent;
 		multiInputUser = gameObject.GetComponent<MultiInputUser>();
 		multiInputUser.InputBindingUsedEvent += OnInputBindingUsedEvent;
     }
 
-	public void OnButtonPressedEvent(ButtonSectionManager manager, ButtonSection section, SectionButton button)
+	public void OnButtonPressedEvent(SectionHolder holder, Section section, SectionButton button)
 	{
 		if (button.ButtonName == "Start")
 		{
@@ -37,11 +37,11 @@ public class MainMenu : MonoBehaviour {
 		{
 			if (action.Name == InputNames.UP)
 			{
-				manager.CurrentlySelectedSection.PreviousButton();
+				holder.CurrentSection.PreviousButton();
 			}
 			else if (action.Name == InputNames.DOWN)
 			{
-				manager.CurrentlySelectedSection.NextButton();
+				holder.CurrentSection.NextButton();
 			}
 		}
 
@@ -52,7 +52,7 @@ public class MainMenu : MonoBehaviour {
 
 		if (action.Name == InputNames.ATTACK)
 		{
-			manager.CurrentlySelectedSection.PressSelectedButton();
+			holder.CurrentSection.CurrentButton.Press();
 		}
 	}
 }
