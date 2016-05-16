@@ -22,13 +22,12 @@ public class GameRulesLobbyTab : LobbyTab
 		conSelectedGameRules = ConfactoryFinder.Instance.Give<ConSelectedGameRules>();
 		SetListenersActiveState(true);
 		BaseGameRules selectedRules = conSelectedGameRules.GetSelectedGameRules();
-        if (selectedRules == null)
-		{
-			OnGameRulesButtonChangedEvent(null, null, gameRulesButton.CurrentValue);
-			OnStocksButtonChangedEvent(null, 0, stocksButton.CurrentValue);
-			OnPlaytimeButtonChangedEvent(null, 0, playtimeButton.CurrentValue);
-		}
-		else
+        
+		OnGameRulesButtonChangedEvent(null, null, gameRulesButton.CurrentValue);
+		OnStocksButtonChangedEvent(null, 0, stocksButton.CurrentValue);
+		OnPlaytimeButtonChangedEvent(null, 0, playtimeButton.CurrentValue);
+
+		if (selectedRules != null)
 		{
 			if(selectedRules is StockGameRules)
 			{
