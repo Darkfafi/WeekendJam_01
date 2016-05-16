@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// Created by Ramses Di Perna
+
+using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
