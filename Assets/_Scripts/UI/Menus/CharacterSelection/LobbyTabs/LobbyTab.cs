@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Ramses.SectionButtons;
+public class LobbyTab : Section{
 
-public class LobbyTab : MonoBehaviour {
+	public bool OpenState { get; private set; }
 
 	[SerializeField] private Image background; // TODO background image height en width tot de grootte brengen van de displayObjectRect.
 	[SerializeField] private RectTransform displayObjectRect;
@@ -13,34 +15,24 @@ public class LobbyTab : MonoBehaviour {
 	void Awake () {
 		startingTabSize = ((RectTransform)transform).sizeDelta;
 		displayObjectRect.gameObject.SetActive(false);
+		SetActiveState(false);
 		background.rectTransform.sizeDelta = startingTabSize;
 		background.rectTransform.anchoredPosition = new Vector2(0.5f, 0f); // top center position
     }
 
-	/*DEBUG STUFF. DONT CALL IT LIKE THIS IN THE UPDATE!*/
-	void Update()
-	{
-		if(Input.GetKeyDown(KeyCode.C))
-		{
-			Open();
-        }
-		if (Input.GetKeyDown(KeyCode.X))
-		{
-			Close();
-		}
-	}
-
-	public void Open()
+	public virtual void Open()
 	{
 		StopAllCoroutines();
 		StartCoroutine(SizeAnimation(background, displayObjectRect.sizeDelta, 10f));
-	}
+		OpenState = true;
+    }
 
-	public void Close()
+	public virtual void Close()
 	{
 		StopAllCoroutines();
 		StartCoroutine(SizeAnimation(background, startingTabSize, 10f));
-	}
+		OpenState = false;
+    }
 
 	private IEnumerator SizeAnimation(Image animatingObject, Vector2 sizeToAnimateTo, float speed)
 	{

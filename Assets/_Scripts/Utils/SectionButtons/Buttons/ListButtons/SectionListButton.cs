@@ -10,6 +10,7 @@ namespace Ramses.SectionButtons
 		public delegate void ListButtonHandler(SectionListButton<T> button, T lastItem, T newItem);
 		public event ListButtonHandler NextButtonUsedEvent;
 		public event ListButtonHandler PreviousButtonUsedEvent;
+		public event ListButtonHandler ValueChangedEvent;
 
 
 		[SerializeField]
@@ -26,9 +27,37 @@ namespace Ramses.SectionButtons
 		private bool looping = false;
 		protected virtual List<T> allItems { get { return _allItems; } }
 		private List<T> _allItems = new List<T>();
+		private List<T> lockedItems = new List<T>();
 
 		// Values
-		private int currentValueIndex = 0;
+		private int currentValueIndex
+		{
+			get { return _curretValueIndex; }
+			set
+			{
+				int old = _curretValueIndex;
+				_curretValueIndex = value;
+				if(ItemLocked(_curretValueIndex))
+				{
+					int itemIndex = _curretValueIndex;
+					for(int i = 0; i < allItems.Count; i++)
+					{
+						itemIndex = allItems.GetLoopIndex(i + _curretValueIndex);
+                        if (!ItemLocked(itemIndex))
+						{
+							_curretValueIndex = itemIndex;
+							break;
+						}
+					}
+				}
+				if (ValueChangedEvent != null)
+				{
+					ValueChangedEvent(this, allItems[old], allItems[_curretValueIndex]);
+				}
+			}
+		}
+
+		private int _curretValueIndex = 0;
 
 		private void Start()
 		{
@@ -36,6 +65,31 @@ namespace Ramses.SectionButtons
 			PreviousButton.ButtonPressedEvent += PreviousButtonPressed;
 			SetLoopButtons();
 		}
+
+		public void LockItem(int index)
+		{
+			if (!lockedItems.Contains(allItems[index]))
+			{
+				lockedItems.Add(allItems[index]);
+				if(currentValueIndex == index)
+				{
+					currentValueIndex = allItems.ToArray().GetLoopIndex(index + 1);
+				}
+			}
+		}
+
+		public void UnLockItem(int index)
+		{
+			if(lockedItems.Contains(allItems[index]))
+			{
+				lockedItems.Remove(allItems[index]);
+			}
+		}
+
+		public bool ItemLocked(int index)
+		{
+			return lockedItems.Contains(allItems[index]);
+        }
 
 		public void AddItem(T item)
 		{
@@ -50,6 +104,11 @@ namespace Ramses.SectionButtons
 		public void UseNextButton()
 		{
 			NextButton.Press();
+		}
+
+		public void JumpToIndex(int index)
+		{
+			currentValueIndex = allItems.ToArray().GetClampedIndex(index);
 		}
 
 		public void UsePreviousButton()
@@ -73,6 +132,7 @@ namespace Ramses.SectionButtons
 			{
 				NextButtonUsedEvent(this, oldValue, CurrentValue);
 			}
+			
 		}
 
 		private void PreviousButtonPressed(SectionButton button)

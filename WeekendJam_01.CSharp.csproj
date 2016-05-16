@@ -112,7 +112,9 @@
     <Compile Include="Assets\_Scripts\UI\Game\PlayerUIInfo\UIPlayerInfos.cs" />
     <Compile Include="Assets\_Scripts\UI\Game\UICharacterArrow.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\CharacterGameLobby.cs" />
-    <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\LobbyTab.cs" />
+    <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\LobbyTabs\GameRulesLobbyTab.cs" />
+    <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\LobbyTabs\LobbyTab.cs" />
+    <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\LobbyTabs\LobbyTabsControll.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\CharacterSelection\PlayerSlot.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\MainMenu.cs" />
     <Compile Include="Assets\_Scripts\UI\Menus\ResultScreen\GameRulesSpecifics\StocksEndResultDisplay.cs" />

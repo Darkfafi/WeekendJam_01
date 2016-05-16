@@ -52,7 +52,10 @@ public class MainMenu : MonoBehaviour {
 
 		if (action.Name == InputNames.ATTACK)
 		{
-			holder.CurrentSection.CurrentButton.Press();
+			if (holder.CurrentSection.CurrentButton != null)
+			{
+				holder.CurrentSection.CurrentButton.Press();
+			}
 		}
 	}
 }

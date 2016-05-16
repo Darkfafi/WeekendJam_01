@@ -7,7 +7,7 @@ public class TimeGameRules : StockGameRules {
 
 	public Timer Timer { get; private set; }
 
-	public TimeGameRules(GameHandler handler, int timeInMinutes, int stocks = 0) : base(handler, stocks)
+	public TimeGameRules(int timeInMinutes, int stocks = 0) : base(stocks)
 	{
 		StartingTimeInMinutes = timeInMinutes;
 
@@ -15,9 +15,9 @@ public class TimeGameRules : StockGameRules {
 		Timer.TimerTikkedEvent += OnTimerTikkedEvent;
     }
 
-	public override void Start()
+	public override void Start(GameHandler handler)
 	{
-		base.Start();
+		base.Start(handler);
 		Timer.Start();
 	}
 

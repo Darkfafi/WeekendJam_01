@@ -21,11 +21,19 @@ public class CharacterGameLobby : MonoBehaviour {
 		conActivePlayers = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConActivePlayers>();
 		conSceneSwitcher = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>();
 		multiInputUser = gameObject.GetComponent<MultiInputUser>();
-		multiInputUser.InputBindingUsedEvent += OnInputBindingUsedEvent;
-
+		SetListeningToInput(true);
 		AddAlreadyRegisteredPlayers();
     }
 	
+	public void SetListeningToInput(bool listening)
+	{
+		multiInputUser.InputBindingUsedEvent -= OnInputBindingUsedEvent;
+		if (listening)
+		{
+			multiInputUser.InputBindingUsedEvent += OnInputBindingUsedEvent;
+		}
+	}
+
 	void AddAlreadyRegisteredPlayers()
 	{
 		foreach(Player player in conActivePlayers.GetAllPlayers())
@@ -59,7 +67,7 @@ public class CharacterGameLobby : MonoBehaviour {
 						conActivePlayers.RegisterPlayer(player);
                     }
 				}
-				if (action.Name == InputNames.USE)
+				if (action.Name == InputNames.JUMP)
 				{
 					ClearAlreadyRegisteredPlayers();
 					conSceneSwitcher.SwitchScreen(backSceneToLoadName);
@@ -89,7 +97,7 @@ public class CharacterGameLobby : MonoBehaviour {
 						notificationBar.ShowNotification("All Players have to be ready to start!", 3.5f, 1.2f, 3.5f);
 					}
 				}
-				if (action.Name == InputNames.USE)
+				if (action.Name == InputNames.JUMP)
 				{
 					// Unready or Remove from slot
 					if (slot.IsReady)

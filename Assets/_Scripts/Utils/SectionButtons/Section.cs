@@ -53,7 +53,7 @@ namespace Ramses.SectionButtons
 			SetCurrentButton(allSecionButtons.GetLoopIndex(currentButtonIndex - 1));
 		}
 
-		public void SetActiveState(bool value)
+		public virtual void SetActiveState(bool value)
 		{
 			activated = value;
 			foreach (SectionButton button in allSecionButtons)
@@ -131,7 +131,7 @@ namespace Ramses.SectionButtons
 		}
 
 
-		private void OnButtonPressedEvent(SectionButton button)
+		protected virtual void OnButtonPressedEvent(SectionButton button)
 		{
 			if (button != CurrentButton)
 			{
@@ -143,7 +143,7 @@ namespace Ramses.SectionButtons
 			}
 		}
 
-		private void OnButtonReleasedEvent(SectionButton button)
+		protected virtual void OnButtonReleasedEvent(SectionButton button)
 		{
 			if (ButtonReleasedEvent != null)
 			{
@@ -151,7 +151,7 @@ namespace Ramses.SectionButtons
 			}
 		}
 
-		private void OnButtonSelectedEvent(SectionButton button)
+		protected virtual void OnButtonSelectedEvent(SectionButton button)
 		{
 			if (button != CurrentButton)
 			{
@@ -163,7 +163,7 @@ namespace Ramses.SectionButtons
 			}
 		}
 
-		private void OnButtonUnSelectedEvent(SectionButton button)
+		protected virtual void OnButtonUnSelectedEvent(SectionButton button)
 		{
 			if (CurrentButton != null)
 			{

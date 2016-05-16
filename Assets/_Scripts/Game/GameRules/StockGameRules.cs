@@ -17,22 +17,22 @@ public class StockGameRules : BaseGameRules {
 	private float waitForSpawnInSeconds = 2f;
 	private bool listeningToDeathEvents = true;
 
-	public StockGameRules(GameHandler handler, int stockAmount) : base(handler)
+	public StockGameRules(int stockAmount) : base()
 	{
 		StartingStockAmount = stockAmount;
     }
 
-	public override void Start()
+	public override void Start(GameHandler handler)
 	{
-		base.Start(); 
+		base.Start(handler); 
         audioManager.PlaySoloAudio("TrompetMusic1", ConAudioManager.MUSIC_STATION, 0.5f);
 		audioManager.PlayAudio("VoiceFight");
-		foreach (Player p in gameHandler.ActivePlayers.GetAllPlayers())
+		foreach (Player p in GameHandler.ActivePlayers.GetAllPlayers())
 		{
 			playersAndStocks.Add(p, StartingStockAmount);
         }
-		gameHandler.SpawnAllPlayers();
-		gameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, 3);
+		GameHandler.SpawnAllPlayers();
+		GameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, 3);
     }
 
 	public override void OnCorpseSpawnedEvent(Corpse corpse)
@@ -40,7 +40,7 @@ public class StockGameRules : BaseGameRules {
 		if (listeningToDeathEvents)
 		{
 			base.OnCorpseSpawnedEvent(corpse);
-			if (StartingStockAmount != 0)
+			if (StartingStockAmount != 0 || SuddenDeathActivated)
 			{
 				SetStockAmountPlayer(corpse.PlayerOwnedCorpse, playersAndStocks[corpse.PlayerOwnedCorpse] - 1);
 			}
@@ -88,7 +88,7 @@ public class StockGameRules : BaseGameRules {
 			{
 				if (prePlayerCheck != null)
 				{
-					if (gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(prePlayerCheck).Length > gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(p).Length)
+					if (GameHandler.BattleHistoryLog.GetAllKillsOfPlayer(prePlayerCheck).Length > GameHandler.BattleHistoryLog.GetAllKillsOfPlayer(p).Length)
 					{
 						rank++;
 					}
@@ -103,7 +103,7 @@ public class StockGameRules : BaseGameRules {
 	
 	private int SortOnKillsMethod(Player pOne, Player pTwo)
 	{
-		if(gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(pOne).Length > gameHandler.BattleHistoryLog.GetAllKillsOfPlayer(pTwo).Length)
+		if(GameHandler.BattleHistoryLog.GetAllKillsOfPlayer(pOne).Length > GameHandler.BattleHistoryLog.GetAllKillsOfPlayer(pTwo).Length)
 		{
 			return -1;
 		}
@@ -130,12 +130,13 @@ public class StockGameRules : BaseGameRules {
 	{
 		if (playersAndStocks.ContainsKey(player))
 		{
+			int oldAmount = playersAndStocks[player];
 			playersAndStocks[player] = amount;
 
-			if(PlayerStockChangedEvent != null)
+			if (PlayerStockChangedEvent != null)
 			{
 				PlayerStockChangedEvent(player, amount);
-            }
+			}
 
 			if (amount <= 0)
 			{
@@ -148,7 +149,10 @@ public class StockGameRules : BaseGameRules {
 			{
 				PrepairPlayerToSpawn(player);
 			}
-			EndGameCheck();
+			Debug.Log(oldAmount + " " + amount);
+			if (oldAmount > playersAndStocks[player]) { 
+				EndGameCheck();
+			}
 		}
 	}
 
@@ -185,7 +189,7 @@ public class StockGameRules : BaseGameRules {
         }
 		else
 		{
-			gameHandler.EndGame();
+			GameHandler.EndGame();
 		}
 	}
 
@@ -202,18 +206,17 @@ public class StockGameRules : BaseGameRules {
 	{
 		SuddenDeathActivated = true;
 		listeningToDeathEvents = true;
-       // Ramses.Confactory.ConfactoryFinder.Instance.Give<ConSceneSwitcher>().FakeSwitchScreen();
 		audioManager.StopAudio(ConAudioManager.MUSIC_STATION);
 		audioManager.PlayAudio("VoiceSuddenDeath");
 		audioManager.PlaySoloAudio("HolyMusic1", ConAudioManager.MUSIC_STATION, 0.3f);
 		foreach (Player p in playersForSuddenDeath)
 		{
-			gameHandler.DestroyPlayerCharacter(p);
+			GameHandler.DestroyPlayerCharacter(p);
 			SetStockAmountPlayer(p, 1);
 		}
 		for(int i = 0; i < 20; i++)
 		{
-			gameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, i * 0.25f);
+			GameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, i * 0.25f);
 		}
     }
 
@@ -222,7 +225,7 @@ public class StockGameRules : BaseGameRules {
 		int amount = 0;
 		foreach(KeyValuePair<Player, int> pair in playersAndStocks)
 		{
-			if(pair.Value > 0 || StartingStockAmount == 0)
+			if(pair.Value > 0 || (StartingStockAmount == 0 && !SuddenDeathActivated))
 			{
 				amount++;
 			}
@@ -232,6 +235,6 @@ public class StockGameRules : BaseGameRules {
 
 	private void PrepairPlayerToSpawn(Player player)
 	{
-		gameHandler.SpawnPlayerCharacter(player, gameHandler.Spawnpoints[Random.Range(0, gameHandler.Spawnpoints.Length)], waitForSpawnInSeconds);
+		GameHandler.SpawnPlayerCharacter(player, GameHandler.Spawnpoints[Random.Range(0, GameHandler.Spawnpoints.Length)], waitForSpawnInSeconds);
 	}
 }

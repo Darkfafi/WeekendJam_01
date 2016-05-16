@@ -4,18 +4,25 @@ using System.Collections.Generic;
 
 public abstract class BaseGameRules
 {
-	public GameHandler gameHandler { get; private set; }
+	public GameHandler GameHandler { get; private set; }
 	protected ConAudioManager audioManager { get; private set; }
-	public BaseGameRules(GameHandler handler)
+
+	public BaseGameRules()
 	{
-		this.gameHandler = handler;
 		audioManager = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConAudioManager>();
-        gameHandler.PlayerCharacterSpawnedEvent += OnPlayerCharacterSpawn;
-        gameHandler.CorpseSpawnedEvent += OnCorpseSpawnedEvent;
+       
     }
 
-	public virtual void Start()
+	public virtual void Start(GameHandler handler)
 	{
+		if(GameHandler != null)
+		{
+			GameHandler.PlayerCharacterSpawnedEvent -= OnPlayerCharacterSpawn;
+			GameHandler.CorpseSpawnedEvent -= OnCorpseSpawnedEvent;
+		}
+		this.GameHandler = handler;
+		GameHandler.PlayerCharacterSpawnedEvent += OnPlayerCharacterSpawn;
+		GameHandler.CorpseSpawnedEvent += OnCorpseSpawnedEvent;
 		Debug.Log("Game Started");
 	}
 

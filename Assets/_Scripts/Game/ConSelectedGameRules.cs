@@ -5,7 +5,7 @@ using System;
 
 public class ConSelectedGameRules : IConfactory {
 
-	private BaseGameRules selectedGameRules = null;
+	private BaseGameRules selectedGameRules = new StockGameRules(5);
 
 	public void SetSelectedGameRules(BaseGameRules gameRules)
 	{

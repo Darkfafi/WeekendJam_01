@@ -12,18 +12,20 @@ public class ScreenTransitionObject : MonoBehaviour {
 
 	private void Awake()
 	{
-		DontDestroyOnLoad(this.gameObject);
+		gameObject.SetActive(false);
 	}
 
 	public void FadeIn(float speed = 2.5f)
 	{
 		StopAllCoroutines();
         Time.timeScale = 0.6f;
+		gameObject.SetActive(true);
 		StartCoroutine(Animate(1, speed));
 	}
 	public void FadeOut(float speed = 2.5f)
 	{
 		StopAllCoroutines();
+		gameObject.SetActive(true);
 		StartCoroutine(Animate(0, speed));
 	}
 
@@ -49,6 +51,7 @@ public class ScreenTransitionObject : MonoBehaviour {
 			{
 				FadeOutCompleteEvent();
 			}
+			gameObject.SetActive(false);
 		}
 		else
 		{

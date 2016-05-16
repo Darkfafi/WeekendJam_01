@@ -23,8 +23,8 @@ public class StocksRulesUI : IBaseGameRulesUI
 			else
 			{
 				playerInfo.SetScoreIndication(UIPlayerInfo.ScoreIndications.Score);
-				stocksGameRules.gameHandler.BattleHistoryLog.DataAddedEvent -= OnBattleDataAddedEvent;
-				stocksGameRules.gameHandler.BattleHistoryLog.DataAddedEvent += OnBattleDataAddedEvent;
+				stocksGameRules.GameHandler.BattleHistoryLog.DataAddedEvent -= OnBattleDataAddedEvent;
+				stocksGameRules.GameHandler.BattleHistoryLog.DataAddedEvent += OnBattleDataAddedEvent;
 				playerInfo.CurrentIndication.IndicationText.text = "Kills: 0";
             }
 
@@ -45,7 +45,7 @@ public class StocksRulesUI : IBaseGameRulesUI
 	public void Stop()
 	{
 		stocksGameRules.PlayerStockChangedEvent -= OnPlayerStockChangedEvent;
-		stocksGameRules.gameHandler.BattleHistoryLog.DataAddedEvent -= OnBattleDataAddedEvent;
+		stocksGameRules.GameHandler.BattleHistoryLog.DataAddedEvent -= OnBattleDataAddedEvent;
 		uiGameRules.Clock.gameObject.SetActive(false);
 		ClockStopped(0);
     }
