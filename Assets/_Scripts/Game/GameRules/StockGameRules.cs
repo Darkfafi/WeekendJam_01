@@ -149,7 +149,6 @@ public class StockGameRules : BaseGameRules {
 			{
 				PrepairPlayerToSpawn(player);
 			}
-			Debug.Log(oldAmount + " " + amount);
 			if (oldAmount > playersAndStocks[player]) { 
 				EndGameCheck();
 			}

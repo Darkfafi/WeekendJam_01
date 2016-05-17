@@ -63,7 +63,7 @@ public class InputItem {
 
 	public InputAction GetInputActionInfo(float lastValueForUser)
 	{
-		return new InputAction(InputActionName, Type, GetUseValue(lastValueForUser));
+		return new InputAction(InputActionName, Type, GetUseValue(lastValueForUser), lastValueForUser);
 	}
 
 	private float KeyCodeCheck()
@@ -109,12 +109,14 @@ public struct InputAction
 	public string Name { get; private set; }
 	public InputItem.InputType Type { get; private set; }
 	public float Value { get; private set; } // Keycode == (-1 onReleased, 0 inPress, 1 is onPress), Axis its -1 to 1 axis info
+	public float LastValue { get; private set; }
 
-	public InputAction(string name, InputItem.InputType type, float value)
+	public InputAction(string name, InputItem.InputType type, float value, float lastValue)
 	{
 		Name = name;
 		Type = type;
 		Value = value;
+		LastValue = lastValue;
 	}
 	public KeyAction KeyActionValue
 	{
