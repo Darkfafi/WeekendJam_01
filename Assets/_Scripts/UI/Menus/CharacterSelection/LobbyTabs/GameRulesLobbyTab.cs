@@ -42,6 +42,35 @@ public class GameRulesLobbyTab : LobbyTab
 		}
 	}
 
+	public override void GetInput(ConGameInputBindings.BindingTypes type, InputAction action)
+	{
+		base.GetInput(type, action);
+		if((action.Type == InputItem.InputType.KeyCode && action.KeyActionValue == InputAction.KeyAction.OnKeyDown) ||
+			action.Type == InputItem.InputType.Axis && (action.LastValue == 0 || action.LastValue == InputAction.NOT_IN_USE_VALUE))
+		{
+			if(action.Name == InputNames.DOWN)
+			{
+				NextButton();
+			}
+			else if(action.Name == InputNames.UP)
+			{
+				PreviousButton();
+			}
+			if(CurrentButton is ISectionListButton)
+			{
+				ISectionListButton button = (ISectionListButton)CurrentButton;
+				if(action.Name == InputNames.LEFT)
+				{
+					button.UsePreviousButton();
+				}
+				else if(action.Name == InputNames.RIGHT)
+				{
+					button.UseNextButton();
+				}
+			}
+		}
+	}
+
 	private void SetListenersActiveState(bool state)
 	{
 		gameRulesButton.ValueChangedEvent -= OnGameRulesButtonChangedEvent;

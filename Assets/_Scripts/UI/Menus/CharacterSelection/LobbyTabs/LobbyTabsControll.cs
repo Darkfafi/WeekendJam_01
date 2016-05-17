@@ -20,8 +20,18 @@ public class LobbyTabsControll : MonoBehaviour {
 	void Awake ()
 	{
 		inputUsers = gameObject.GetComponent<MultiInputUser>();
-		inputUsers.InputBindingUsedEvent += OnInputUsedEvent;
     }
+
+	void OnEnable()
+	{
+		inputUsers.InputBindingUsedEvent -= OnInputUsedEvent;
+		inputUsers.InputBindingUsedEvent += OnInputUsedEvent;
+	}
+
+	void OnDisable()
+	{
+		inputUsers.InputBindingUsedEvent -= OnInputUsedEvent;
+	}
 
 	private void OnInputUsedEvent(ConGameInputBindings.BindingTypes type, InputAction action)
 	{
@@ -33,6 +43,10 @@ public class LobbyTabsControll : MonoBehaviour {
 				{
 					SelectLobbyTab(lobbySettingsTab);
                 }
+				else if (currentlySelectedLobbyTab == lobbySettingsTab)
+				{
+					CloseCurrentTab();
+				}
 			}
 			if (action.Name == InputNames.GRAB_THROW)
 			{
@@ -40,11 +54,15 @@ public class LobbyTabsControll : MonoBehaviour {
 				{
 					SelectLobbyTab(gameRulesTab);
                 }
+				else if(currentlySelectedLobbyTab == gameRulesTab)
+				{
+					CloseCurrentTab();
+				}
 			}
-			if (action.Name == InputNames.JUMP)
-			{
-				CloseCurrentTab();
-			}
+		}
+		if (currentlySelectedLobbyTab != null)
+		{
+			currentlySelectedLobbyTab.GetInput(type, action);
 		}
 	}
 	private void SelectLobbyTab(LobbyTab lobbyTab)

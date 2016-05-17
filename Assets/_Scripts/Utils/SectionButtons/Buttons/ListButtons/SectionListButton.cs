@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 namespace Ramses.SectionButtons
 {
-	public abstract class SectionListButton<T> : SectionColorButton
+	public abstract class SectionListButton<T> : SectionColorButton, ISectionListButton
 	{
 
 		public delegate void ListButtonHandler(SectionListButton<T> button, T lastItem, T newItem);
@@ -169,5 +169,12 @@ namespace Ramses.SectionButtons
 			base.SetActiveState(value);
 			SetLoopButtons();
 		}
+	}
+
+	public interface ISectionListButton
+	{
+		void UseNextButton();
+		void JumpToIndex(int index);
+		void UsePreviousButton();
 	}
 }

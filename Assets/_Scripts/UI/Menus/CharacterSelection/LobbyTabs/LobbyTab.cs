@@ -20,6 +20,11 @@ public class LobbyTab : Section{
 		background.rectTransform.anchoredPosition = new Vector2(0.5f, 0f); // top center position
     }
 
+	public virtual void GetInput(ConGameInputBindings.BindingTypes type, InputAction action)
+	{
+
+	}
+
 	public virtual void Open()
 	{
 		StopAllCoroutines();
