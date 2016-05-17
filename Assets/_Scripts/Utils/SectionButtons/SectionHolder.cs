@@ -90,7 +90,6 @@ namespace Ramses.SectionButtons
 
 		public void SwitchLayer(int layer, int buttonSelect = -1, int sectionIndex = 0)
 		{
-			int l = currentLayer;
 			currentLayer = layer;
 			SetSection(sectionIndex);
 			CurrentSection.SetCurrentButton(buttonSelect);
@@ -155,6 +154,7 @@ namespace Ramses.SectionButtons
 			}
 
 			SetCurrentSection(targetIndex);
+			CurrentSection.SetCurrentButton(preButtonIndex);
 		}
 
 		private void SetCurrentSection(int index)

@@ -97,10 +97,18 @@ namespace Ramses.SectionButtons
 			{
 				Unselect();
 			}
+			bool changedState = activated != value;
 			activated = value;
 			if (activated)
 			{
 				SetCurrentState();
+			}
+			if (changedState)
+			{
+				if (ButtonChangedActiveStateEvent != null)
+				{
+					ButtonChangedActiveStateEvent(this);
+				}
 			}
 		}
 
