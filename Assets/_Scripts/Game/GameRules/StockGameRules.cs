@@ -208,10 +208,13 @@ public class StockGameRules : BaseGameRules {
 		audioManager.StopAudio(ConAudioManager.MUSIC_STATION);
 		audioManager.PlayAudio("VoiceSuddenDeath");
 		audioManager.PlaySoloAudio("HolyMusic1", ConAudioManager.MUSIC_STATION, 0.3f);
-		foreach (Player p in playersForSuddenDeath)
+		foreach (Player p in GameHandler.ActivePlayers.GetAllPlayers())
 		{
 			GameHandler.DestroyPlayerCharacter(p);
-			SetStockAmountPlayer(p, 1);
+			if (playersForSuddenDeath.Contains(p))
+			{
+				SetStockAmountPlayer(p, 1);
+			}
 		}
 		for(int i = 0; i < 20; i++)
 		{
