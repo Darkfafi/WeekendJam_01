@@ -22,10 +22,10 @@ public class ObjectPicker : MonoBehaviour {
 		return info;
 	}
 
-	public PickUpInfo PickUpObject<T>(Vector2 direction, Vector2 startRayPosition, Vector2 sizeBoxCheck, float pickUpLength, bool destroyOnPickUp = true) where T : PickAbleObject
+	public PickUpInfo PickUpObject<T>(Vector2 startRayPosition, Vector2 sizeBoxCheck, bool destroyOnPickUp = true) where T : PickAbleObject
 	{
 		PickUpInfo info;
-		RaycastHit2D hit = Physics2D.BoxCast(startRayPosition, sizeBoxCheck,0, direction, pickUpLength, Layers.LayerMaskSeeOnly(Layers.OBJECTS));
+		RaycastHit2D hit = Physics2D.BoxCast(startRayPosition, sizeBoxCheck,0, Vector2.zero, 1, Layers.LayerMaskSeeOnly(Layers.OBJECTS));
 		string idObject = "";
 		PickAbleObject pickedUpGameObject = null;
 
