@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Ramses.Confactory;
 using Ramses.Entities;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameHandler : MonoBehaviour {
 
@@ -14,6 +15,7 @@ public class GameHandler : MonoBehaviour {
 	public PlayerHandler PlayerCharacterSpawnedEvent;
 	public CorpseHandler CorpseSpawnedEvent; // Game mods can let corpses disapear or even make zombies out of them if they so desire. IDEA (Haunted game mod maybe? be chaces by the ones you killed)
 	public BaseGameRulesHandler GameRulesActivatedEvent;
+	public BaseGameRulesHandler GameRulesDeactivatedEvent;
 
 	public ConActivePlayers ActivePlayers { get; private set; }
 	public GameBattleHistoryLog BattleHistoryLog { get; private set; }
@@ -28,8 +30,10 @@ public class GameHandler : MonoBehaviour {
 		audioManager = ConfactoryFinder.Instance.Give<ConAudioManager>();
 		BattleHistoryLog = ConfactoryFinder.Instance.Give<ConGameBattleHistoryLog>(); // = new GameBattleHistoryLog();
 		((ConGameBattleHistoryLog)BattleHistoryLog).Reset();
-		
-		ActiveGameRules = ConfactoryFinder.Instance.Give<ConSelectedGameRules>().GetSelectedGameRules();
+		ConSelectedGameRules conSgr = ConfactoryFinder.Instance.Give<ConSelectedGameRules>();
+		ActiveGameRules = conSgr.GetSelectedGameRules();
+		ActiveGameRules.Clear();
+
 		ActivePlayers = ConfactoryFinder.Instance.Give<ConActivePlayers>();
     }
 
@@ -109,7 +113,7 @@ public class GameHandler : MonoBehaviour {
 			}
 			if(spawnpoint == null)
 			{
-				spawnpoint = Spawnpoints[Random.Range(0, Spawnpoints.Length)];
+				spawnpoint = Spawnpoints[UnityEngine.Random.Range(0, Spawnpoints.Length)];
 			}
 		}
 
@@ -130,7 +134,7 @@ public class GameHandler : MonoBehaviour {
 
 	public void SpawnWeapon(WeaponFactory.AllWeapons weapon)
 	{
-		float spawnX = Random.Range(10, 90) * 0.01f;
+		float spawnX = UnityEngine.Random.Range(10, 90) * 0.01f;
 		Vector3 spawn = new Vector3((SpawnArea.Size.x * spawnX) - SpawnArea.Size.x / 2, SpawnArea.Size.y / 2, -1);
         Weapon weaponSpawning = Instantiate<Weapon>(WeaponFactory.GetWeaponObject(weapon));
 		weaponSpawning.transform.eulerAngles = new Vector3(0, 0, -92);
@@ -155,6 +159,12 @@ public class GameHandler : MonoBehaviour {
 	public void EndGame()
 	{
 		//Debug.Log("Global End Game Method to end the game and its gamemod mechanics");
+		ActiveGameRules.Stop();
+		if(GameRulesDeactivatedEvent != null)
+		{
+			GameRulesDeactivatedEvent(ActiveGameRules);
+        }
+		ActiveGameRules = null;
 		StopAllCoroutines();
 		StartCoroutine(WaitForEndScreen());
 		

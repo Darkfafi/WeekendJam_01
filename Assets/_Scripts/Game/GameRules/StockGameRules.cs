@@ -27,12 +27,21 @@ public class StockGameRules : BaseGameRules {
 		base.Start(handler); 
         audioManager.PlaySoloAudio("TrompetMusic1", ConAudioManager.MUSIC_STATION, 0.5f);
 		audioManager.PlayAudio("VoiceFight");
+		SuddenDeathActivated = false; // False at start not end so other menus / classes can read if the round had a sudden death 
+		listeningToDeathEvents = true;
+		playersAndStocks = new Dictionary<Player, int>();
 		foreach (Player p in GameHandler.ActivePlayers.GetAllPlayers())
 		{
 			playersAndStocks.Add(p, StartingStockAmount);
         }
 		GameHandler.SpawnAllPlayers();
 		GameHandler.SpawnWeapon(WeaponFactory.AllWeapons.Spear, 3);
+    }
+
+	public override void Clear()
+	{
+		base.Clear();
+		playersAndStocks = null;
     }
 
 	public override void OnCorpseSpawnedEvent(Corpse corpse)
@@ -214,6 +223,10 @@ public class StockGameRules : BaseGameRules {
 			if (playersForSuddenDeath.Contains(p))
 			{
 				SetStockAmountPlayer(p, 1);
+			}
+			else
+			{
+				SetStockAmountPlayer(p, 0);
 			}
 		}
 		for(int i = 0; i < 20; i++)

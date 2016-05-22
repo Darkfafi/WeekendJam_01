@@ -29,16 +29,29 @@ public class GameRulesLobbyTab : LobbyTab
 
 		if (selectedRules != null)
 		{
-			if(selectedRules is StockGameRules)
+			SetRulesButton(selectedRules);
+            if (selectedRules is StockGameRules)
 			{
-				gameRulesButton.JumpToIndex(0);
-                stocksButton.JumpToIndex(((StockGameRules)selectedRules).StartingStockAmount);
+				stocksButton.JumpToIndex(((StockGameRules)selectedRules).StartingStockAmount);
 			}
-			if(selectedRules is TimeGameRules)
+
+			if (selectedRules is TimeGameRules)
 			{
-				gameRulesButton.JumpToIndex(1);
 				playtimeButton.JumpToIndex(((TimeGameRules)selectedRules).StartingTimeInMinutes - 1);
 			}
+		}
+	}
+
+	private void SetRulesButton(BaseGameRules rules)
+	{
+		if (rules is StockGameRules)
+		{
+			gameRulesButton.JumpToIndex(0);
+		}
+
+		if (rules is TimeGameRules)
+		{
+			gameRulesButton.JumpToIndex(1);
 		}
 	}
 

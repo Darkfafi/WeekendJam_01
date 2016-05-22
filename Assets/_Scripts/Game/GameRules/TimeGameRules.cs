@@ -18,7 +18,15 @@ public class TimeGameRules : StockGameRules {
 	public override void Start(GameHandler handler)
 	{
 		base.Start(handler);
+		Timer.TimerTikkedEvent += OnTimerTikkedEvent;
+		Timer.Reset();
 		Timer.Start();
+	}
+
+	public override void Stop()
+	{
+		base.Stop();
+		Timer.TimerTikkedEvent -= OnTimerTikkedEvent;
 	}
 
 	private void OnTimerTikkedEvent(int tik)

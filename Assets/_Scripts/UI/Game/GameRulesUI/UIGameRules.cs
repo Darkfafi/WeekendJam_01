@@ -3,8 +3,8 @@ using System.Collections;
 
 public class UIGameRules : MonoBehaviour {
 
-	public GameHandler GameHandler { get { return gameHandler;  } }
-    public UIPlayerInfos PlayerInfos { get { return playerInfos;  } }
+	public GameHandler GameHandler { get { return gameHandler; } }
+	public UIPlayerInfos PlayerInfos { get { return playerInfos; } }
 	public TextIndicationUI Clock { get { return clock; } }
 	public ConAudioManager audioManager { get; private set; }
 
@@ -14,22 +14,19 @@ public class UIGameRules : MonoBehaviour {
 
 	private IBaseGameRulesUI currentBaseRulesUI = null;
 
-	void Awake ()
+	void Awake()
 	{
 		audioManager = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConAudioManager>();
-        GameHandler.GameRulesActivatedEvent += OnGameRulesActivatedEvent;
+		GameHandler.GameRulesActivatedEvent += OnGameRulesActivatedEvent;
+		GameHandler.GameRulesDeactivatedEvent += OnGameRulesDeactivatedEvent;
 	}
 
 	void OnDestroy()
 	{
-		GameHandler.GameRulesActivatedEvent -= OnGameRulesActivatedEvent;
-		if (currentBaseRulesUI != null)
-		{
-			currentBaseRulesUI.Stop();
-		}
-	}
+		OnGameRulesDeactivatedEvent(gameHandler.ActiveGameRules);
+    }
 
-	private void OnGameRulesActivatedEvent(BaseGameRules rulesActivated)
+	protected virtual void OnGameRulesActivatedEvent(BaseGameRules rulesActivated)
 	{
 		if (currentBaseRulesUI != null)
 		{
@@ -43,5 +40,15 @@ public class UIGameRules : MonoBehaviour {
 		}
 
 		currentBaseRulesUI.Start(this);
+	}
+
+	protected virtual void OnGameRulesDeactivatedEvent(BaseGameRules rulesActivated)
+	{
+		GameHandler.GameRulesActivatedEvent -= OnGameRulesActivatedEvent;
+		GameHandler.GameRulesDeactivatedEvent -= OnGameRulesDeactivatedEvent;
+		if (currentBaseRulesUI != null)
+		{
+			currentBaseRulesUI.Stop();
+		}
 	}
 }

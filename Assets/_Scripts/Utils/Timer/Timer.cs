@@ -83,14 +83,15 @@ public class Timer {
 		Running = false;
 		timerWorking = false;
 		SecondsPassedForTik = 0;
-		if (concoroutines.HasContext(this))
+		if (concoroutines != null && concoroutines.HasContext(this))
 		{
 			concoroutines.StopContext(this);
 			if (TimerStoppedEvent != null)
 			{
 				TimerStoppedEvent(TimesLooped);
 			}
-		}
+			this.concoroutines = null;
+        }
 	}
 
 	public void Pause()

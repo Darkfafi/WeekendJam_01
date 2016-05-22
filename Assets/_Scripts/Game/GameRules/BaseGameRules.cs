@@ -10,20 +10,30 @@ public abstract class BaseGameRules
 	public BaseGameRules()
 	{
 		audioManager = Ramses.Confactory.ConfactoryFinder.Instance.Give<ConAudioManager>();
-       
     }
 
 	public virtual void Start(GameHandler handler)
 	{
-		if(GameHandler != null)
-		{
-			GameHandler.PlayerCharacterSpawnedEvent -= OnPlayerCharacterSpawn;
-			GameHandler.CorpseSpawnedEvent -= OnCorpseSpawnedEvent;
-		}
+		Stop();
 		this.GameHandler = handler;
 		GameHandler.PlayerCharacterSpawnedEvent += OnPlayerCharacterSpawn;
 		GameHandler.CorpseSpawnedEvent += OnCorpseSpawnedEvent;
 		Debug.Log("Game Started");
+	}
+
+	public virtual void Stop()
+	{
+		if (GameHandler != null)
+		{
+			GameHandler.PlayerCharacterSpawnedEvent -= OnPlayerCharacterSpawn;
+			GameHandler.CorpseSpawnedEvent -= OnCorpseSpawnedEvent;
+		}
+		Debug.Log("Game Ended");
+	}
+
+	public virtual void Clear()
+	{
+		GameHandler = null;
 	}
 
 	public virtual void OnPlayerCharacterSpawn(Player player)

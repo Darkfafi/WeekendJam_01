@@ -12,6 +12,7 @@ public class UIPlayerInfo : MonoBehaviour {
 
 	public Player LinkedPlayer { get; private set; }
 	public TextIndicationUI CurrentIndication { get; private set; }
+	public ScoreIndications CurrentIndicationType { get; private set; }
 
 	public Image PortraitImage { get { return portraitImage; } }
 	public Image BackgroundImage { get { return backgroundImage; } }
@@ -59,5 +60,6 @@ public class UIPlayerInfo : MonoBehaviour {
 				CurrentIndication = stocksIndication;
                 break;
 		}
+		CurrentIndicationType = indication;
 	}
 }
