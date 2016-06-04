@@ -42,7 +42,10 @@ public class StocksRulesUI : IBaseGameRulesUI
 	{
 		UIPlayerInfo playerInfo = uiGameRules.PlayerInfos.GetUIPlayerInfo(player);
 		playerInfo.CurrentIndication.IndicationText.text = stocks.ToString();
-		SetCurrentIndicationType(UIPlayerInfo.ScoreIndications.Stocks);
+		if (currentIndicationType != UIPlayerInfo.ScoreIndications.Stocks)
+		{ 
+			SetCurrentIndicationType(UIPlayerInfo.ScoreIndications.Stocks);
+		}
         if (stocks == 0)
 		{
 			playerInfo.BackgroundImage.color = Color.gray;
