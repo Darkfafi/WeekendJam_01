@@ -98,6 +98,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\Utils\Editor\GridLevelCreator\GridDisplay.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Editor\GridLevelCreator\ScreenGridEditor.cs" />
     <Compile Include="Assets\_Scripts\Utils\Editor\PlatformGridGenerator\TilesGenerator.cs" />
     <Compile Include="Assets\_Scripts\Utils\Editor\PlatformGridGenerator\TilesGeneratorEditor.cs" />
     <Compile Include="Assets\_Scripts\Utils\Editor\ScriptableObjects\ScriptableObjectFactory.cs" />

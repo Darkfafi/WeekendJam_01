@@ -62,6 +62,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\AI\Pathfinding\AIGridManager.cs" />
+    <Compile Include="Assets\_Scripts\AI\Pathfinding\AStarPlatforming.cs" />
+    <Compile Include="Assets\_Scripts\AI\Pathfinding\GenericGrid\Grid.cs" />
+    <Compile Include="Assets\_Scripts\AI\Pathfinding\GenericGrid\Node.cs" />
     <Compile Include="Assets\_Scripts\Animation\AnimationManager.cs" />
     <Compile Include="Assets\_Scripts\Audio\AudioLibrary.cs" />
     <Compile Include="Assets\_Scripts\Audio\ConAudioManager.cs" />
@@ -132,13 +136,13 @@
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\IConfactory.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactorySystem\IConfactoryFinder.cs" />
     <Compile Include="Assets\_Scripts\Utils\ConfactoryUtilItems\ConCoroutines.cs" />
-    <Compile Include="Assets\_Scripts\Utils\DontDestroyOnLoadObject.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\ConEntityDatabase.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\Entity.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\EntityFilter.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\IEntity.cs" />
     <Compile Include="Assets\_Scripts\Utils\Entities\MonoEntity.cs" />
     <Compile Include="Assets\_Scripts\Utils\Misc\BusyList.cs" />
+    <Compile Include="Assets\_Scripts\Utils\Misc\DontDestroyOnLoadObject.cs" />
     <Compile Include="Assets\_Scripts\Utils\Misc\TouchDetector2D.cs" />
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\Buttons\ListButtons\SectionIntListButton.cs" />
     <Compile Include="Assets\_Scripts\Utils\SectionButtons\Buttons\ListButtons\SectionListButton.cs" />
