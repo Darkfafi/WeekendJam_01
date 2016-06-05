@@ -21,7 +21,7 @@ public class GameHandler : MonoBehaviour {
 	public GameBattleHistoryLog BattleHistoryLog { get; private set; }
 	public BaseGameRules ActiveGameRules { get; private set; } // Set on which game mod has been selected (In confactory)
 	public SpawnPointObject[] Spawnpoints { get; private set; }
-	public MassEntity SpawnArea;
+	public MassEntity SpawnArea { get; private set; }
 
 	private ConAudioManager audioManager;
 
@@ -135,7 +135,7 @@ public class GameHandler : MonoBehaviour {
 	public void SpawnWeapon(WeaponFactory.AllWeapons weapon)
 	{
 		float spawnX = UnityEngine.Random.Range(10, 90) * 0.01f;
-		Vector3 spawn = new Vector3((SpawnArea.Size.x * spawnX) - SpawnArea.Size.x / 2, SpawnArea.Size.y / 2, -1);
+		Vector3 spawn = new Vector3(SpawnArea.transform.position.x + (SpawnArea.Size.x * spawnX) - SpawnArea.Size.x / 2, SpawnArea.transform.position.y + SpawnArea.Size.y / 2, -1);
         Weapon weaponSpawning = Instantiate<Weapon>(WeaponFactory.GetWeaponObject(weapon));
 		weaponSpawning.transform.eulerAngles = new Vector3(0, 0, -92);
 		SpawnObject(weaponSpawning, spawn, new Vector2(0, -0.6f));
