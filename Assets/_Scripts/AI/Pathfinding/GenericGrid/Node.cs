@@ -14,7 +14,7 @@ namespace Ramses.Grid
 		public int PositionX { get { return (int)Position.x; } }
 		public int PositionY { get { return (int)Position.y; } }
 
-		public void SetNode(IGrid grid, int xPosition, int yPosition, float size)
+		public virtual void SetNode(IGrid grid, int xPosition, int yPosition, float size)
 		{
 			Position = new Vector2(xPosition, yPosition);
 			Grid = grid;
