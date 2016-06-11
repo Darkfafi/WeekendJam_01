@@ -8,7 +8,7 @@ public class AIGridManager : MonoBehaviour
 	public Grid<AIGridNode> AIGrid { get; private set; }
 	[SerializeField] private SpriteRenderer tileUsed;
 	[SerializeField] private bool debugMode = false;
-
+	[SerializeField] private Character c;
 	private void Awake()
 	{
 		AIGrid = new Grid<AIGridNode>(tileUsed.bounds.size.x);
@@ -25,8 +25,8 @@ public class AIGridManager : MonoBehaviour
 				List<AIGridNode> waypointNodes = null;
                 if (Input.GetKey(KeyCode.Space))
 				{
-					waypointNodes = new List<AIGridNode>(AStarPlatforming.Search(AIGrid, new Vector2(10, 10),
-						AIGrid.GetNodeByWorldPointHit(Camera.main.ScreenToWorldPoint(Input.mousePosition)).Position, null));
+					waypointNodes = new List<AIGridNode>(AStarPlatforming.Search(AIGrid, (c != null ? AIGrid.GetNodeByWorldPointHit(c.transform.position).Position : new Vector2(10, 3)),
+						AIGrid.GetNodeByWorldPointHit(Camera.main.ScreenToWorldPoint(Input.mousePosition)).Position, (c != null ? c.PlatformerMovement : null)));
 				}
 
 				foreach (AIGridNode node in AIGrid.GetAllNodesArray())

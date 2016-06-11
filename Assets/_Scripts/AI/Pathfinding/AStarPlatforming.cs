@@ -57,6 +57,13 @@ public class AStarPlatforming {
 					{
 						continue;
 					}
+					if (platformerMovement != null)
+					{
+						if (!PassesPlatformerRestrictions(aiGrid, neighbourChecking, platformerMovement))
+						{
+							continue;
+						}
+					}
 
 					neighbourChecking.Data.G = DistanceValueCheck(startGridPos, neighbourChecking.Position);
 
@@ -78,6 +85,12 @@ public class AStarPlatforming {
 		int yValue = (int)Mathf.Abs(end.y - start.y);
 
 		return (xValue + yValue);
+	}
+
+	private static bool PassesPlatformerRestrictions(Grid<AIGridNode> aiGrid, AIGridNode node, PlatformerMovement2D movement)
+	{
+		bool result = CheckPassableHeightNode(aiGrid, node, movement.SizeCollider.y);
+		return result;
 	}
 
 	private static int SortOnF(AIGridNode a, AIGridNode b)

@@ -26,11 +26,11 @@ public class Character : MonoEntity {
 	[SerializeField]
 	private DamageHitBox hitBox;
 
+	public PlatformerMovement2D PlatformerMovement { get; private set; }	// TODO make this private and find another way to pass its information
 	private BusyList busyList = new BusyList();
 	private Animator animator;
 	private ObjectPicker objectPicker;
 	private WeaponHolder weaponHolder;
-    private PlatformerMovement2D platformerMovement;
 	private CharacterAnimationManager animationHandler;
 	private InputUser userInput;
 	private TouchDetector2D touch2D;
@@ -72,14 +72,14 @@ public class Character : MonoEntity {
 		SizeCharacter = CharacterCollider.bounds.size;
         touch2D.DistanceCheck = 0.05f;
 
-		platformerMovement = new PlatformerMovement2D(transform, CharacterCollider, CharacterRigidbody2D, touch2D);
-		platformerMovement.MovementSpeed = movementSpeed;
-		platformerMovement.JumpForce = jumpForce;
+		PlatformerMovement = new PlatformerMovement2D(transform, CharacterCollider, CharacterRigidbody2D, touch2D);
+		PlatformerMovement.MovementSpeed = movementSpeed;
+		PlatformerMovement.JumpForce = jumpForce;
 
-		platformerMovement.MoveEvent += OnMovedEvent;
-		platformerMovement.LostContactWithGroundEvent += OnNoGroundEvent;
-		platformerMovement.LandOnGroundEvent += OnLandGroundEvent;
-		platformerMovement.JumpEvent += OnJumpEvent;
+		PlatformerMovement.MoveEvent += OnMovedEvent;
+		PlatformerMovement.LostContactWithGroundEvent += OnNoGroundEvent;
+		PlatformerMovement.LandOnGroundEvent += OnLandGroundEvent;
+		PlatformerMovement.JumpEvent += OnJumpEvent;
 
 		weaponHolder = new WeaponHolder(this.transform, hitBox, objectPicker);
         weaponHolder.DropWeapon(false);
@@ -130,7 +130,7 @@ public class Character : MonoEntity {
 				{
 					if (name == InputNames.JUMP)
 					{
-						platformerMovement.Jump();
+						PlatformerMovement.Jump();
 					}
 
 					if (name == InputNames.GRAB_THROW)
@@ -247,9 +247,9 @@ public class Character : MonoEntity {
 	// Move & Attack are private because they will be triggered by AI using input user stuff.
 	private void Move(int direction)
 	{
-		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT) && platformerMovement.OnGround || !platformerMovement.OnGround)
+		if (!busyList.InBusyAction(BusyConsts.BUSY_LAYER_COMBAT) && PlatformerMovement.OnGround || !PlatformerMovement.OnGround)
 		{
-			platformerMovement.Move(direction);
+			PlatformerMovement.Move(direction);
 		}
 	}
 
@@ -363,12 +363,12 @@ public class Character : MonoEntity {
 
 	private void RemoveEventListeners()
 	{
-		if (platformerMovement != null)
+		if (PlatformerMovement != null)
 		{
-			platformerMovement.MoveEvent -= OnMovedEvent;
-			platformerMovement.LostContactWithGroundEvent -= OnNoGroundEvent;
-			platformerMovement.LandOnGroundEvent -= OnLandGroundEvent;
-			platformerMovement.JumpEvent -= OnJumpEvent;
+			PlatformerMovement.MoveEvent -= OnMovedEvent;
+			PlatformerMovement.LostContactWithGroundEvent -= OnNoGroundEvent;
+			PlatformerMovement.LandOnGroundEvent -= OnLandGroundEvent;
+			PlatformerMovement.JumpEvent -= OnJumpEvent;
 		}
 		if (animationHandler != null)
 		{
