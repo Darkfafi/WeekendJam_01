@@ -73,8 +73,8 @@ public class Character : MonoEntity {
         touch2D.DistanceCheck = 0.05f;
 
 		platformerMovement = new PlatformerMovement2D(transform, CharacterCollider, CharacterRigidbody2D, touch2D);
-		platformerMovement.movementSpeed = movementSpeed;
-		platformerMovement.jumpForce = jumpForce;
+		platformerMovement.MovementSpeed = movementSpeed;
+		platformerMovement.JumpForce = jumpForce;
 
 		platformerMovement.MoveEvent += OnMovedEvent;
 		platformerMovement.LostContactWithGroundEvent += OnNoGroundEvent;

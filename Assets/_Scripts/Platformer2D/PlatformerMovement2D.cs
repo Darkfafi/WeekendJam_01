@@ -19,30 +19,35 @@ public class PlatformerMovement2D {
 	public const int DIR_RIGHT = 1;
 
 	#region Options Members
-	public int maxJumps = 2;
-	public float movementSpeed = 5;
-	public float jumpForce = 7;
-	public float multiplyEachJumpWith = 0.8f;
-	public bool adjustScaleDirectionToMovement = true;
-	// TODO Add wallsliding and wall jumping booleans
+	public int MaxJumps = 2;
+	public float MovementSpeed = 5;
+	public float JumpForce = 7;
+	public float MultiplyEachJumpWith = 0.8f;
+	public bool AdjustScaleDirectionToMovement = true;
 	#endregion
+
+	public Vector2 SizeCollider { get { return coll2D.bounds.size; } }
+
 	private TouchDetector2D touchDetector2D;
 	private Rigidbody2D rbody2D;
 	private Transform transformObject;
+	private Collider2D coll2D;
 
 	public int CurrentDirection { get; private set; }
 	private int jumpsBeforeGroundHit = 0; // if == 2 then the player dubble jumped
+
 	public bool OnGround { get { return onGround; } }
 	private bool onGround = false;
 
-	public PlatformerMovement2D(Transform transformObject, Collider2D colliderObject,Rigidbody2D rigidbodyObject, TouchDetector2D touchDetector = null)
+	public PlatformerMovement2D(Transform transformObject, Collider2D colliderObject, Rigidbody2D rigidbodyObject, TouchDetector2D touchDetector = null)
 	{
 		this.transformObject = transformObject;
         touchDetector2D = (touchDetector != null) ? touchDetector : transformObject.gameObject.AddComponent<TouchDetector2D>();
 		touchDetector2D.MarginBordersVertical = 0.3f;
 		touchDetector2D.MarginBordersHorizontal = 0.01f;
 		rbody2D = rigidbodyObject;
-		touchDetector2D.RunOn(colliderObject);
+		coll2D = colliderObject;
+        touchDetector2D.RunOn(coll2D);
 
 		touchDetector2D.HitEvent += OnHitEvent;
 		touchDetector2D.HitEndEvent += OnHitEndEvent;
@@ -60,7 +65,7 @@ public class PlatformerMovement2D {
         }
 		if (touchDetector2D.GetHitInfoFromSide(new Vector2(horizontalDirection, 0)) == null) //Don't move if something is blocking your path
 		{
-			float calculatedSpeed = (movementSpeed * speedMultiplier);
+			float calculatedSpeed = (MovementSpeed * speedMultiplier);
             transformObject.Translate(new Vector2(horizontalDirection * calculatedSpeed, 0) * Time.deltaTime);
 			CurrentDirection = horizontalDirection;
 			if(MoveEvent != null)
@@ -68,7 +73,7 @@ public class PlatformerMovement2D {
 				MoveEvent(calculatedSpeed);
             }
 		}
-		if (adjustScaleDirectionToMovement)
+		if (AdjustScaleDirectionToMovement)
 		{
 			transformObject.localScale = new Vector3(Mathf.Abs(transformObject.localScale.x) * horizontalDirection, transformObject.localScale.y, transformObject.localScale.z);
         }
@@ -77,9 +82,9 @@ public class PlatformerMovement2D {
 	public void Jump(float jumpForceMultiplier = 1)
 	{
 		if(touchDetector2D.GetHitInfoFromSide(Vector2.up) == null){
-			if (jumpsBeforeGroundHit < maxJumps)
+			if (jumpsBeforeGroundHit < MaxJumps)
 			{
-				float calculatedJumpForce = (jumpForce * (Mathf.Pow(multiplyEachJumpWith, jumpsBeforeGroundHit))) * jumpForceMultiplier;
+				float calculatedJumpForce = (JumpForce * (Mathf.Pow(MultiplyEachJumpWith, jumpsBeforeGroundHit))) * jumpForceMultiplier;
                 rbody2D.velocity = new Vector2(0, calculatedJumpForce);
 				if(JumpEvent != null)
 				{
@@ -126,6 +131,7 @@ public class PlatformerMovement2D {
             }
 		}
 	}
+
 	private void OnHitEndEvent(Vector2 side, Collider2D collider)
 	{
 		if (side == Vector2.down)
