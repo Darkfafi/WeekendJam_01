@@ -10,6 +10,8 @@ namespace Ramses.Grid
 		public float TileSize { get; private set; }
 
 		private List<List<T>> allNodes_YX_Oder = new List<List<T>>();
+		public int Width;
+		public int Height;
 
 		public Grid(float tileSize)
 		{
@@ -18,6 +20,8 @@ namespace Ramses.Grid
 
 		public void SetGrid(int width, int height)
 		{
+			Width = width;
+			Height = height;
 			T node = null;
 			List<T> yRowList;
 			for (int yRow = 0; yRow < height; yRow++)
@@ -37,11 +41,11 @@ namespace Ramses.Grid
 		{
 			T nodeToReturn = null;
 
-			if (x >= 0 && y >= 0 && x < allNodes_YX_Oder.Count && y < allNodes_YX_Oder[x].Count)
+			if (x >= 0 && y >= 0 && y < allNodes_YX_Oder.Count && x < allNodes_YX_Oder[y].Count)
 			{
-				if (allNodes_YX_Oder[x] != null && allNodes_YX_Oder[x][y] != null)
+				if (allNodes_YX_Oder[y] != null && allNodes_YX_Oder[y][x] != null)
 				{
-					nodeToReturn = allNodes_YX_Oder[x][y];
+					nodeToReturn = allNodes_YX_Oder[y][x];
 				}
 			}
 
@@ -50,15 +54,12 @@ namespace Ramses.Grid
 
 		public T GetNodeByWorldPointHit(Vector2 hitPosition)
 		{
-			T[] ar = GetAllNodesArray();
-			for(int i = 0; i < ar.Length; i++)
-			{
-				if(ar[i].WorldPositionInBounds(hitPosition))
-				{
-					return ar[i];
-				}
-			}
-			return null;
+			float gridWidth = TileSize * Width;
+			float gridHeight = TileSize * Height;
+			Vector2 hitNodePos = new Vector2(Mathf.FloorToInt(((hitPosition.x + TileSize / 2) / gridWidth) * Width),
+				Mathf.FloorToInt(((hitPosition.y + TileSize / 2) / gridHeight) * Height));
+			
+			return GetNode(hitNodePos);
 		}
 
 		public Vector2 GetNodeWorldPosition(int x, int y)
