@@ -21,7 +21,7 @@ public class PlatformerMovement2D {
 	#region Options Members
 	public int MaxJumps = 2;
 	public float MovementSpeed = 5;
-	public float JumpForce = 7;
+	public float JumpHeight = 3;
 	public float MultiplyEachJumpWith = 0.8f;
 	public bool AdjustScaleDirectionToMovement = true;
 	#endregion
@@ -84,9 +84,10 @@ public class PlatformerMovement2D {
 		if(touchDetector2D.GetHitInfoFromSide(Vector2.up) == null){
 			if (jumpsBeforeGroundHit < MaxJumps)
 			{
-				float calculatedJumpForce = (JumpForce * (Mathf.Pow(MultiplyEachJumpWith, jumpsBeforeGroundHit))) * jumpForceMultiplier;
-                rbody2D.velocity = new Vector2(0, calculatedJumpForce);
-				if(JumpEvent != null)
+				float calculatedJumpForce = (JumpHeight * (Mathf.Pow(MultiplyEachJumpWith, jumpsBeforeGroundHit))) * jumpForceMultiplier;
+				rbody2D.velocity = new Vector2(0, Mathf.Sqrt(-2f * Physics2D.gravity.y * calculatedJumpForce));
+
+                if (JumpEvent != null)
 				{
 					JumpEvent(calculatedJumpForce);
                 }

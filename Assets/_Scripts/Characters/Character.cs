@@ -40,7 +40,7 @@ public class Character : MonoEntity {
 	// Options
 	[SerializeField] private float throwForceMod = 1.1f;
 	[SerializeField] private float movementSpeed = 6f;
-	[SerializeField] private float jumpForce = 8f;
+	[SerializeField] private float jumpHeight = 3f;
 
 	protected override void Awake()
 	{
@@ -74,7 +74,7 @@ public class Character : MonoEntity {
 
 		PlatformerMovement = new PlatformerMovement2D(transform, CharacterCollider, CharacterRigidbody2D, touch2D);
 		PlatformerMovement.MovementSpeed = movementSpeed;
-		PlatformerMovement.JumpForce = jumpForce;
+		PlatformerMovement.JumpHeight = jumpHeight;
 
 		PlatformerMovement.MoveEvent += OnMovedEvent;
 		PlatformerMovement.LostContactWithGroundEvent += OnNoGroundEvent;
