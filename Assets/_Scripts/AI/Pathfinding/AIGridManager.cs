@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Ramses.Grid;
+using System.Collections.Generic;
 
 public class AIGridManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class AIGridManager : MonoBehaviour
 	private void Awake()
 	{
 		AIGrid = new Grid<AIGridNode>(tileUsed.bounds.size.x);
-		AIGrid.SetGrid(100, 100);
+		AIGrid.SetGrid(35, 15);
 	}
 
 #if UNITY_EDITOR
@@ -21,6 +22,13 @@ public class AIGridManager : MonoBehaviour
 		{
 			if (AIGrid != null)
 			{
+				List<AIGridNode> waypointNodes = null;
+                if (Input.GetKey(KeyCode.Space))
+				{
+					waypointNodes = new List<AIGridNode>(AStarPlatforming.Search(AIGrid, new Vector2(10, 10),
+						AIGrid.GetNodeByWorldPointHit(Camera.main.ScreenToWorldPoint(Input.mousePosition)).Position, null));
+				}
+
 				foreach (AIGridNode node in AIGrid.GetAllNodesArray())
 				{
 					Gizmos.color = new Color(1, 0, 0, 0.5f);
@@ -28,7 +36,7 @@ public class AIGridManager : MonoBehaviour
 					{
 						Gizmos.color = Color.green;
 					}
-					if (node.Data.Solid)
+					if (node.Data.Solid || (waypointNodes != null && waypointNodes.Count > 0 && waypointNodes.Contains(node))) 
 					{
 						Gizmos.DrawCube(node.GetWorldPosition(), new Vector3(node.Size, node.Size, node.Size));
 					}
@@ -66,13 +74,33 @@ public class AIGridNode : Node<AIGridNodeData>
 public class AIGridNodeData : INodeData
 {
 	public bool Solid { get { return (hit.collider != null); } }
+
 	private RaycastHit2D hit;
 	private AIGridNode node;
+
+	// costs
+	public float G = 0;
+	public float H = 0;
+	public float F { get { return G + H; } }
+	public AIGridNode ParentNode = null;
+	public AIGridNode[] Neighbours { get; private set; }
+
+	public void ResetSearchData()
+	{
+		G = 0;
+		H = 0;
+		ParentNode = null;
+	}
 
 	public AIGridNodeData(AIGridNode node)
 	{
 		this.node = node;
     }
+
+	public void SetNeighbours(AIGridNode[] neighbours)
+	{
+		this.Neighbours = neighbours;
+	}
 
 	public void SetData(RaycastHit2D hit)
 	{
