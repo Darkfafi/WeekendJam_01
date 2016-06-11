@@ -36,14 +36,25 @@ public class AIGridManager : MonoBehaviour
 					{
 						Gizmos.color = Color.green;
 					}
-					if (node.Data.Solid || (waypointNodes != null && waypointNodes.Count > 0 && waypointNodes.Contains(node))) 
+					if (node.Data.IsGround())
 					{
-						Gizmos.DrawCube(node.GetWorldPosition(), new Vector3(node.Size, node.Size, node.Size));
+						Gizmos.color = Color.green;
+					}
+					else if (node.Data.IsSolid())
+					{
+						Gizmos.color = Color.red;
+					}
+					else if((waypointNodes != null && waypointNodes.Count > 0 && waypointNodes.Contains(node)))
+					{
+						Gizmos.color = Color.blue;
 					}
 					else
 					{
 						Gizmos.DrawWireCube(node.GetWorldPosition(), new Vector3(node.Size, node.Size, node.Size));
+						continue;
 					}
+					Gizmos.color = Gizmos.color.AlphaVersion(0.5f);
+					Gizmos.DrawCube(node.GetWorldPosition(), new Vector3(node.Size, node.Size, node.Size));
 				}
 			}
 		}
@@ -73,15 +84,16 @@ public class AIGridNode : Node<AIGridNodeData>
 
 public class AIGridNodeData : INodeData
 {
-	public bool Solid { get { return (hit.collider != null); } }
-
 	private RaycastHit2D hit;
 	private AIGridNode node;
 
 	// costs
 	public float G = 0;
 	public float H = 0;
+	public float J = 0; // Jump cost
+
 	public float F { get { return G + H; } }
+
 	public AIGridNode ParentNode = null;
 	public AIGridNode[] Neighbours { get; private set; }
 
@@ -105,5 +117,25 @@ public class AIGridNodeData : INodeData
 	public void SetData(RaycastHit2D hit)
 	{
 		this.hit = hit;
+		
+	}
+
+	public bool IsGround()
+	{
+		if (!IsSolid())
+		{
+			Grid<AIGridNode> gr = node.Grid as Grid<AIGridNode>;
+			AIGridNode n = gr.GetNode(node.PositionX, node.PositionY - 1);
+            if (n != null && n.Data.IsSolid())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool IsSolid()
+	{
+		return hit.collider != null;
 	}
 }

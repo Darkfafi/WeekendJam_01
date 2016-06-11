@@ -14,8 +14,8 @@ public class AStarPlatforming {
 		AIGridNode currentNode = aiGrid.GetNode(startGridPos);
 		AIGridNode endNode = aiGrid.GetNode(endGridPos);
 
-		if (currentNode != null && !currentNode.Data.Solid 
-			&& endNode != null && !endNode.Data.Solid)
+		if (currentNode != null && !currentNode.Data.IsSolid() 
+			&& endNode != null && !endNode.Data.IsSolid())
 		{
 			ResetGrid(aiGrid);
 
@@ -53,7 +53,7 @@ public class AStarPlatforming {
 				{
 					neighbourChecking = currentNode.Data.Neighbours[i];
 
-					if (closedNodes.Contains(neighbourChecking) || neighbourChecking.Data.Solid)
+					if (closedNodes.Contains(neighbourChecking) || neighbourChecking.Data.IsSolid())
 					{
 						continue;
 					}
@@ -140,12 +140,16 @@ public class AStarPlatforming {
 		return nodes.ToArray();
 	}
 
+	/// <summary>
+	/// Checks if the node is at a location the player can reach with his own height. 
+	/// In other words, that the nodes above it which the player will collide if he stands on the target node are not solid.
+	/// </summary>
 	private static bool CheckPassableHeightNode(Grid<AIGridNode> aiGrid, AIGridNode node, float height)
 	{
 		AIGridNode checkingNode = node;
         while (height > 0)
 		{
-			if (checkingNode != null && !checkingNode.Data.Solid)
+			if (checkingNode != null && !checkingNode.Data.IsSolid())
 			{
 				height -= checkingNode.Size;
 				checkingNode = aiGrid.GetNode(checkingNode.PositionX, checkingNode.PositionY + 1);
