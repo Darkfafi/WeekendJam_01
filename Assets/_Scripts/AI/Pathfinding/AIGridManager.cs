@@ -9,6 +9,9 @@ public class AIGridManager : MonoBehaviour
 	[SerializeField] private SpriteRenderer tileUsed;
 	[SerializeField] private bool debugMode = false;
 	[SerializeField] private Character c;
+
+	private List<AIGridNode> waypointNodes = null;
+
 	private void Awake()
 	{
 		AIGrid = new Grid<AIGridNode>(tileUsed.bounds.size.x);
@@ -22,7 +25,6 @@ public class AIGridManager : MonoBehaviour
 		{
 			if (AIGrid != null)
 			{
-				List<AIGridNode> waypointNodes = null;
                 if (Input.GetKey(KeyCode.Space))
 				{
 					waypointNodes = new List<AIGridNode>(AStarPlatforming.Search(AIGrid, (c != null ? AIGrid.GetNodeByWorldPointHit(c.transform.position).Position : new Vector2(10, 3)),
@@ -32,26 +34,32 @@ public class AIGridManager : MonoBehaviour
 				foreach (AIGridNode node in AIGrid.GetAllNodesArray())
 				{
 					Gizmos.color = new Color(1, 0, 0, 0.5f);
-					if (node.PositionX == 0 && node.PositionY == 0)
+					bool checkPoint = false;
+					if ((waypointNodes != null && waypointNodes.Count > 0 && waypointNodes.Contains(node)))
 					{
-						Gizmos.color = Color.green;
-					}
-					if (node.Data.IsGround())
+						GizmosExtensions.DrawString(node.Data.J.ToString(), new Vector3(node.GetWorldPosition().x, node.GetWorldPosition().y + node.Size, 1), Color.white);
+                        Gizmos.color = Color.blue;
+						checkPoint = true;
+                    }
+					if (!checkPoint)
 					{
-						Gizmos.color = Color.green;
-					}
-					else if (node.Data.IsSolid())
-					{
-						Gizmos.color = Color.red;
-					}
-					else if((waypointNodes != null && waypointNodes.Count > 0 && waypointNodes.Contains(node)))
-					{
-						Gizmos.color = Color.blue;
-					}
-					else
-					{
-						Gizmos.DrawWireCube(node.GetWorldPosition(), new Vector3(node.Size, node.Size, node.Size));
-						continue;
+						if (node.PositionX == 0 && node.PositionY == 0)
+						{
+							Gizmos.color = Color.green;
+						}
+						if (node.Data.IsGround())
+						{
+							Gizmos.color = Color.green;
+						}
+						else if (node.Data.IsSolid())
+						{
+							Gizmos.color = Color.red;
+						}
+						else
+						{
+							Gizmos.DrawWireCube(node.GetWorldPosition(), new Vector3(node.Size, node.Size, node.Size));
+							continue;
+						}
 					}
 					Gizmos.color = Gizmos.color.AlphaVersion(0.5f);
 					Gizmos.DrawCube(node.GetWorldPosition(), new Vector3(node.Size, node.Size, node.Size));
@@ -88,11 +96,11 @@ public class AIGridNodeData : INodeData
 	private AIGridNode node;
 
 	// costs
-	public float G = 0;
-	public float H = 0;
-	public float J = 0; // Jump cost
+	public int G = 0;
+	public int H = 0;
+	public int J = 0; // Jump cost
 
-	public float F { get { return G + H; } }
+	public float F { get { return G + H + J; } }
 
 	public AIGridNode ParentNode = null;
 	public AIGridNode[] Neighbours { get; private set; }
@@ -101,6 +109,7 @@ public class AIGridNodeData : INodeData
 	{
 		G = 0;
 		H = 0;
+		J = 0;
 		ParentNode = null;
 	}
 

@@ -127,6 +127,7 @@
     <Compile Include="Assets\_Scripts\UI\NotificationBar.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ArrayExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ColorExtensions.cs" />
+    <Compile Include="Assets\_Scripts\Utils\ClassExtensions\GizmosExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ImageExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\ListExtensions.cs" />
     <Compile Include="Assets\_Scripts\Utils\ClassExtensions\Vactor2DExtensions.cs" />

@@ -14,15 +14,22 @@ public class AStarPlatforming {
 		AIGridNode currentNode = aiGrid.GetNode(startGridPos);
 		AIGridNode endNode = aiGrid.GetNode(endGridPos);
 
-		if (currentNode != null && !currentNode.Data.IsSolid() 
+        if (currentNode != null && !currentNode.Data.IsSolid() 
 			&& endNode != null && !endNode.Data.IsSolid())
 		{
 			ResetGrid(aiGrid);
 
 			List<AIGridNode> openNodes = new List<AIGridNode>();
 			List<AIGridNode> closedNodes = new List<AIGridNode>();
-
 			AIGridNode neighbourChecking = null;
+
+			// Jump calculations
+			int maxJumpNodeCost = CalculateMaxJumpCost(platformerMovement.GetPotentialMaxJumpHeight(), aiGrid.TileSize);
+
+			if (!currentNode.Data.IsGround())
+			{
+				currentNode.Data.J = maxJumpNodeCost;
+            }
 
 			openNodes.Add(currentNode);
 			while (openNodes.Count > 0)
@@ -57,6 +64,7 @@ public class AStarPlatforming {
 					{
 						continue;
 					}
+
 					if (platformerMovement != null)
 					{
 						if (!PassesPlatformerRestrictions(aiGrid, neighbourChecking, platformerMovement))
@@ -64,11 +72,19 @@ public class AStarPlatforming {
 							continue;
 						}
 					}
-
 					neighbourChecking.Data.G = DistanceValueCheck(startGridPos, neighbourChecking.Position);
+
+					if(currentNode.Data.J >= maxJumpNodeCost)
+					{
+						if(neighbourChecking.PositionY > currentNode.PositionY
+							|| (neighbourChecking.PositionX != currentNode.PositionX && currentNode.Data.J % 2 != 0))
+						continue;
+					}
+
 
 					if (!openNodes.Contains(neighbourChecking))
 					{
+						neighbourChecking.Data.J = CalculateJumpValue(currentNode, neighbourChecking);
 						neighbourChecking.Data.H = DistanceValueCheck(neighbourChecking.Position, endGridPos);
 						openNodes.Add(neighbourChecking);
 						neighbourChecking.Data.ParentNode = currentNode;
@@ -161,5 +177,35 @@ public class AStarPlatforming {
 		}
 
 		return true;
+	}
+
+
+	// jumping
+	private static int CalculateMaxJumpCost(float jumpHeight, float nodeSize)
+	{
+		int cost = 0;
+		while(jumpHeight > nodeSize)
+		{
+			jumpHeight -= nodeSize;
+			cost += 2;
+		}
+		return cost;
+	}
+
+	private static int CalculateJumpValue(AIGridNode currentNode, AIGridNode checkingNeighbourNode)
+	{
+		if (!checkingNeighbourNode.Data.IsGround())
+		{
+			int value = currentNode.Data.J + 1;
+			if (value % 2 != 0 && currentNode.PositionY != checkingNeighbourNode.PositionY)
+			{
+				value++;
+			}
+			return value;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }
