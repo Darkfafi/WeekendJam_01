@@ -85,7 +85,7 @@ public class PlatformerMovement2D {
 			if (jumpsBeforeGroundHit < MaxJumps)
 			{
 				float calculatedJumpForce = (JumpHeight * (Mathf.Pow(MultiplyEachJumpWith, jumpsBeforeGroundHit))) * jumpForceMultiplier;
-				rbody2D.velocity = new Vector2(0, Mathf.Sqrt(-2f * Physics2D.gravity.y * calculatedJumpForce));
+				rbody2D.velocity = new Vector2(0, Mathf.Sqrt(calculatedJumpForce * -2 * Physics2D.gravity.y * rbody2D.gravityScale));
 
                 if (JumpEvent != null)
 				{
@@ -110,6 +110,16 @@ public class PlatformerMovement2D {
 				jumpsBeforeGroundHit++;
 			}
 		}
+	}
+
+	public float GetPotentialMaxJumpHeight()
+	{
+		float j = JumpHeight;
+		for(int i = 1; i < MaxJumps; i++)
+		{
+			j += (JumpHeight * Mathf.Pow(MultiplyEachJumpWith, i)) * 0.8f;
+		}
+		return j;
 	}
 
 	private void OnHitEvent(Vector2 side, Collider2D collider)
