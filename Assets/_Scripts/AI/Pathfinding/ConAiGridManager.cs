@@ -1,22 +1,61 @@
-﻿/*
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
+using Ramses.Confactory;
+using System;
 using Ramses.Grid;
 using System.Collections.Generic;
+using Ramses.Entities;
 
-public class AIGridManager : MonoBehaviour
+public class ConAiGridManager : MonoBehaviour, IConfactory
 {
 	public Grid<AIGridNode> AIGrid { get; private set; }
-	[SerializeField] private SpriteRenderer tileUsed;
-	[SerializeField] private bool debugMode = false;
-	[SerializeField] private Character c;
+
+	[SerializeField]
+	private bool debugMode = false;
 
 	private List<AIGridNode> waypointNodes = null;
 
-	private void Awake()
+	public void ConClear()
 	{
-		AIGrid = new Grid<AIGridNode>(tileUsed.bounds.size.x);
-		AIGrid.SetGrid(35, 15);
+		waypointNodes = null;
+		AIGrid.ClearGrid();
+    }
+
+	public void ConStruct()
+	{
+		MassEntity gbi = ConfactoryFinder.Instance.Give<ConEntityDatabase>().GetAnyEntity<MassEntity>("GridBoundsItem");
+		SpriteRenderer tileObject = Resources.Load<SpriteRenderer>("Tiles/BaseTile");
+		AIGrid = new Grid<AIGridNode>(tileObject.bounds.size.x, 
+			(gbi != null ? new Vector2(gbi.transform.position.x - gbi.Size.x * 0.5f, gbi.transform.position.y - gbi.Size.y * 0.5f) : new Vector2()));
+		if(gbi != null)
+		{
+			AIGrid.SetGrid(Mathf.CeilToInt(SizeToTiles(gbi.Size.x, AIGrid.TileSize) * 1.1f),Mathf.CeilToInt(SizeToTiles(gbi.Size.y, AIGrid.TileSize) * 1.1f));
+		}
+		else
+		{
+			AIGrid.SetGrid(100, 100);
+		}
+    }
+
+	public void OnSceneSwitch(int newSceneIndex)
+	{
+		ConfactoryFinder.Instance.Delete<ConAiGridManager>();
+	}
+
+	public void SetDebugWaypoints(AIGridNode[] nodes)
+	{
+		waypointNodes = new List<AIGridNode>(nodes);
+	}
+
+	private int SizeToTiles(float size, float tileSize)
+	{
+		int tiles = 0;
+		while(size >= tileSize)
+		{
+			size -= tileSize;
+			tiles++;
+		}
+		return tiles;
 	}
 
 #if UNITY_EDITOR
@@ -26,12 +65,6 @@ public class AIGridManager : MonoBehaviour
 		{
 			if (AIGrid != null)
 			{
-                if (Input.GetKey(KeyCode.Space))
-				{
-					waypointNodes = new List<AIGridNode>(AStarPlatforming.Search(AIGrid, (c != null ? AIGrid.GetNodeByWorldPointHit(c.transform.position).Position : new Vector2(10, 3)),
-						AIGrid.GetNodeByWorldPointHit(Camera.main.ScreenToWorldPoint(Input.mousePosition)).Position, (c != null ? c.PlatformerMovement : null)));
-				}
-
 				foreach (AIGridNode node in AIGrid.GetAllNodesArray())
 				{
 					Gizmos.color = new Color(1, 0, 0, 0.5f);
@@ -39,9 +72,9 @@ public class AIGridManager : MonoBehaviour
 					if ((waypointNodes != null && waypointNodes.Count > 0 && waypointNodes.Contains(node)))
 					{
 						GizmosExtensions.DrawString(node.Data.J.ToString(), new Vector3(node.GetWorldPosition().x, node.GetWorldPosition().y + node.Size, 1), Color.white);
-                        Gizmos.color = Color.blue;
+						Gizmos.color = Color.blue;
 						checkPoint = true;
-                    }
+					}
 					if (!checkPoint)
 					{
 						if (node.PositionX == 0 && node.PositionY == 0)
@@ -117,7 +150,7 @@ public class AIGridNodeData : INodeData
 	public AIGridNodeData(AIGridNode node)
 	{
 		this.node = node;
-    }
+	}
 
 	public void SetNeighbours(AIGridNode[] neighbours)
 	{
@@ -127,7 +160,7 @@ public class AIGridNodeData : INodeData
 	public void SetData(RaycastHit2D hit)
 	{
 		this.hit = hit;
-		
+
 	}
 
 	public bool IsGround()
@@ -136,7 +169,7 @@ public class AIGridNodeData : INodeData
 		{
 			Grid<AIGridNode> gr = node.Grid as Grid<AIGridNode>;
 			AIGridNode n = gr.GetNode(node.PositionX, node.PositionY - 1);
-            if (n != null && n.Data.IsSolid())
+			if (n != null && n.Data.IsSolid())
 			{
 				return true;
 			}
@@ -149,4 +182,3 @@ public class AIGridNodeData : INodeData
 		return hit.collider != null;
 	}
 }
-*/

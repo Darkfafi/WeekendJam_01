@@ -29,7 +29,7 @@ namespace Ramses.Grid
 
 		public Vector2 GetWorldPosition()
 		{
-			return new Vector2(Size * PositionX, Size * PositionY);
+			return new Vector2((Size * PositionX) + Grid.Offset.x, (Size * PositionY) + Grid.Offset.y);
 		}
 
 		public bool WorldPositionInBounds(Vector2 position)

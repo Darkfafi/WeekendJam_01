@@ -27,6 +27,8 @@ public class PlatformerMovement2D {
 	#endregion
 
 	public Vector2 SizeCollider { get { return coll2D.bounds.size; } }
+	public Vector2 Position { get { return transformObject.position; } }
+	public int TimesJumpedBeforeGroundHit { get { return jumpsBeforeGroundHit; } }
 
 	private TouchDetector2D touchDetector2D;
 	private Rigidbody2D rbody2D;
@@ -114,8 +116,13 @@ public class PlatformerMovement2D {
 
 	public float GetPotentialMaxJumpHeight()
 	{
+		return GetPotentialMaxJumpHeight(MaxJumps);
+    }
+
+	public float GetPotentialMaxJumpHeight(int jumpAmount)
+	{
 		float j = JumpHeight;
-		for(int i = 1; i < MaxJumps; i++)
+		for(int i = 1; i < jumpAmount; i++)
 		{
 			j += (JumpHeight * Mathf.Pow(MultiplyEachJumpWith, i)) * 0.8f;
 		}

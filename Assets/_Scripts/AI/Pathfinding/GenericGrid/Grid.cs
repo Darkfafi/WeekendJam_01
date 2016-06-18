@@ -13,9 +13,19 @@ namespace Ramses.Grid
 		public int Width;
 		public int Height;
 
-		public Grid(float tileSize)
+		public Vector2 Offset { get; private set; }
+
+		public Grid(float tileSize, Vector2? offset = null)
 		{
 			this.TileSize = tileSize;
+			if(offset.HasValue)
+			{
+				Offset = offset.Value;
+			}
+			else
+			{
+				offset = new Vector2();
+			}
 		}
 
 		public void SetGrid(int width, int height)
@@ -35,6 +45,14 @@ namespace Ramses.Grid
 					yRowList.Add(node);
 				}
 			}
+		}
+
+		public void ClearGrid()
+		{
+			Width = 0;
+			Height = 0;
+			allNodes_YX_Oder.Clear();
+			TileSize = 0;
 		}
 
 		public T GetNode(int x, int y)
@@ -106,6 +124,7 @@ namespace Ramses.Grid
 	public interface IGrid
 	{
 		float TileSize { get; }
+		Vector2 Offset { get; }
 
 		void SetGrid(int width, int height);
 		INode GetNode(int x, int y);

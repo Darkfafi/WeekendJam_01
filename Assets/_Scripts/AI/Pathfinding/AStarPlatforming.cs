@@ -44,7 +44,7 @@ public class AStarPlatforming {
 						currentNode = currentNode.Data.ParentNode;
 					}
 					allWaypointNodes.Reverse();
-
+					//FilterWaypoints(allWaypointNodes);
 					return allWaypointNodes.ToArray(); // Return path with all waypoints
 				}
 
@@ -94,6 +94,30 @@ public class AStarPlatforming {
 		}
 		return allWaypointNodes.ToArray();
 	}
+
+	/*
+	private static void FilterWaypoints(List<AIGridNode> nodesToFilter)
+	{
+		List<AIGridNode> returnNodes = new List<AIGridNode>();
+		AIGridNode preNode = null;
+		AIGridNode currentNode = null;
+		for (int i = nodesToFilter.Count - 1; i >= 0; i--)
+		{
+			currentNode = nodesToFilter[i];
+			if(currentNode.Data.J == 2)
+			{
+				if (preNode != null)
+				{
+					returnNodes.Add(preNode); // Start Jump Node
+                }
+				returnNodes.Add(currentNode); // First Air Node
+			}
+
+
+			preNode = currentNode;
+		}
+	}
+	*/
 
 	private static int DistanceValueCheck(Vector2 start, Vector2 end)
 	{
@@ -160,7 +184,7 @@ public class AStarPlatforming {
 	/// Checks if the node is at a location the player can reach with his own height. 
 	/// In other words, that the nodes above it which the player will collide if he stands on the target node are not solid.
 	/// </summary>
-	private static bool CheckPassableHeightNode(Grid<AIGridNode> aiGrid, AIGridNode node, float height)
+	public static bool CheckPassableHeightNode(Grid<AIGridNode> aiGrid, AIGridNode node, float height)
 	{
 		AIGridNode checkingNode = node;
         while (height > 0)
@@ -181,7 +205,7 @@ public class AStarPlatforming {
 
 
 	// jumping
-	private static int CalculateMaxJumpCost(float jumpHeight, float nodeSize)
+	public static int CalculateMaxJumpCost(float jumpHeight, float nodeSize)
 	{
 		int cost = 0;
 		while(jumpHeight > nodeSize)

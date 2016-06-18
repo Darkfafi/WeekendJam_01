@@ -62,8 +62,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\AI\AIInput\AIInputSubmitter.cs" />
+    <Compile Include="Assets\_Scripts\AI\CharacterAI\AIParts\IAIPart.cs" />
+    <Compile Include="Assets\_Scripts\AI\CharacterAI\CharacterAI.cs" />
+    <Compile Include="Assets\_Scripts\AI\CharacterAI\MovementAIPart.cs" />
     <Compile Include="Assets\_Scripts\AI\Pathfinding\AIGridManager.cs" />
     <Compile Include="Assets\_Scripts\AI\Pathfinding\AStarPlatforming.cs" />
+    <Compile Include="Assets\_Scripts\AI\Pathfinding\ConAiGridManager.cs" />
     <Compile Include="Assets\_Scripts\AI\Pathfinding\GenericGrid\Grid.cs" />
     <Compile Include="Assets\_Scripts\AI\Pathfinding\GenericGrid\Node.cs" />
     <Compile Include="Assets\_Scripts\Animation\AnimationManager.cs" />
